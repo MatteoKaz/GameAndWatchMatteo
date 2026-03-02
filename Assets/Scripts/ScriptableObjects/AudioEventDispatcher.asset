@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c01e1514bafb84419b1aea1faadcdee, type: 3}
+  m_Name: AudioEventDispatcher
+  m_EditorClassIdentifier: Assembly-CSharp::AudioEventDispatcher
+  _audioClips:
+  - audioType: 1
+    audioClip: {fileID: 8300000, guid: 72f8ddf5c1c0d644a855f8cadd89f4e5, type: 3}
+  - audioType: 2
+    audioClip: {fileID: 8300000, guid: 1c12d4a1598394745b6d0b01ff51e418, type: 3}
+  - audioType: 5
+    audioClip: {fileID: 8300000, guid: 21089e04446108a41a9f67b4e78bbda5, type: 3}
+  - audioType: 4
+    audioClip: {fileID: 8300000, guid: 21089e04446108a41a9f67b4e78bbda5, type: 3}
