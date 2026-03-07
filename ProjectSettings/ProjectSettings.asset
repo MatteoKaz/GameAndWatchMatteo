@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: 'Matteo '
+  companyName: matteo
   productName: GameAndWatch
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -782,7 +782,7 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
-  activeInputHandler: 2
+  activeInputHandler: 1
   windowsGamepadBackendHint: 0
   cloudProjectId: 35281abd-f348-4a01-b489-107d22b1b6d9
   framebufferDepthMemorylessMode: 0

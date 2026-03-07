@@ -13,6 +13,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private int _spawnInterval = 4;
     private int _RefNumber;
     public event Action OnSpawn;
+    private int _LastRefNumber = 5;
+
 
     private void OnEnable()
     {
@@ -44,33 +46,114 @@ public class Spawner : MonoBehaviour
         {
             OnSpawn?.Invoke();
             _spawnTimer = 0;
-           random();
+            random();
             var LastRefNumb = _RefNumber;
-            
+
+
+
             if (_RefNumber == 0)
             {
-                _fallingLines[_RefNumber].Init(Instantiate(_objectToSpawn));
+                if (_LastRefNumber != 0)
+                {
+                    _fallingLines[_RefNumber].Init(Instantiate(_objectToSpawn));
+                    _LastRefNumber = _RefNumber;
+                }
+
+                else
+                {
+                    var NewNumber = UnityEngine.Random.Range(1, 2);
+                    if (NewNumber == 1)
+                    {
+                        _fallingLines[NewNumber].Init(Instantiate(_objectToSpawn2));
+                        _LastRefNumber = NewNumber;
+                        LastRefNumb = NewNumber;
+
+                    }
+                    if (NewNumber == 2)
+                    {
+                        _fallingLines[NewNumber].Init(Instantiate(_objectToSpawn3));
+                        _LastRefNumber = NewNumber;
+                        LastRefNumb = NewNumber;
+
+
+                    }
+                    
+                }
             }
             if (_RefNumber == 1)
             {
-                _fallingLines[_RefNumber].Init(Instantiate(_objectToSpawn2));
-            }
-            if (_RefNumber == 2)
-            {
-                _fallingLines[_RefNumber].Init(Instantiate(_objectToSpawn3));
-            }
-            if (randomBonus() == 0)
-            {
+                    if (_LastRefNumber != 1)
+                    {
+                        _fallingLines[_RefNumber].Init(Instantiate(_objectToSpawn2));
+                        _LastRefNumber = _RefNumber;
+                    }
 
-                int newRef;
-                do
+                    else
+                    {
+                    var NewNumber = 2;
+                        do
+                        {
+                        NewNumber = UnityEngine.Random.Range(0, 2);
+                        } while (NewNumber ==1);
+                    if (NewNumber == 0)
+                        {
+                            _fallingLines[NewNumber].Init(Instantiate(_objectToSpawn));
+                            _LastRefNumber = NewNumber;
+                            LastRefNumb = NewNumber;
+
+                        }
+                        if (NewNumber == 2)
+                        {
+                            _fallingLines[NewNumber].Init(Instantiate(_objectToSpawn3));
+                            _LastRefNumber = NewNumber;
+                            LastRefNumb = NewNumber;
+
+                        }
+                    }
+            }
+           if (_RefNumber == 2)
+            {
+                    if (_LastRefNumber != 2)
+                    {
+                        _fallingLines[_RefNumber].Init(Instantiate(_objectToSpawn3));
+                        _LastRefNumber = _RefNumber;
+                        
+                    }
+
+                    else
+                    {
+                        var NewNumber = UnityEngine.Random.Range(0, 1);
+                        if (NewNumber == 0)
+                        {
+                            _fallingLines[NewNumber].Init(Instantiate(_objectToSpawn));
+                            _LastRefNumber = NewNumber;
+                            LastRefNumb = NewNumber;
+
+                        }
+                        if (NewNumber == 1)
+                        {
+                            _fallingLines[NewNumber].Init(Instantiate(_objectToSpawn2));
+                            _LastRefNumber = NewNumber;
+                            LastRefNumb = NewNumber;
+
+
+                        }
+                    }
+           }
+                if (randomBonus() == 0)
                 {
-                    newRef = UnityEngine.Random.Range(0, _fallingLines.Length);
-                } while (newRef == LastRefNumb);
 
-                _fallingLines[newRef].Init(Instantiate(_BonusToSpawn));
-            }
+                    int newRef;
+                    do
+                    {
+                        newRef = UnityEngine.Random.Range(0, _fallingLines.Length);
+                    } while (newRef  == LastRefNumb);
+
+                    _fallingLines[newRef].Init(Instantiate(_BonusToSpawn));
+                }
+
             
+
         }
     }
 }

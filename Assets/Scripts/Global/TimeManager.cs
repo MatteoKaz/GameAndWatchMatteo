@@ -58,7 +58,7 @@ public class TimeManager : MonoBehaviour
             }
             else
             {
-                _timeStepDuration = Mathf.Clamp(_timeStepDuration - 0.15f, 0.5f, 1.5f);
+                _timeStepDuration = Mathf.Clamp(_timeStepDuration - 0.25f, 0.5f, 1.5f);
             }
             
         }

@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -18,10 +19,14 @@ public class InputPlayerManagerCustom : MonoBehaviour
     private float height = 0.0f;
 
     private Vector2 startPosition;
+    string debugText = "";
     private Vector2 endPosition;
 
-    
 
+    void Awake()
+    {
+        EnhancedTouchSupport.Enable();
+    }
 
     private void Start()
     {
@@ -48,11 +53,12 @@ public class InputPlayerManagerCustom : MonoBehaviour
         {
             if (dot < 0)
             {
-                MoveLeft();
+                MoveRight();
             }
             else
             {
-                MoveRight();
+                MoveLeft();
+                
             }
         }
     }
@@ -68,22 +74,27 @@ public class InputPlayerManagerCustom : MonoBehaviour
         }
         var touch = Touch.activeTouches[0];
 
-        if (touch.phase == TouchPhase.Began)
+        if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
         {
             startPosition = touch.screenPosition;
-
+            debugText = "Touches: " + Touch.activeTouches.Count;
+            Debug.Log("Start");
+          
         }
-        if(touch.phase == TouchPhase.Ended)
+        if(touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
         {
             endPosition = touch.screenPosition;
             OnSwipe();
+            debugText = "Touchesend: " + Touch.activeTouches.Count;
+            Debug.Log("end");
 
-          
+         
+
         }
 
-   
+        Debug.Log(Touch.activeTouches.Count);
 
-        
+
 
 
         //if (Input.touchCount > 0)
@@ -131,6 +142,10 @@ public class InputPlayerManagerCustom : MonoBehaviour
 
         //    }
         //}
+    }
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 1500, 1500), debugText);
     }
     public void MoveLeft()
     {
