@@ -58,9 +58,11 @@ public class SnakeBody : MonoBehaviour
 
             snakeCoords.Add(pos);
             segments.Add(seg);
+            
         }
 
         UpdateRotations();
+        playerMovement.Spawned();
     }
 
     /// <summary>
@@ -114,6 +116,8 @@ public class SnakeBody : MonoBehaviour
         }
         MoveFinish = true;
         playerMovement.coordPlayer = snakeCoords[0];
+       
+        playerMovement.EndTurn();
     }
 
     /// <summary>

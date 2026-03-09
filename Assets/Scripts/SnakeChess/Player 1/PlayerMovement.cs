@@ -1,5 +1,7 @@
 using UnityEngine;
-
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,7 +10,12 @@ public class PlayerMovement : MonoBehaviour
     public Vector2Int coordPlayer;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private SnakeBody snakeBody;
+    [SerializeField] public TurnManager tm;
 
+    public bool playerTurn = false;
+
+    public event Action TurnDone;
+    public event Action SpawnedSnake;
 
     public enum MoveType
     {
@@ -28,15 +35,41 @@ public class PlayerMovement : MonoBehaviour
     {
         m_inputPlayerManager.OnMove += TryMove;
         gridManager.FinishInitialize += PlacePlayer;
-       
+        tm.playerTurn += TurnPlayer;
+
+
+    }
+
+    public void Spawned()
+    {
+        SpawnedSnake?.Invoke();
     }
 
     private void OnDisable()
     {
         m_inputPlayerManager.OnMove -= TryMove;
         gridManager.FinishInitialize -= PlacePlayer;
+        tm.playerTurn -= TurnPlayer;
     }
    
+
+
+    public void TurnPlayer()
+    {
+    
+        playerTurn = true;
+        Debug.Log("value " + playerTurn);
+        ColorCell();
+    }
+
+
+    public void EndTurn()
+    {
+        TurnDone?.Invoke();
+    }
+
+
+
     bool IsValidMove(Vector2Int target)
     {
         int dx = target.x - coordPlayer.x;
@@ -48,54 +81,74 @@ public class PlayerMovement : MonoBehaviour
         switch (currentMoveType)
         {
             case MoveType.Fou:
-                return adx == ady && adx != 0;
+                return adx == ady && adx != 0 && !IsPathBlocked(target);
 
             case MoveType.Roi:
                 return adx <= 1 && ady <= 1 && (adx != 0 || ady != 0);
 
             case MoveType.Tour:
-                return (dx == 0 && dy != 0) || (dx != 0 && dy == 0);
+                return (dx == 0 && dy != 0) || (dx != 0 && dy == 0) && !IsPathBlocked(target);
 
             case MoveType.Cavalier:
                 return (adx == 2 && ady == 1) || (adx == 1 && ady == 2);
 
             case MoveType.Dame:
-                return (adx == ady) || (dx == 0 && dy != 0) || (dx != 0 && dy == 0);
+                return (adx == ady) || (dx == 0 && dy != 0) || (dx != 0 && dy == 0) && !IsPathBlocked(target);
         }
 
         return false;
     }
     public void TryMove(Cell newCell)
     {
-        if (IsValidMove(newCell.coord))
+        if (playerTurn == true)
         {
-            if (snakeBody.MoveFinish == true)
+            if (IsValidMove(newCell.coord))
             {
-                snakeBody.MoveFinish = false;
-                coordPlayer = newCell.coord;
-                transform.position = newCell.transform.position;
-                snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(newCell.coord));
+                bool occupied = snakeBody.snakeCoords.Contains(newCell.coord);
 
-                snakeBody.MoveSnakeTo(coordPlayer);
+                if (snakeBody.MoveFinish == true && occupied == false)
+                {
+                    snakeBody.MoveFinish = false;
+                    coordPlayer = newCell.coord;
+                    transform.position = newCell.transform.position;
+                    
+                    playerTurn = false;
+                    snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(newCell.coord));
+                    
+
+
+
+                }
+
             }
-            
         }
+        
+       
     }
+
+
+
+
+
+
 
     public void PlacePlayer()
     {
-        int x = Random.Range(0, 7);
-        int y = Random.Range(0, 7);
+        int x = UnityEngine.Random.Range(0, 7);
+        int y = UnityEngine.Random.Range(0, 7);
         coordPlayer = new Vector2Int(x, y);
         snakeBody.CreateSnake();
         snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(coordPlayer));
-        snakeBody.MoveSnakeTo(coordPlayer);
+        
+       
     }
 
-    public void Update()
+    public void ColorCell()
     {
         foreach (Cell cell in gridManager.allCells)
         {
+            bool occupied = snakeBody.snakeCoords.Contains(cell.coord);
+            bool validMove = IsValidMove(cell.coord);
             if (cell == null) continue;
 
             SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
@@ -103,10 +156,76 @@ public class PlayerMovement : MonoBehaviour
             if (IsValidMove(cell.coord))
                 sr.color = Color.yellow;
             else
-                sr.color = cell.cellColor;
+            {
+                sr.sprite = cell.sprite;
+                sr.color = Color.white;
+            }
+               
+
+            if (occupied && validMove)
+            {
+               
+
+
+                sr.color = Color.white;
+            }
+           
         }
     }
 
-  
+    public void UpdateGridHighlights()
+    {
+        // Parcours toutes les cellules de la grille
+        foreach (Cell cell in gridManager.allCells)
+        {
+            // La case est interdite si :
+            // - elle est déjà occupée par une partie du serpent
+            // - ou le mouvement vers elle n'est pas valide
+            bool occupied = snakeBody.snakeCoords.Contains(cell.coord);
+            bool validMove = IsValidMove(cell.coord);
+
+           
+
+          
+        }
+
+                
+           
+        
+    }
+    public void SetGray(bool value)
+    {
+
+        foreach (Cell cell in gridManager.allCells)
+        {
+            if (cell == null) continue;
+
+            SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
+
+
+            sr.color = value ? Color.gray : sr.color = cell.cellColor;
+        }
+    }
+
+    bool IsPathBlocked(Vector2Int target)
+    {
+        int dx = target.x - coordPlayer.x;
+        int dy = target.y - coordPlayer.y;
+
+        int stepX = dx == 0 ? 0 : dx / Mathf.Abs(dx);
+        int stepY = dy == 0 ? 0 : dy / Mathf.Abs(dy);
+
+        Vector2Int pos = coordPlayer + new Vector2Int(stepX, stepY);
+
+        while (pos != target)
+        {
+            if (snakeBody.snakeCoords.Contains(pos))
+                return true; // un segment bloque le chemin
+
+            pos += new Vector2Int(stepX, stepY);
+        }
+
+        return false;
+    }
 
 }

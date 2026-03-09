@@ -7,6 +7,7 @@ public class Cell : MonoBehaviour
     public Vector2Int coord;  
     public Button button;
     public Color cellColor;
+    public Sprite sprite;
 
 
     // Initialisation
