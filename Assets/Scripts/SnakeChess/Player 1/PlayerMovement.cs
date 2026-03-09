@@ -1,11 +1,14 @@
 using UnityEngine;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private InputPlayerManagerCustomSnake m_inputPlayerManager;
     [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
     public Vector2Int coordPlayer;
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private SnakeBody snakeBody;
+
 
     public enum MoveType
     {
@@ -33,72 +36,50 @@ public class PlayerMovement : MonoBehaviour
         m_inputPlayerManager.OnMove -= TryMove;
         gridManager.FinishInitialize -= PlacePlayer;
     }
+   
+    bool IsValidMove(Vector2Int target)
+    {
+        int dx = target.x - coordPlayer.x;
+        int dy = target.y - coordPlayer.y;
 
+        int adx = Mathf.Abs(dx);
+        int ady = Mathf.Abs(dy);
+
+        switch (currentMoveType)
+        {
+            case MoveType.Fou:
+                return adx == ady && adx != 0;
+
+            case MoveType.Roi:
+                return adx <= 1 && ady <= 1 && (adx != 0 || ady != 0);
+
+            case MoveType.Tour:
+                return (dx == 0 && dy != 0) || (dx != 0 && dy == 0);
+
+            case MoveType.Cavalier:
+                return (adx == 2 && ady == 1) || (adx == 1 && ady == 2);
+
+            case MoveType.Dame:
+                return (adx == ady) || (dx == 0 && dy != 0) || (dx != 0 && dy == 0);
+        }
+
+        return false;
+    }
     public void TryMove(Cell newCell)
     {
-        Vector2Int CellCoord = newCell.coord;
-        if (currentMoveType == MoveType.Fou)
+        if (IsValidMove(newCell.coord))
         {
-            Debug.Log("Le fou se déplace en diagonale");
-            int dx = CellCoord.x - coordPlayer.x;
-            int dy = CellCoord.y - coordPlayer.y;
-            if (Mathf.Abs(dx) == Mathf.Abs(dy) && dx != 0)
+            if (snakeBody.MoveFinish == true)
             {
+                snakeBody.MoveFinish = false;
                 coordPlayer = newCell.coord;
                 transform.position = newCell.transform.position;
+                snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(newCell.coord));
+
+                snakeBody.MoveSnakeTo(coordPlayer);
             }
-
-
+            
         }
-        if (currentMoveType == MoveType.Roi)
-        {
-            int dx = Mathf.Abs(CellCoord.x - coordPlayer.x);
-            int dy = Mathf.Abs(CellCoord.y - coordPlayer.y);
-
-            if (dx <= 1 && dy <= 1 && (dx != 0 || dy != 0))
-            {
-                coordPlayer = newCell.coord;
-                transform.position = newCell.transform.position;
-            }
-
-        }
-        if (currentMoveType == MoveType.Tour)
-        {
-            int dx = CellCoord.x - coordPlayer.x;
-            int dy = CellCoord.y - coordPlayer.y;
-
-            // La cellule est valide si elle est sur la même ligne ou la même colonne
-            if ((dx == 0 && dy != 0) || (dx != 0 && dy == 0))
-            {
-                coordPlayer = newCell.coord;
-                transform.position = newCell.transform.position;
-            }
-        }
-        if (currentMoveType == MoveType.Cavalier)
-        {
-            int dx = Mathf.Abs(CellCoord.x - coordPlayer.x);
-            int dy = Mathf.Abs(CellCoord.y - coordPlayer.y);
-
-            // La cellule est valide si elle est sur la même ligne ou la même colonne
-            if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2))
-            {
-                coordPlayer = newCell.coord;
-                transform.position = newCell.transform.position;
-            }
-        }
-        if (currentMoveType == MoveType.Dame)
-        {
-            int dx = Mathf.Abs(CellCoord.x - coordPlayer.x);
-            int dy = Mathf.Abs(CellCoord.y - coordPlayer.y);
-            if (Mathf.Abs(dx) == Mathf.Abs(dy) || (dx == 0 && dy != 0) || (dx != 0 && dy == 0))
-            {
-                coordPlayer = newCell.coord;
-                transform.position = newCell.transform.position;
-            }
-            Debug.Log("Le fou se déplace en diagonale");
-        }
-        //coordPlayer = newCell.coord;
-        //transform.position = newCell.transform.position;
     }
 
     public void PlacePlayer()
@@ -106,111 +87,26 @@ public class PlayerMovement : MonoBehaviour
         int x = Random.Range(0, 7);
         int y = Random.Range(0, 7);
         coordPlayer = new Vector2Int(x, y);
-        transform.position = gridManager.allCells[x, y].transform.position;
+        snakeBody.CreateSnake();
+        snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(coordPlayer));
+        snakeBody.MoveSnakeTo(coordPlayer);
     }
 
     public void Update()
     {
         foreach (Cell cell in gridManager.allCells)
         {
-            if (cell != null)
-            {
-                Vector2Int CellCoord = cell.coord;
-                if (currentMoveType == MoveType.Fou)
-                {
-                    
-                    int dx = CellCoord.x - coordPlayer.x;
-                    int dy = CellCoord.y - coordPlayer.y;
-                    if (Mathf.Abs(dx) == Mathf.Abs(dy) && dx != 0)
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        if (sr != null)
-                            sr.color = Color.yellow;
+            if (cell == null) continue;
 
-                    }
-                    else
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        sr.color = cell.cellColor;
-                    }
-                }
+            SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
 
-                if (currentMoveType == MoveType.Roi)
-                {
-                    int dx = Mathf.Abs(CellCoord.x - coordPlayer.x);
-                    int dy = Mathf.Abs(CellCoord.y - coordPlayer.y);
-
-                    if (dx <= 1 && dy <= 1 && (dx != 0 || dy != 0))
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        if (sr != null)
-                            sr.color = Color.yellow;
-
-                    }
-                    else
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        sr.color = cell.cellColor;
-                    }
-
-                }
-                if (currentMoveType == MoveType.Tour)
-                {
-                    int dx = CellCoord.x - coordPlayer.x;
-                    int dy = CellCoord.y - coordPlayer.y;
-
-                    // La cellule est valide si elle est sur la même ligne ou la même colonne
-                    if ((dx == 0 && dy != 0) || (dx != 0 && dy == 0))
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        if (sr != null)
-                            sr.color = Color.yellow;
-
-                    }
-                    else
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        sr.color = cell.cellColor;
-                    }
-                }
-                if (currentMoveType == MoveType.Cavalier)
-                {
-                    int dx = Mathf.Abs(CellCoord.x - coordPlayer.x);
-                    int dy = Mathf.Abs(CellCoord.y - coordPlayer.y);
-                    if ((dx == 2 && dy == 1) ||  (dx == 1 && dy == 2))
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        if (sr != null)
-                            sr.color = Color.yellow;
-                   }
-                    else
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        sr.color = cell.cellColor;
-                    }
-
-
-                }
-                if (currentMoveType == MoveType.Dame)
-                {
-                    int dx = Mathf.Abs(CellCoord.x - coordPlayer.x);
-                    int dy = Mathf.Abs(CellCoord.y - coordPlayer.y);
-                    if (Mathf.Abs(dx) == Mathf.Abs(dy) || (dx == 0 && dy != 0) || (dx != 0 && dy == 0))
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        if (sr != null)
-                            sr.color = Color.yellow;
-                    }
-                    else
-                    {
-                        SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
-                        sr.color = cell.cellColor;
-                    }
-                }
-
-            }
+            if (IsValidMove(cell.coord))
+                sr.color = Color.yellow;
+            else
+                sr.color = cell.cellColor;
         }
     }
+
   
-  
+
 }

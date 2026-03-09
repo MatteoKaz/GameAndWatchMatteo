@@ -11,8 +11,8 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] GameObject cellPrefab;
     
-    [SerializeField] int width = 8;
-    [SerializeField] int height = 8;
+    [SerializeField] public int width = 8;
+    [SerializeField] public int height = 8;
     [SerializeField] float cellSize = 2f; // taille d’une case dans le monde
     [SerializeField] Vector3 startPosition = new Vector3(2f, 3f, 0f);
     [SerializeField] float spacing = 0.2f;  // espace supplémentaire entre cellules
@@ -50,7 +50,7 @@ public class GridManager : MonoBehaviour
                 SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
                 if (sr != null)
                 {
-                    sr.color = ((x + y) % 2 == 0) ? Color.white : Color.black;
+                    sr.color = ((x + y) % 2 == 0) ? Color.black : Color.white;
                     cellscript.cellColor = sr.color;
 
                 }
