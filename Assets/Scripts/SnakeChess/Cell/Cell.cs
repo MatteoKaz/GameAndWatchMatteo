@@ -21,5 +21,9 @@ public class Cell : MonoBehaviour
     {
         Debug.Log("Click");
     }
-
+    public void ColorCase(Color color)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.color = color;
+    }
 }

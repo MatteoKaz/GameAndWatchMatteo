@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         int y = UnityEngine.Random.Range(0, 7);
         coordPlayer = new Vector2Int(x, y);
         snakeBody.CreateSnake();
-        snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(coordPlayer));
+        snakeBody.StartCoroutine(snakeBody.FirstMoveSnakeTo(coordPlayer));
         
        
     }

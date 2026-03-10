@@ -11,12 +11,14 @@ public class SnakeBody : MonoBehaviour
     [SerializeField] private Sprite tailSprite;
     [SerializeField] private PlayerMovement playerMovement;
     public bool MoveFinish = true;
+    [SerializeField] private PlayerEat pe;
 
     public List<Vector2Int> snakeCoords = new List<Vector2Int>();
     private List<GameObject> segments = new List<GameObject>();
 
     public int startSize = 3;
     public float moveDuration = 0.2f;
+    
 
     private void OnEnable()
     {
@@ -116,7 +118,10 @@ public class SnakeBody : MonoBehaviour
         }
         MoveFinish = true;
         playerMovement.coordPlayer = snakeCoords[0];
-       
+        pe.PlayerKill();
+
+
+
         playerMovement.EndTurn();
     }
 
@@ -219,4 +224,56 @@ public class SnakeBody : MonoBehaviour
         }
 
     }
+
+
+
+
+
+    public IEnumerator FirstMoveSnakeTo(Vector2Int target)
+    {
+        // Génère le chemin case par case (inclut Cavalier en L)
+        List<Vector2Int> path = GetPathToTarget(snakeCoords[0], target, playerMovement.currentMoveType);
+
+        foreach (Vector2Int next in path)
+        {
+            // Crée la nouvelle configuration du serpent
+            List<Vector2Int> newCoords = new List<Vector2Int> { next };
+            for (int i = 0; i < segments.Count - 1; i++)
+            {
+                newCoords.Add(snakeCoords[i]); // décale les positions existantes
+            }
+
+            // Stock positions actuelles et futures
+            Vector3[] startPositions = new Vector3[segments.Count];
+            Vector3[] endPositions = new Vector3[segments.Count];
+
+            for (int i = 0; i < segments.Count; i++)
+            {
+                startPositions[i] = segments[i].transform.position;
+                Vector2Int coord = newCoords[i];
+                coord.x = Mathf.Clamp(coord.x, 0, gridManager.width - 1);
+                coord.y = Mathf.Clamp(coord.y, 0, gridManager.height - 1);
+                endPositions[i] = gridManager.allCells[coord.x, coord.y].transform.position;
+            }
+
+            // Lerp pour mouvement fluide
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / moveDuration;
+                for (int i = 0; i < segments.Count; i++)
+                    segments[i].transform.position = Vector3.Lerp(startPositions[i], endPositions[i], t);
+
+                UpdateRotations();
+                yield return null;
+            }
+
+            // Fixe la position finale et met à jour snakeCoords
+            for (int i = 0; i < segments.Count; i++)
+                segments[i].transform.position = endPositions[i];
+
+            snakeCoords = newCoords;
+            UpdateRotations();
+        }
+    } 
 }

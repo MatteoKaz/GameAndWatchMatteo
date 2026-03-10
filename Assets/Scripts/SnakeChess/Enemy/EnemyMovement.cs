@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] public AIManger aim;
     [SerializeField] public Sprite sprite;
     public Vector2Int coordEnemy;
+    public Vector2Int CurrentcoordEnemy;
     public Vector3 futurmove;
 
     [SerializeField] private float moveDuration = 0.3f;
@@ -35,7 +36,11 @@ public class EnemyMovement : MonoBehaviour
         aim.tm.pm.SpawnedSnake -= PlaceEnemy;
     }
 
-
+    public void SetSpriteColor(Color color)
+    {
+       SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.color = color;   
+    }
 
 
 
@@ -61,7 +66,9 @@ public class EnemyMovement : MonoBehaviour
         }
 
         coordEnemy = spawnPos;
+        CurrentcoordEnemy = spawnPos;
         transform.position = gridManager.allCells[spawnPos.x, spawnPos.y].transform.position;
+
     }
 
     public IEnumerator MoveEnemy()
@@ -78,9 +85,13 @@ public class EnemyMovement : MonoBehaviour
             transform.position = Vector3.Lerp(startPos, futurmove, t);
             yield return null;
         }
-
+        
+        CurrentcoordEnemy = coordEnemy;
+        Debug.Log("value " + CurrentcoordEnemy);
         transform.position = futurmove;
-        cellscript.cellColor = Color.white;
+        cellscript.ColorCase(Color.white);
+        SetSpriteColor(Color.white);
+        aim.SetEndTurn();
     }
 
     public void TryMove()
@@ -94,9 +105,10 @@ public class EnemyMovement : MonoBehaviour
         Vector2Int target = ChooseAction(moves);
 
         coordEnemy = target;
-        Cell cellscript = gridManager.allCells[coordEnemy.x, coordEnemy.y];
-        cellscript.cellColor = Color.red;
         futurmove = gridManager.allCells[target.x, target.y].transform.position;
+        Cell cellscript = gridManager.allCells[target.x, target.y];
+        cellscript.ColorCase(Color.red);
+        
     }
 
     public List<Vector2Int> GetPossibleMoves()
