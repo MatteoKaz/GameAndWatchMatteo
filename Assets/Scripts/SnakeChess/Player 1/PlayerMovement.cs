@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private SnakeBody snakeBody;
     [SerializeField] public TurnManager tm;
-
+    [SerializeField] public AIManger aim;
     public bool playerTurn = false;
 
     public event Action TurnDone;
@@ -81,19 +81,23 @@ public class PlayerMovement : MonoBehaviour
         switch (currentMoveType)
         {
             case MoveType.Fou:
-                return adx == ady && adx != 0 && !IsPathBlocked(target);
+                return (adx == ady && adx != 0) && !IsPathBlocked(target);
 
             case MoveType.Roi:
                 return adx <= 1 && ady <= 1 && (adx != 0 || ady != 0);
 
             case MoveType.Tour:
-                return (dx == 0 && dy != 0) || (dx != 0 && dy == 0) && !IsPathBlocked(target);
+                 return ((dx == 0 && dy != 0) || (dx != 0 && dy == 0)) && !IsPathBlocked(target);
 
             case MoveType.Cavalier:
                 return (adx == 2 && ady == 1) || (adx == 1 && ady == 2);
 
             case MoveType.Dame:
-                return (adx == ady) || (dx == 0 && dy != 0) || (dx != 0 && dy == 0) && !IsPathBlocked(target);
+                return (
+                    adx == ady ||
+                    dx == 0 ||
+                    dy == 0
+                ) && !IsPathBlocked(target);
         }
 
         return false;
@@ -222,10 +226,17 @@ public class PlayerMovement : MonoBehaviour
             if (snakeBody.snakeCoords.Contains(pos))
                 return true; // un segment bloque le chemin
 
-            pos += new Vector2Int(stepX, stepY);
+            for (int i = aim.enemies.Count - 1; i >= 0; i--)
+            {
+                if (aim.enemies[i].CurrentcoordEnemy == pos)
+                    return true;
+            }
+                pos += new Vector2Int(stepX, stepY);
         }
 
         return false;
     }
+
+
 
 }

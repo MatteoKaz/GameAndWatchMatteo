@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SnakeBody : MonoBehaviour
 {
@@ -13,8 +14,10 @@ public class SnakeBody : MonoBehaviour
     public bool MoveFinish = true;
     [SerializeField] private PlayerEat pe;
 
+    public event Action GrownUp;
+    public event Action GrownDown;
     public List<Vector2Int> snakeCoords = new List<Vector2Int>();
-    private List<GameObject> segments = new List<GameObject>();
+    public List<GameObject> segments = new List<GameObject>();
 
     public int startSize = 3;
     public float moveDuration = 0.2f;
@@ -202,6 +205,7 @@ public class SnakeBody : MonoBehaviour
         GameObject seg = Instantiate(segmentPrefab);
         seg.transform.position = gridManager.allCells[tail.x, tail.y].transform.position;
         segments.Add(seg);
+        GrownUp?.Invoke();
     }
 
     private void UpdateRotations()
@@ -211,9 +215,19 @@ public class SnakeBody : MonoBehaviour
            
             if (i + 1 == segments.Count )
             {
-                Vector2Int dir = snakeCoords[i] - snakeCoords[i - 1];
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                segments[i].transform.rotation = Quaternion.Euler(0, 0, angle);
+                if(segments.Count == 1)
+                {
+                    Vector2Int dir = Vector2Int.right;
+                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    segments[i].transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
+                else
+                {
+                    Vector2Int dir = snakeCoords[i] - snakeCoords[i - 1];
+                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    segments[i].transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
+                    
             }
             else
             {
@@ -275,5 +289,78 @@ public class SnakeBody : MonoBehaviour
             snakeCoords = newCoords;
             UpdateRotations();
         }
-    } 
+    }
+
+    /// <summary>
+    /// Supprime un segment du serpent correspondant à la position donnée.
+    /// Gère correctement les cas queue, corps, et serpent minimal (2 segments).
+    /// </summary>
+    public void RemoveSegmentAt(Vector2Int targetPos)
+    {
+        int index = snakeCoords.IndexOf(targetPos);
+
+        if (index == -1) return; // la position n'est pas dans le serpent
+
+        // Si le serpent est minimal (2 segments : tête + queue)
+        if (snakeCoords.Count <= 2)
+        {
+            // Option : supprimer la queue uniquement
+            if (index == 1)
+            {
+                Destroy(segments[index]);
+                segments.RemoveAt(index);
+                snakeCoords.RemoveAt(index);
+
+                // Le serpent est réduit à une seule tête, on garde son sprite
+                segments[0].GetComponent<SpriteRenderer>().sprite = headSprite;
+                Debug.Log("Dead");
+            }
+            else
+            {
+                // Tentative de supprimer la tête : déclenche fin de partie
+                Debug.Log("Le joueur est mort : suppression de la tête !");
+                // Ici tu peux appeler une fonction GameOver()
+            }
+
+            UpdateRotations();
+            return;
+        }
+
+        // Cas général : corps ou queue
+        if (index == 0)
+        {
+            // Suppression de la tête non autorisée
+            Debug.LogWarning("Suppression de la tête non supportée ici.");
+            return;
+        }
+
+        if (index == snakeCoords.Count - 1)
+        {
+            // Supprime la queue
+            Vector2Int tailPos = snakeCoords[snakeCoords.Count - 2];
+
+            Destroy(segments[index]);
+            segments.RemoveAt(index);
+            snakeCoords.RemoveAt(index);
+
+            // Repositionne la nouvelle queue
+            SpriteRenderer sr = segments[segments.Count - 1].GetComponent<SpriteRenderer>();
+            sr.sprite = tailSprite;
+            segments[segments.Count - 1].transform.position = gridManager.allCells[tailPos.x, tailPos.y].transform.position;
+        }
+        else
+        {
+            // Supprime un segment du corps
+            Destroy(segments[index]);
+            segments.RemoveAt(index);
+            snakeCoords.RemoveAt(index);
+        }
+
+        GrownDown?.Invoke();
+        // Mise à jour des sprites tête et queue
+        segments[0].GetComponent<SpriteRenderer>().sprite = headSprite;
+        segments[segments.Count - 1].GetComponent<SpriteRenderer>().sprite = tailSprite;
+
+        UpdateRotations();
+    }
 }

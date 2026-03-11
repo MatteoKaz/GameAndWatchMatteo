@@ -2,18 +2,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using UnityEngine;
+using System;
+
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] private GridManager gridManager;
-    [SerializeField] private SnakeBody snakeBody;
+    [SerializeField] public GridManager gridManager;
+    [SerializeField] public SnakeBody snakeBody;
     [SerializeField] public AIManger aim;
     [SerializeField] public Sprite sprite;
+    [SerializeField] public PlayerEat pe;
     public Vector2Int coordEnemy;
     public Vector2Int CurrentcoordEnemy;
     public Vector3 futurmove;
+    public int Value;
 
     [SerializeField] private float moveDuration = 0.3f;
+    public event Action CutPlayer;
 
     public enum MoveType
     {
@@ -42,18 +48,38 @@ public class EnemyMovement : MonoBehaviour
         sr.color = color;   
     }
 
-
+    public void SetValue()
+    {
+        switch (currentMoveType)
+        {
+            case MoveType.Roi:
+                Value = 100;
+                break;
+            case MoveType.Cavalier:
+                Value = 300; 
+                break;
+            case MoveType.Tour:
+                Value = 500;
+                break;
+            case MoveType.Fou:
+                Value = 300;
+                break;
+            case MoveType.Dame:
+                Value = 900;
+                break;
+        }
+    }
 
     public void PlaceEnemy()
     {
         Vector2Int spawnPos;
         int maxTries = 100;
         int tries = 0;
-
+        SetValue();
         do
         {
-            int x = Random.Range(0, gridManager.width);
-            int y = Random.Range(0, gridManager.height);
+            int x = UnityEngine.Random.Range(0, gridManager.width);
+            int y = UnityEngine.Random.Range(0, gridManager.height);
             spawnPos = new Vector2Int(x, y);
             tries++;
         }
@@ -89,9 +115,11 @@ public class EnemyMovement : MonoBehaviour
         CurrentcoordEnemy = coordEnemy;
         Debug.Log("value " + CurrentcoordEnemy);
         transform.position = futurmove;
+        pe.CutOrKillPlayer(CurrentcoordEnemy);
         cellscript.ColorCase(Color.white);
         SetSpriteColor(Color.white);
         aim.SetEndTurn();
+
     }
 
     public void TryMove()
@@ -217,7 +245,9 @@ public class EnemyMovement : MonoBehaviour
                 if (IsEnemy(pos)) break;
                 if (IsSnake(pos))
                 {
-                    moves.Add(pos); // case serpent pour couper/attaquer
+                    moves.Add(pos);
+                   
+                    //CutPlayer?.Invoke();// case serpent pour couper/attaquer
                     break;
                 }
                 moves.Add(pos);
@@ -254,7 +284,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (moves.Count == 0) return coordEnemy;
 
-        int r = Random.Range(0, 4);
+        int r = UnityEngine.Random.Range(0, 4);
         switch (r)
         {
             case 0: return ChaseHead(moves);
@@ -304,6 +334,6 @@ public class EnemyMovement : MonoBehaviour
         return bestMove;
     }
 
-    Vector2Int RandomMove(List<Vector2Int> moves) => moves[Random.Range(0, moves.Count)];
+    Vector2Int RandomMove(List<Vector2Int> moves) => moves[UnityEngine.Random.Range(0, moves.Count)];
 
 }

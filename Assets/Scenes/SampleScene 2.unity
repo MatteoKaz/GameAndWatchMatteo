@@ -304,6 +304,10 @@ PrefabInstance:
       value: Enemy (3)
       objectReference: {fileID: 0}
     - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
+      propertyPath: pe
+      value: 
+      objectReference: {fileID: 1919128416}
+    - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
       propertyPath: aim
       value: 
       objectReference: {fileID: 1919128414}
@@ -670,7 +674,7 @@ GameObject:
   - component: {fileID: 122293538}
   - component: {fileID: 122293537}
   - component: {fileID: 122293536}
-  - component: {fileID: 122293539}
+  - component: {fileID: 122293541}
   - component: {fileID: 122293540}
   m_Layer: 5
   m_Name: ShowScore (1)
@@ -781,20 +785,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122293534}
   m_CullTransparentMesh: 1
---- !u!114 &122293539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 122293534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d88ab79ad1f789642afb426cdc09e8cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScoreUI
-  ScoreTexte: {fileID: 1266059472}
-  ScorePlayer: {fileID: 677991726}
 --- !u!223 &122293540
 Canvas:
   m_ObjectHideFlags: 0
@@ -818,6 +808,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: -3
   m_TargetDisplay: 0
+--- !u!114 &122293541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122293534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e1bf40f0fda3f478d427839805ddd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreUISnake
+  ScoreTexte: {fileID: 1266059472}
+  ScorePlayer: {fileID: 677991733}
 --- !u!1 &135559444
 GameObject:
   m_ObjectHideFlags: 0
@@ -2258,7 +2262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreUI
   ScoreTexte: {fileID: 1607480668}
-  ScorePlayer: {fileID: 677991726}
+  ScorePlayer: {fileID: 0}
 --- !u!114 &423655015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3389,8 +3393,8 @@ GameObject:
   - component: {fileID: 677991719}
   - component: {fileID: 677991723}
   - component: {fileID: 677991724}
-  - component: {fileID: 677991726}
   - component: {fileID: 677991725}
+  - component: {fileID: 677991733}
   - component: {fileID: 677991728}
   - component: {fileID: 677991727}
   - component: {fileID: 677991729}
@@ -3545,21 +3549,7 @@ MonoBehaviour:
   timeManager: {fileID: 0}
   DeathMenu: {fileID: 1790997817}
   _audioEventDispatcher: {fileID: 11400000, guid: 7063fb652f376c3459dd8cd9d81e992b, type: 2}
-  PlayerScore: {fileID: 677991726}
---- !u!114 &677991726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677991718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48ce4a5b4f6924646ab6aa93fea39e8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerScore
-  score: 0
-  _audioEventDispatcher: {fileID: 11400000, guid: 7063fb652f376c3459dd8cd9d81e992b, type: 2}
+  PlayerScore: {fileID: 0}
 --- !u!50 &677991727
 Rigidbody2D:
   serializedVersion: 5
@@ -3645,7 +3635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91b27a0003494849b9f179799da8b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScalePlayerUp
-  PS: {fileID: 677991726}
+  PS: {fileID: 0}
 --- !u!114 &677991730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3678,6 +3668,7 @@ MonoBehaviour:
   gridManager: {fileID: 1919128413}
   snakeBody: {fileID: 677991732}
   tm: {fileID: 1919128415}
+  aim: {fileID: 1919128414}
   playerTurn: 0
   currentMoveType: 2
 --- !u!114 &677991732
@@ -3701,8 +3692,26 @@ MonoBehaviour:
   MoveFinish: 1
   pe: {fileID: 1919128416}
   snakeCoords: []
+  segments: []
   startSize: 3
   moveDuration: 0.2
+--- !u!114 &677991733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677991718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f0569348094ed645acf0a28bcec1b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerScoreSnake
+  score: 0
+  multiplicator: 1
+  _audioEventDispatcher: {fileID: 11400000, guid: 7063fb652f376c3459dd8cd9d81e992b, type: 2}
+  pe: {fileID: 1919128416}
+  sb: {fileID: 677991732}
 --- !u!1 &695170136
 GameObject:
   m_ObjectHideFlags: 0
@@ -4001,7 +4010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreUI
   ScoreTexte: {fileID: 119990810}
-  ScorePlayer: {fileID: 677991726}
+  ScorePlayer: {fileID: 0}
 --- !u!114 &772621427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4837,6 +4846,10 @@ PrefabInstance:
       value: Enemy (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
+      propertyPath: pe
+      value: 
+      objectReference: {fileID: 1919128416}
+    - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
       propertyPath: aim
       value: 
       objectReference: {fileID: 1919128414}
@@ -4926,12 +4939,16 @@ PrefabInstance:
       objectReference: {fileID: 706966842301063632, guid: de8bf2b5a32db1944b356bcff07560c6, type: 3}
     - target: {fileID: 2953030902206554543, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.2
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3854824043727368359, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
+      propertyPath: pe
+      value: 
+      objectReference: {fileID: 1919128416}
     - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
       propertyPath: aim
       value: 
@@ -9861,6 +9878,9 @@ MonoBehaviour:
   - {fileID: 1978623514}
   - {fileID: 954876524}
   - {fileID: 1527351588}
+  gridManager: {fileID: 1919128413}
+  snakeBody: {fileID: 677991732}
+  pe: {fileID: 1919128416}
   tm: {fileID: 1919128415}
   enemy: {fileID: 0}
   gm: {fileID: 1919128413}
@@ -9894,6 +9914,8 @@ MonoBehaviour:
   gridManager: {fileID: 1919128413}
   aim: {fileID: 1919128414}
   pm: {fileID: 677991731}
+  playerscore: {fileID: 677991733}
+  snakeBody: {fileID: 677991732}
 --- !u!1 &1962664296
 GameObject:
   m_ObjectHideFlags: 0
@@ -10524,6 +10546,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
+      propertyPath: pe
+      value: 
+      objectReference: {fileID: 1919128416}
     - target: {fileID: 5857918188521310865, guid: cdbbe84134a86254d9ad6f4871303de5, type: 3}
       propertyPath: aim
       value: 

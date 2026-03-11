@@ -7,6 +7,9 @@ using System.Collections;
 public class AIManger : MonoBehaviour
 {
     public List<EnemyMovement> enemies = new List<EnemyMovement>();
+    [SerializeField] public GridManager gridManager;
+    [SerializeField] public SnakeBody snakeBody;
+    [SerializeField] public PlayerEat pe;
     [SerializeField] public TurnManager tm;
     public event Action TurnDoneEnemy;
     public EnemyMovement enemy;
@@ -19,6 +22,7 @@ public class AIManger : MonoBehaviour
         tm.EnemyTurn +=MoveEnemy;
         tm.playerTurn += LaunchEnemy;
         gm.FinishInitialize += InitializeStart;
+
     }
 
     void LaunchEnemy()

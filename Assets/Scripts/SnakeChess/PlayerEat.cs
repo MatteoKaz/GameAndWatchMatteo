@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerEat : MonoBehaviour
@@ -5,6 +8,14 @@ public class PlayerEat : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] public AIManger aim;
     [SerializeField] private PlayerMovement pm;
+    [SerializeField] public PlayerScoreSnake playerscore;
+    [SerializeField] private SnakeBody snakeBody;
+
+    public event Action Eat;
+    void OnEnable()
+    {
+
+    }
 
     public void PlayerKill()
     {
@@ -19,8 +30,22 @@ public class PlayerEat : MonoBehaviour
                 EnemyMovement em = aim.enemies[i];
                 aim.enemies.RemoveAt(i);
 
+                playerscore.AddPoint(em.Value);
+                Eat?.Invoke();
                 Destroy(em.gameObject);
             }
         }
     }
+
+    public void CutOrKillPlayer(Vector2Int pos)
+    {
+        for (int i = 0; i < snakeBody.snakeCoords.Count; i++)
+            if(pos == snakeBody.snakeCoords[i])
+            {
+                snakeBody.RemoveSegmentAt(pos);
+            }
+
+       
+    }
+
 }
