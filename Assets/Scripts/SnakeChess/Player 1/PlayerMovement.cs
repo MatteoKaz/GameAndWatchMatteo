@@ -9,11 +9,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
     public Vector2Int coordPlayer;
     [SerializeField] private GridManager gridManager;
-    [SerializeField] private SnakeBody snakeBody;
+    [SerializeField] public SnakeBody snakeBody;
     [SerializeField] public TurnManager tm;
     [SerializeField] public AIManger aim;
     public bool playerTurn = false;
+    [SerializeField] public WaveManager wm;
+    public int NumberOfMoves = 8;
 
+    public event Action CheckCombo;
     public event Action TurnDone;
     public event Action SpawnedSnake;
 
@@ -36,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
         m_inputPlayerManager.OnMove += TryMove;
         gridManager.FinishInitialize += PlacePlayer;
         tm.playerTurn += TurnPlayer;
+        wm.NewWave += SetNewWave;
 
 
     }
@@ -44,6 +48,19 @@ public class PlayerMovement : MonoBehaviour
     {
         SpawnedSnake?.Invoke();
     }
+
+
+    public void SetNewWave()
+    {
+        NumberOfMoves = wm.currentWaveData.maxMoves;
+        if (wm.currentWave != 1)
+        {
+            
+        }
+        
+    }
+
+
 
     private void OnDisable()
     {
@@ -110,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 bool occupied = snakeBody.snakeCoords.Contains(newCell.coord);
 
-                if (snakeBody.MoveFinish == true && occupied == false)
+                if (snakeBody.MoveFinish == true && occupied == false && NumberOfMoves != 0)
                 {
                     snakeBody.MoveFinish = false;
                     coordPlayer = newCell.coord;
@@ -118,7 +135,9 @@ public class PlayerMovement : MonoBehaviour
                     
                     playerTurn = false;
                     snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(newCell.coord));
+                    NumberOfMoves -= 1;
                     
+
 
 
 

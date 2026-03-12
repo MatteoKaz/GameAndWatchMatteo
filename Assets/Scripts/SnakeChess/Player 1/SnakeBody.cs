@@ -32,7 +32,13 @@ public class SnakeBody : MonoBehaviour
     {
        // gridManager.FinishInitialize -= CreateSnake;
     }
-
+    public void DestroySnake()
+    {
+        snakeCoords.Clear();
+        foreach (var seg in segments)
+            Destroy(seg);
+        segments.Clear();
+    }
     public void CreateSnake()
     {
         Vector2Int start = playerMovement.coordPlayer;
@@ -200,11 +206,13 @@ public class SnakeBody : MonoBehaviour
     public void Grow()
     {
         Vector2Int tail = snakeCoords[snakeCoords.Count - 1];
+
         snakeCoords.Add(tail);
 
         GameObject seg = Instantiate(segmentPrefab);
         seg.transform.position = gridManager.allCells[tail.x, tail.y].transform.position;
-        segments.Add(seg);
+        segments.Add(seg); 
+        
         GrownUp?.Invoke();
     }
 
@@ -330,7 +338,7 @@ public class SnakeBody : MonoBehaviour
         if (index == 0)
         {
             // Suppression de la tête non autorisée
-            Debug.LogWarning("Suppression de la tête non supportée ici.");
+            Debug.Log("Suppression de la tête non supportée ici.");
             return;
         }
 

@@ -22,6 +22,7 @@ public class AIManger : MonoBehaviour
         tm.EnemyTurn +=MoveEnemy;
         tm.playerTurn += LaunchEnemy;
         gm.FinishInitialize += InitializeStart;
+        tm.pm.SpawnedSnake += PlaceEnemyAim;
 
     }
 
@@ -34,7 +35,7 @@ public class AIManger : MonoBehaviour
             return;
              int index = UnityEngine.Random.Range(0, enemies.Count);
              enemy = enemies[index];
-             enemy.TryMove();
+             
              enemy.SetSpriteColor(Color.red);
              
              if (count != 0)
@@ -48,12 +49,24 @@ public class AIManger : MonoBehaviour
          
         }
     }
+    public void PlaceEnemyAim()
+    {
+        
+
+        if (enemies.Count == 0)
+            return;
+      for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].PlaceEnemy();
+        }
+    }
 
     public IEnumerator Wait()
     {
         yield return new WaitForSeconds(0.25f);
         if (enemy != null)
         {
+            enemy.TryMove();
             enemy.StartCoroutine(enemy.MoveEnemy());
 
         }
@@ -63,6 +76,7 @@ public class AIManger : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             if (enemy != null)
             {
+                enemy.TryMove();
                 enemy.StartCoroutine(enemy.MoveEnemy());
 
             }
@@ -86,10 +100,12 @@ public class AIManger : MonoBehaviour
 
     public void InitializeStart()
     {
+       
         StartCoroutine(Initialize());
     }
     public IEnumerator Initialize()
     {
+        
         yield return new WaitForSeconds(0.25f);
 
         TurnEnemy = true;
@@ -97,5 +113,24 @@ public class AIManger : MonoBehaviour
            
         
 
+    }
+
+    public void ClearEnemies()
+    {
+        // Vérifie si la liste existe et contient des ennemis
+        if (enemies == null || enemies.Count == 0)
+            return;
+
+        // Parcours tous les ennemis et détruit leur GameObject
+        for (int i = enemies.Count - 1; i >= 0; i--)
+        {
+            if (enemies[i] != null)
+            {
+                Destroy(enemies[i].gameObject);
+            }
+        }
+
+        // Vide la liste pour supprimer toutes les références
+        enemies.Clear();
     }
 }

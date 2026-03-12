@@ -34,12 +34,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        aim.tm.pm.SpawnedSnake += PlaceEnemy;
+        //aim.tm.pm.SpawnedSnake += PlaceEnemy;
     }
 
     private void OnDisable()
     {
-        aim.tm.pm.SpawnedSnake -= PlaceEnemy;
+        //aim.tm.pm.SpawnedSnake -= PlaceEnemy;
     }
 
     public void SetSpriteColor(Color color)
@@ -53,19 +53,19 @@ public class EnemyMovement : MonoBehaviour
         switch (currentMoveType)
         {
             case MoveType.Roi:
-                Value = 100;
+                Value = 10;
                 break;
             case MoveType.Cavalier:
-                Value = 300; 
+                Value = 30; 
                 break;
             case MoveType.Tour:
-                Value = 500;
+                Value = 50;
                 break;
             case MoveType.Fou:
-                Value = 300;
+                Value = 30;
                 break;
             case MoveType.Dame:
-                Value = 900;
+                Value = 90;
                 break;
         }
     }
@@ -284,12 +284,14 @@ public class EnemyMovement : MonoBehaviour
     {
         if (moves.Count == 0) return coordEnemy;
 
-        int r = UnityEngine.Random.Range(0, 4);
+        int r = UnityEngine.Random.Range(0,10);
         switch (r)
         {
             case 0: return ChaseHead(moves);
             case 1: return CutSnake(moves);
             case 2: return ApproachSnake(moves);
+            case 3: return ApproachSnake(moves);
+            case 4: return ApproachSnake(moves);
             default: return RandomMove(moves);
         }
     }

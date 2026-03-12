@@ -10,8 +10,11 @@ public class PlayerEat : MonoBehaviour
     [SerializeField] private PlayerMovement pm;
     [SerializeField] public PlayerScoreSnake playerscore;
     [SerializeField] private SnakeBody snakeBody;
+    private bool HasKill = false;
+
 
     public event Action Eat;
+    public event Action End;
     void OnEnable()
     {
 
@@ -29,12 +32,25 @@ public class PlayerEat : MonoBehaviour
 
                 EnemyMovement em = aim.enemies[i];
                 aim.enemies.RemoveAt(i);
-
+                HasKill = true;
                 playerscore.AddPoint(em.Value);
+                pm.snakeBody.Grow();
+               
                 Eat?.Invoke();
                 Destroy(em.gameObject);
             }
+            
         }
+        if (HasKill == true)
+        {
+            playerscore.multiplicatorEnchainement += playerscore.multiplierValueEnchainementValue;
+            HasKill = false;
+        }
+        else
+        {
+            playerscore.multiplicatorEnchainement = 1f;
+        }
+        End?.Invoke();
     }
 
     public void CutOrKillPlayer(Vector2Int pos)
