@@ -5353,6 +5353,7 @@ MonoBehaviour:
   _audioEventDispatcher: {fileID: 11400000, guid: 7063fb652f376c3459dd8cd9d81e992b, type: 2}
   pe: {fileID: 1919128416}
   sb: {fileID: 677991732}
+  cm: {fileID: 1914360032}
   PointReceive: 0
 --- !u!1 &679166728
 GameObject:
@@ -14309,6 +14310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChangeMovement
   pm: {fileID: 677991731}
   movementChange: 3
+  baseMoveChange: 1
   ScoreTexte: {fileID: 1702323629}
 --- !u!1 &1919128410
 GameObject:

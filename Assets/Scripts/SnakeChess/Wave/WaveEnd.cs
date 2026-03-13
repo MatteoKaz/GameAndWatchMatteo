@@ -26,10 +26,15 @@ public class WaveEnd : MonoBehaviour
         if (aim.enemies.Count == 0 || pm.NumberOfMoves == 0)
         {
             playerScore.CalculateScore();
+            if (wm.currentWaveData.waveValue <= playerScore.score)
+            {
+                
 
-            //Quand upgrade modifier ici 
-            ResetAndRelaunch();
+                //Quand upgrade modifier ici 
+                ResetAndRelaunch();
+            }
         }
+            
     }
 
     public void ResetAndRelaunch()
@@ -42,7 +47,7 @@ public class WaveEnd : MonoBehaviour
     }
     public IEnumerator GenerateGrid()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(3f);
         playerScore.ResetValue();
         aim.ClearEnemies();
         yield return new WaitForSeconds(0.75f);

@@ -27,6 +27,7 @@ public class PlayerScoreSnake : MonoBehaviour
     [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
     [SerializeField] private PlayerEat pe;
     [SerializeField] SnakeBody sb;
+    [SerializeField] ChangeMovement cm;
     public int PointReceive = 0;
     public void OnEnable()
     {
@@ -72,11 +73,13 @@ public class PlayerScoreSnake : MonoBehaviour
 
     public void ResetValue()
     {
+        cm.movementChange = cm.baseMoveChange;
         multiplicator = multiplierBaseValue;
         PointReceive = 0;
         score = 0;
         multiplierValue = multiplierValueBase;
         multiplicatorEnchainement = multiplicatorEnchainementBaseValue;
         multiplierValueEnchainementValue = BasemultiplierValueEnchainementAdd;
+
     }
 }

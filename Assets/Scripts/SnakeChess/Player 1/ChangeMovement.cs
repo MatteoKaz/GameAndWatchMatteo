@@ -4,7 +4,8 @@ using TMPro;
 public class ChangeMovement : MonoBehaviour
 {
     [SerializeField] public PlayerMovement pm;
-    public int movementChange = 3;
+    public int movementChange = 1;
+    public int baseMoveChange = 1;
     [SerializeField] TMP_Text ScoreTexte;
 
 
