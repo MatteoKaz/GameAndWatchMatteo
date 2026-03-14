@@ -17,6 +17,6 @@ public class ScoreUISnake : MonoBehaviour
     void Update()
     {
 
-        ScoreTexte.text = $"{ScorePlayer.score.ToString()} ";
+        
     }
 }

@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
+using TMPro;
+
 
 public class PlayerEat : MonoBehaviour
 {
@@ -11,10 +14,19 @@ public class PlayerEat : MonoBehaviour
     [SerializeField] public PlayerScoreSnake playerscore;
     [SerializeField] private SnakeBody snakeBody;
     private bool HasKill = false;
+    public int movetoLooseMult = 2;
+    public int BasemovetoLooseMult = 2;
 
 
     public event Action Eat;
     public event Action End;
+    public List<SpriteRenderer> deathPlace;
+    public List<TMP_Text> TMP_Texts;
+    public int temporarPoint;
+    public int indexPlaceToDie = 0;
+    public EnemyMovement.MoveType moveType;
+    public List<Sprite> ListOfSprite;
+    public List<Animator> animatorsDeadpiece;
     void OnEnable()
     {
 
@@ -32,6 +44,8 @@ public class PlayerEat : MonoBehaviour
 
                 EnemyMovement em = aim.enemies[i];
                 aim.enemies.RemoveAt(i);
+                temporarPoint = em.Value;
+                moveType = em.currentMoveType;
                 HasKill = true;
                 playerscore.AddPoint(em.Value);
                 pm.snakeBody.Grow();
@@ -44,11 +58,24 @@ public class PlayerEat : MonoBehaviour
         if (HasKill == true)
         {
             playerscore.multiplicatorEnchainement += playerscore.multiplierValueEnchainementValue;
+            temporarPoint *= (int)playerscore.multiplicatorEnchainement;
+            SpawnEnemyDead();
+
             HasKill = false;
         }
         else
         {
-            playerscore.multiplicatorEnchainement = 1f;
+            if (movetoLooseMult == 0)
+            {
+                playerscore.multiplicatorEnchainement = playerscore.multiplicatorEnchainementBaseValue;
+                movetoLooseMult = BasemovetoLooseMult;
+            }
+            if (movetoLooseMult > 0)
+            {
+                movetoLooseMult -= 1;
+            }
+          
+
         }
         End?.Invoke();
     }
@@ -62,6 +89,34 @@ public class PlayerEat : MonoBehaviour
             }
 
        
+    }
+
+    public void SpawnEnemyDead()
+    {
+        TMP_Texts[indexPlaceToDie].text = $"+{temporarPoint}";
+        temporarPoint = 0;
+        switch (moveType)
+        {
+            case EnemyMovement.MoveType.Cavalier:
+                 deathPlace[indexPlaceToDie].sprite = ListOfSprite[0];
+                break;
+            case EnemyMovement.MoveType.Roi:
+                deathPlace[indexPlaceToDie].sprite = ListOfSprite[1];
+                break;
+            case EnemyMovement.MoveType.Fou:
+                deathPlace[indexPlaceToDie].sprite = ListOfSprite[2];
+                break;
+            case EnemyMovement.MoveType.Tour:
+                deathPlace[indexPlaceToDie].sprite = ListOfSprite[3];
+                break;
+            case EnemyMovement.MoveType.Dame:
+                deathPlace[indexPlaceToDie].sprite = ListOfSprite[4];
+                break;
+
+        }
+        indexPlaceToDie++;
+
+
     }
 
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class SpawnerEnemy : MonoBehaviour
 {
     public Transform enemyParent;
-    public GridManager gridManager;
+    [SerializeField] public GridManager gridManager;
     [SerializeField] public AIManger aim;
 
     public void SpawnWave(WaveData waveData)
@@ -35,12 +35,13 @@ public class SpawnerEnemy : MonoBehaviour
 
     private void ClearEnemies()
     {
+        aim.enemies.Clear();
         foreach (Transform child in enemyParent)
         {
             Destroy(child.gameObject);
         }
 
         // nettoyer la liste d'ennemis dans l'AI
-        aim.enemies.Clear();
+        
     }
 }

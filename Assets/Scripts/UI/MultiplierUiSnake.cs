@@ -17,6 +17,6 @@ public class MultiplierUiSnake : MonoBehaviour
     void Update()
     {
 
-        ScoreTexte.text = $"{ScorePlayer.PointReceive.ToString()} X {ScorePlayer.multiplicator.ToString()} ";
+        //ScoreTexte.text = $"{ScorePlayer.PointReceive.ToString()} X {ScorePlayer.multiplicator.ToString()} ";
     }
 }

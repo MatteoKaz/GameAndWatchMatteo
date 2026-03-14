@@ -9,6 +9,17 @@ public enum UpgradeType
     ExtraMove,
     ExtraSize,
     ExtraSwap,
+    ExtraTimeCombo,
+    CavalierMultEnd,
+    FouMultEnd,
+    DameMultEnd,
+    RoiMultEnd,
+    TourMultEnd,
+    CavalierCombo,
+    FouCombo,
+    DameCombo,
+    RoiCombo,
+    TourCombo,
 
 }
 
@@ -20,10 +31,11 @@ public class UpgradeData
     public UpgradeType type;
     public float value;      // +0.25, +0.5, etc.
     public int formIndex;    // 0 = Roi, 1 = Cavalier, etc. si spécifique
+    public Sprite icone;
 }
 
-[CreateAssetMenu(fileName = "DataUpgrades", menuName = "Scriptable Objects/DataUpgrades")]
-public class DataUpgrades : ScriptableObject
+[CreateAssetMenu(fileName = "Upgrades", menuName = "Scriptable Objects/Upgrade")]
+public class Upgrade : ScriptableObject
 {
     public List<UpgradeData> allUpgrades;
 }

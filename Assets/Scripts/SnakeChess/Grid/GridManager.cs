@@ -1,13 +1,14 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System;
-using System.Runtime.CompilerServices;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UI;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class GridManager : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class GridManager : MonoBehaviour
     Vector2Int[,] gridPositions;
     public Cell[,] allCells;
     public event Action FinishInitialize;
+    public bool FinishInvoke = false;
 
     void Awake()
     {
@@ -38,7 +40,7 @@ public class GridManager : MonoBehaviour
     void CellClicked(Vector2Int coord)
     {
         // logique pour déplacer le serpent, vérifier validité, score, etc.
-        Debug.Log("Cell clicked: " + coord);
+       
     }
 
     IEnumerator GenerateGrid()
@@ -46,9 +48,9 @@ public class GridManager : MonoBehaviour
         gridPositions = new Vector2Int[width, height];
         ClearGrid();
 
-
-            for (int y = 0; y < height; y++)
-            {
+        Debug.Log("Generation");
+        for (int y = 0; y < height; y++)
+        {
                 for (int x = 0; x < width; x++)
                 {
                     Vector3 worldPos = startPosition + new Vector3(
@@ -73,16 +75,17 @@ public class GridManager : MonoBehaviour
                         cellscript.sprite = sr.sprite;
                     }
 
-                yield return new WaitForSeconds(0.03f);
+                    yield return new WaitForSeconds(0.03f);
 
-            }
-            }
+                }
+        }
         yield return new WaitForSeconds(0.75f);
-
+        FinishInvoke = true;
         FinishInitialize?.Invoke();
     }
     public void InvokeThings()
     {
+        FinishInvoke = false;
         StartCoroutine(GenerateGrid());
     }
 

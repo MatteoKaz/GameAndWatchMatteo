@@ -45,6 +45,7 @@ public class WaveManager : MonoBehaviour
 
     public void NextWave()
     {
+        Debug.Log("NouvelleWave");
         int nextWave = currentWave + 1;
 
         if (nextWave > dataWave.waves.Count)

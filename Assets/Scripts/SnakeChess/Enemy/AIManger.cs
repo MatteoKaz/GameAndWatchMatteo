@@ -16,6 +16,7 @@ public class AIManger : MonoBehaviour
     private int count = 0 ;
     private bool TurnEnemy= false;
     [SerializeField] public GridManager gm;
+    [SerializeField] private WaveEnd waveEnd;
 
     void OnEnable()
     {
@@ -26,6 +27,11 @@ public class AIManger : MonoBehaviour
 
     }
 
+
+    public void PlaceEnemyAim()
+    {
+        StartCoroutine(PlaceEnemyAimCoroutine());
+    }
     void LaunchEnemy()
     {
         if (TurnEnemy == true)
@@ -49,16 +55,25 @@ public class AIManger : MonoBehaviour
          
         }
     }
-    public void PlaceEnemyAim()
+    public IEnumerator PlaceEnemyAimCoroutine()
     {
-        
-
         if (enemies.Count == 0)
-            return;
-      for (int i = 0; i < enemies.Count; i++)
+            yield break; // quitte la coroutine si pas d'ennemis
+
+        // Attendre que la grille soit complètement générée
+        while (gridManager.FinishInvoke == false)
+        {
+            yield return null; // attend la frame suivante
+        }
+
+        // Placer les ennemis
+        for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].PlaceEnemy();
         }
+
+        // Lancer la wave
+        waveEnd.BeginWave();
     }
 
     public IEnumerator Wait()
@@ -133,4 +148,6 @@ public class AIManger : MonoBehaviour
         // Vide la liste pour supprimer toutes les références
         enemies.Clear();
     }
+
+   
 }

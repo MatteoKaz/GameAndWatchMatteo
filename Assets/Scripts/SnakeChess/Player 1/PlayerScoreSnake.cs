@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 
 public class PlayerScoreSnake : MonoBehaviour
 {
@@ -16,8 +17,8 @@ public class PlayerScoreSnake : MonoBehaviour
     public float multiplicatorEnchainement = 1f;
     public float multiplicatorEnchainementBaseValue = 1f;
 
-    public float multiplierValueEnchainementValue = 4f;
-    public float BasemultiplierValueEnchainementAdd = 4f;
+    public float multiplierValueEnchainementValue = 2f;
+    public float BasemultiplierValueEnchainementAdd = 2f;
 
 
 
@@ -29,6 +30,12 @@ public class PlayerScoreSnake : MonoBehaviour
     [SerializeField] SnakeBody sb;
     [SerializeField] ChangeMovement cm;
     public int PointReceive = 0;
+
+    [SerializeField] TMP_Text UIPoint;
+    [SerializeField] TMP_Text UImultiplier;
+    [SerializeField] TMP_Text UIScore;
+
+    public event Action ShakeCam;
     public void OnEnable()
     {
         sb.GrownUp += AddMult;
@@ -68,9 +75,68 @@ public class PlayerScoreSnake : MonoBehaviour
 
     public void CalculateScore()
     {
-        score += Mathf.RoundToInt(PointReceive * multiplicator);
+        StartCoroutine(AnimEnd());
     }
 
+
+    public IEnumerator AnimEnd()
+    {
+        int pointToShow = 0;
+        score += Mathf.RoundToInt(PointReceive * multiplicator);
+        yield return new WaitForSeconds(0.25f);
+
+        yield return new WaitForSeconds(0.75f);
+
+        // Point Ajoute multiplication demain de ces scores
+        for (int i = 0; i < pe.indexPlaceToDie; i++)
+        {
+            pe.animatorsDeadpiece[i].SetTrigger("Piece");
+            yield return new WaitForSeconds(0.18f);
+            pe.deathPlace[i].sprite = null;
+            pe.TMP_Texts[i].color = Color.white;
+            pe.animatorsDeadpiece[i].SetTrigger("Point");
+            yield return new WaitForSeconds(0.15f);
+            if (int.TryParse(pe.TMP_Texts[i].text, out int number))
+            {
+                pointToShow += number; // 42
+            }
+                else
+            {
+                Debug.Log("Conversion impossible");
+            }
+            UIPoint.text = $"{pointToShow}";
+            //animPoint
+            yield return new WaitForSeconds(0.5f);
+            ShakeCam?.Invoke();
+
+            yield return new WaitForSeconds(0.35f);
+
+        }
+        yield return new WaitForSeconds(0.35f);
+
+
+        //Multiplication
+
+
+        pointToShow = 0;
+        UIPoint.text = $"{pointToShow}";
+        //Score Final
+        
+        for (int i = 0; i <= score; i++)
+        {
+            UIScore.text = $"{i} ";
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        yield return new WaitForSeconds(1f);
+        for (int i = score; i == 0; i--)
+        {
+            UIScore.text = $"{i} ";
+            yield return new WaitForSeconds(0.01f);
+        }
+        yield return new WaitForSeconds(2f);
+        
+    }
     public void ResetValue()
     {
         cm.movementChange = cm.baseMoveChange;

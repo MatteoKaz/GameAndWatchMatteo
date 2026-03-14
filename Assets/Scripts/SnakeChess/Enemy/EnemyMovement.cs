@@ -287,9 +287,10 @@ public class EnemyMovement : MonoBehaviour
         int r = UnityEngine.Random.Range(0,10);
         switch (r)
         {
-            case 0: return ChaseHead(moves);
+            case 0: return ApproachSnake(moves);
             case 1: return CutSnake(moves);
             case 2: return ApproachSnake(moves);
+           
             case 3: return ApproachSnake(moves);
             case 4: return ApproachSnake(moves);
             default: return RandomMove(moves);
@@ -312,30 +313,72 @@ public class EnemyMovement : MonoBehaviour
 
     Vector2Int CutSnake(List<Vector2Int> moves)
     {
+        Vector2Int head = snakeBody.snakeCoords[0];
         Vector2Int target = snakeBody.snakeCoords[snakeBody.snakeCoords.Count / 2];
+
         Vector2Int bestMove = moves[0];
         float bestDist = float.MaxValue;
+
         foreach (Vector2Int m in moves)
         {
+            if (m == head) continue;
+
             float d = Vector2Int.Distance(m, target);
-            if (d < bestDist) { bestDist = d; bestMove = m; }
+
+            if (d < bestDist)
+            {
+                bestDist = d;
+                bestMove = m;
+            }
         }
+
         return bestMove;
     }
 
     Vector2Int ApproachSnake(List<Vector2Int> moves)
     {
+        Vector2Int head = snakeBody.snakeCoords[0];
+
         Vector2Int bestMove = moves[0];
         float bestDist = float.MaxValue;
+
         foreach (Vector2Int m in moves)
+        {
+            if (m == head) continue;
+
             foreach (Vector2Int s in snakeBody.snakeCoords)
             {
                 float d = Vector2Int.Distance(m, s);
-                if (d < bestDist) { bestDist = d; bestMove = m; }
+
+                if (d < bestDist)
+                {
+                    bestDist = d;
+                    bestMove = m;
+                }
             }
+        }
+
         return bestMove;
     }
+    Vector2Int RandomMove(List<Vector2Int> moves)
+    {
+        Vector2Int head = snakeBody.snakeCoords[0];
 
-    Vector2Int RandomMove(List<Vector2Int> moves) => moves[UnityEngine.Random.Range(0, moves.Count)];
+        List<Vector2Int> safeMoves = new List<Vector2Int>();
+
+        foreach (Vector2Int m in moves)
+        {
+            if (m != head) // évite la tête
+            {
+                safeMoves.Add(m);
+            }
+        }
+
+        if (safeMoves.Count > 0)
+            return safeMoves[UnityEngine.Random.Range(0, safeMoves.Count)];
+
+        // fallback si aucun safe move
+        return moves[UnityEngine.Random.Range(0, moves.Count)];
+    }
 
 }

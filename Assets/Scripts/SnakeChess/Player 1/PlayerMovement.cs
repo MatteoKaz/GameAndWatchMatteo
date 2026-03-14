@@ -12,10 +12,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public SnakeBody snakeBody;
     [SerializeField] public TurnManager tm;
     [SerializeField] public AIManger aim;
+    [SerializeField] WaveEnd waveEnd;
     public bool playerTurn = false;
     [SerializeField] public WaveManager wm;
     public int NumberOfMoves = 8;
-
+    public int NumberOfMovesBonus = 0;
     public event Action CheckCombo;
     public event Action TurnDone;
     public event Action SpawnedSnake;
@@ -53,11 +54,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetNewWave()
     {
         NumberOfMoves = wm.currentWaveData.maxMoves;
-        if (wm.currentWave != 1)
-        {
-            
-        }
-        
+        NumberOfMoves += NumberOfMovesBonus;
+        Debug.Log("Nombre deCoup" +  NumberOfMoves);
+
+
     }
 
 
@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void TryMove(Cell newCell)
     {
-        if (playerTurn == true)
+        if (playerTurn == true && waveEnd.waveActive == true)
         {
             if (IsValidMove(newCell.coord))
             {

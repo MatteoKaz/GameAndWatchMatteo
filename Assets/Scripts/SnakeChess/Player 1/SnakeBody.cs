@@ -21,7 +21,7 @@ public class SnakeBody : MonoBehaviour
 
     public int startSize = 3;
     public float moveDuration = 0.2f;
-    
+    public int GrowValue = 1;
 
     private void OnEnable()
     {
@@ -202,18 +202,34 @@ public class SnakeBody : MonoBehaviour
 
         return path;
     }
-
     public void Grow()
     {
-        Vector2Int tail = snakeCoords[snakeCoords.Count - 1];
+        for (int i = 0; i < GrowValue; i++)
+        {
+            Vector2Int tail = snakeCoords[snakeCoords.Count - 1];
+            Vector2Int dir = Vector2Int.zero;
 
-        snakeCoords.Add(tail);
+            if (snakeCoords.Count > 1)
+            {
+                Vector2Int beforeTail = snakeCoords[snakeCoords.Count - 2];
+                dir = tail - beforeTail;
+            }
 
-        GameObject seg = Instantiate(segmentPrefab);
-        seg.transform.position = gridManager.allCells[tail.x, tail.y].transform.position;
-        segments.Add(seg); 
+            Vector2Int newTailPos = tail + dir;
+
+            // Clamping pour éviter out of range
+            newTailPos.x = Mathf.Clamp(newTailPos.x, 0, gridManager.width - 1);
+            newTailPos.y = Mathf.Clamp(newTailPos.y, 0, gridManager.height - 1);
+
+            snakeCoords.Add(newTailPos);
+
+            GameObject seg = Instantiate(segmentPrefab);
+            seg.transform.position = gridManager.allCells[newTailPos.x, newTailPos.y].transform.position;
+            segments.Add(seg);
+            GrownUp?.Invoke();
+        }
+
         
-        GrownUp?.Invoke();
     }
 
     private void UpdateRotations()

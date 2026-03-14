@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DataWave
   waves:
   - waveNumber: 1
-    waveValue: 50
+    waveValue: 150
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
@@ -25,18 +25,50 @@ MonoBehaviour:
       count: 1
     numBonuses: 4
   - waveNumber: 2
-    waveValue: 100
-    maxMoves: 8
+    waveValue: 400
+    maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
       count: 1
-    - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
       count: 2
-    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
       count: 1
     numBonuses: 0
-  - waveNumber: 0
-    waveValue: 0
-    maxMoves: 0
-    enemies: []
+  - waveNumber: 3
+    waveValue: 800
+    maxMoves: 9
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
+      count: 3
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 1
+    numBonuses: 0
+  - waveNumber: 4
+    waveValue: 1500
+    maxMoves: 10
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 1
+    numBonuses: 0
+  - waveNumber: 5
+    waveValue: 2500
+    maxMoves: 7
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 2
     numBonuses: 0
