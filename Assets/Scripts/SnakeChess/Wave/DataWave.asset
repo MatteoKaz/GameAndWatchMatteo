@@ -36,7 +36,7 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 3
-    waveValue: 800
+    waveValue: 1200
     maxMoves: 9
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
@@ -47,7 +47,7 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 4
-    waveValue: 1500
+    waveValue: 2500
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
@@ -60,8 +60,8 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 5
-    waveValue: 2500
-    maxMoves: 7
+    waveValue: 3500
+    maxMoves: 8
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
       count: 1
@@ -71,4 +71,64 @@ MonoBehaviour:
       count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
       count: 2
+    numBonuses: 0
+  - waveNumber: 6
+    waveValue: 6000
+    maxMoves: 8
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 3
+    numBonuses: 0
+  - waveNumber: 7
+    waveValue: 10000
+    maxMoves: 8
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 3
+    numBonuses: 0
+  - waveNumber: 8
+    waveValue: 15000
+    maxMoves: 8
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 4
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 1
+    numBonuses: 0
+  - waveNumber: 9
+    waveValue: 25000
+    maxMoves: 8
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
+      count: 3
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 2
+    numBonuses: 0
+  - waveNumber: 10
+    waveValue: 45000
+    maxMoves: 8
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
+      count: 7
+    numBonuses: 0
+  - waveNumber: 11
+    waveValue: 75000
+    maxMoves: 8
+    enemies:
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 6f35d398162e03f49b785066549fe18e, type: 3}
+      count: 1
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
+      count: 3
     numBonuses: 0

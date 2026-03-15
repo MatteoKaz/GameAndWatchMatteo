@@ -27,7 +27,9 @@ public class SetUpgrade : MonoBehaviour
             ListOfIcone[i].sprite = DataToChoose.icone;
             upgradeGivers[i].upgradeValue = DataToChoose.value;
             upgradeGivers[i].GetTypeUpgrade(DataToChoose.type);
-            prefabCard[i].SetActive(true);
+           
+            //prefabCard[i].SetActive(true);
+           
             Bouton[i].SetActive(true);
 
 

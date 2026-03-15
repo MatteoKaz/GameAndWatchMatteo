@@ -7,6 +7,7 @@ public class SnakeBody : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject segmentPrefab;
+    [SerializeField] private GameObject HeadsegmentPrefab;
     [SerializeField] private Sprite headSprite;        
     [SerializeField] private Sprite bodySprite;
     [SerializeField] private Sprite tailSprite;
@@ -55,20 +56,44 @@ public class SnakeBody : MonoBehaviour
         {
             Vector2Int pos = start + new Vector2Int(-i, 0);
             pos.x = Mathf.Clamp(pos.x, 0, gridManager.width - 1);
-
-            GameObject seg = Instantiate(segmentPrefab);
-            seg.transform.position = gridManager.allCells[pos.x, pos.y].transform.position;
-
-            SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
+            
             if (i == 0)
-                sr.sprite = headSprite;
-            else if (i + 1 == startSize)
-                sr.sprite = tailSprite;
-            else
-                sr.sprite = bodySprite;
+            {
+                GameObject seg = Instantiate(HeadsegmentPrefab);
+                seg.transform.position = gridManager.allCells[pos.x, pos.y].transform.position;
 
-            snakeCoords.Add(pos);
-            segments.Add(seg);
+                SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
+                if (i == 0)
+                    sr.sprite = headSprite;
+                else if (i + 1 == startSize)
+                    sr.sprite = tailSprite;
+                else
+                    sr.sprite = bodySprite;
+
+                snakeCoords.Add(pos);
+                segments.Add(seg);
+            }
+            else
+            {
+                GameObject seg = Instantiate(segmentPrefab);
+                seg.transform.position = gridManager.allCells[pos.x, pos.y].transform.position;
+
+                SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
+                if (i == 0)
+                    sr.sprite = headSprite;
+                else if (i + 1 == startSize)
+                {
+                    sr.sprite = tailSprite;
+                    GrownUp?.Invoke();
+                }
+                    
+                else
+                    sr.sprite = bodySprite;
+
+                snakeCoords.Add(pos);
+                segments.Add(seg);
+            }
+
             
         }
 
@@ -81,36 +106,50 @@ public class SnakeBody : MonoBehaviour
     /// </summary>
     public IEnumerator MoveSnakeTo(Vector2Int target)
     {
-        // Génère le chemin case par case (inclut Cavalier en L)
         List<Vector2Int> path = GetPathToTarget(snakeCoords[0], target, playerMovement.currentMoveType);
 
         foreach (Vector2Int next in path)
         {
-            // Crée la nouvelle configuration du serpent
-            List<Vector2Int> newCoords = new List<Vector2Int> { next };
-            for (int i = 0; i < segments.Count - 1; i++)
-            {
-                newCoords.Add(snakeCoords[i]); // décale les positions existantes
-            }
+            List<Vector2Int> newCoords = new List<Vector2Int>();
+            newCoords.Add(next);
 
-            // Stock positions actuelles et futures
+            for (int i = 0; i < segments.Count - 1; i++)
+                newCoords.Add(snakeCoords[i]);
+
             Vector3[] startPositions = new Vector3[segments.Count];
             Vector3[] endPositions = new Vector3[segments.Count];
 
             for (int i = 0; i < segments.Count; i++)
             {
                 startPositions[i] = segments[i].transform.position;
+
                 Vector2Int coord = newCoords[i];
-                coord.x = Mathf.Clamp(coord.x, 0, gridManager.width - 1);
-                coord.y = Mathf.Clamp(coord.y, 0, gridManager.height - 1);
-                endPositions[i] = gridManager.allCells[coord.x, coord.y].transform.position;
+
+                // vérifie si la coordonnée est dans la grille
+                bool inside =
+                    coord.x >= 0 &&
+                    coord.x < gridManager.width &&
+                    coord.y >= 0 &&
+                    coord.y < gridManager.height;
+
+                if (inside)
+                {
+                    endPositions[i] = gridManager.allCells[coord.x, coord.y].transform.position;
+                }
+                else
+                {
+                    // si hors grille le segment reste à sa position actuelle
+                    endPositions[i] = startPositions[i];
+                    newCoords[i] = snakeCoords[i];
+                }
             }
 
-            // Lerp pour mouvement fluide
             float t = 0f;
+
             while (t < 1f)
             {
                 t += Time.deltaTime / moveDuration;
+
                 for (int i = 0; i < segments.Count; i++)
                     segments[i].transform.position = Vector3.Lerp(startPositions[i], endPositions[i], t);
 
@@ -118,22 +157,18 @@ public class SnakeBody : MonoBehaviour
                 yield return null;
             }
 
-            // Fixe la position finale et met à jour snakeCoords
             for (int i = 0; i < segments.Count; i++)
                 segments[i].transform.position = endPositions[i];
 
             snakeCoords = newCoords;
             UpdateRotations();
         }
+
         MoveFinish = true;
         playerMovement.coordPlayer = snakeCoords[0];
         pe.PlayerKill();
-
-
-
         playerMovement.EndTurn();
     }
-
     /// <summary>
     /// Retourne le chemin case par case vers la cible, avec Cavalier correct en L.
     /// </summary>
@@ -206,35 +241,61 @@ public class SnakeBody : MonoBehaviour
     {
         for (int i = 0; i < GrowValue; i++)
         {
+            // On prend la dernière position connue de la queue
             Vector2Int tail = snakeCoords[snakeCoords.Count - 1];
             Vector2Int dir = Vector2Int.zero;
 
+            // Calcul de la direction depuis l'avant-dernier segment si possible
             if (snakeCoords.Count > 1)
             {
                 Vector2Int beforeTail = snakeCoords[snakeCoords.Count - 2];
                 dir = tail - beforeTail;
             }
 
+            // Nouvelle position derrière la queue
             Vector2Int newTailPos = tail + dir;
 
-            // Clamping pour éviter out of range
+            // Clamp pour rester dans la grille
             newTailPos.x = Mathf.Clamp(newTailPos.x, 0, gridManager.width - 1);
             newTailPos.y = Mathf.Clamp(newTailPos.y, 0, gridManager.height - 1);
 
-            snakeCoords.Add(newTailPos);
+            // Si la case est occupée par le serpent on cherche une case adjacente libre
+            if (snakeCoords.Contains(newTailPos))
+            {
+                Vector2Int[] checks = new Vector2Int[]
+                {
+                tail + Vector2Int.up,
+                tail + Vector2Int.down,
+                tail + Vector2Int.left,
+                tail + Vector2Int.right
+                };
 
+                foreach (var pos in checks)
+                {
+                    if (!snakeCoords.Contains(pos) &&
+                        pos.x >= 0 && pos.x < gridManager.width &&
+                        pos.y >= 0 && pos.y < gridManager.height)
+                    {
+                        newTailPos = pos;
+                        break;
+                    }
+                }
+                // Si aucune case libre, on reste sur la position de la queue (évite plantage)
+            }
+
+            // On ajoute le segment
+            snakeCoords.Add(newTailPos);
             GameObject seg = Instantiate(segmentPrefab);
             seg.transform.position = gridManager.allCells[newTailPos.x, newTailPos.y].transform.position;
             segments.Add(seg);
+
             GrownUp?.Invoke();
         }
-
-        
     }
 
     private void UpdateRotations()
     {
-        for (int i = 0; i < segments.Count; i++)
+        for (int i = 0; i < 1; i++)
         {
            
             if (i + 1 == segments.Count )

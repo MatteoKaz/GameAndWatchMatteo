@@ -22,7 +22,10 @@ public class WaveEnd : MonoBehaviour
     void OnEnable()
     {
         pe.End += CheckEnd;
-        
+        pm.PlayerStuck += EndLauncher;
+        playerScore.AnimEnded += AnimEnd;
+
+
     }
 
     // Update is called once per frame
@@ -45,25 +48,33 @@ public class WaveEnd : MonoBehaviour
         Debug.Log($"CheckEnd called - enemies: {aim.enemies.Count}, NumberOfMoves: {pm.NumberOfMoves}");
         if (aim.enemies.Count == 0 || pm.NumberOfMoves <= 0)
         {
-            playerScore.CalculateScore();
-            if (wm.currentWaveData.waveValue <= playerScore.score)
-            {
-                
-                Debug.Log("fin wave" );
-                //Quand upgrade modifier ici 
-                ResetAndRelaunch();
-            }
-            else
-            {
-                StartCoroutine(Death());
-            }
+            EndLauncher();
         }
 
     }
+    public void EndLauncher()
+    {
+        playerScore.CalculateScore();
+       
+    }
 
+    public void AnimEnd()
+    {
+        if (wm.currentWaveData.waveValue <= playerScore.score)
+        {
+
+            Debug.Log("fin wave");
+            //Quand upgrade modifier ici 
+            ResetAndRelaunch();
+        }
+        else
+        {
+            StartCoroutine(Death());
+        }
+    }
     public IEnumerator Death()
     {
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(1f);
         DeathScreen.SetActive(true);
         yield return new WaitForSeconds(1f);
         animatorDeathScreen.SetTrigger("WaveEnd");
@@ -100,7 +111,7 @@ public class WaveEnd : MonoBehaviour
     {
         waveActive = false;
         
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(1f);
         playerScore.ResetValue();
         aim.ClearEnemies();
         yield return new WaitForSeconds(0.75f);

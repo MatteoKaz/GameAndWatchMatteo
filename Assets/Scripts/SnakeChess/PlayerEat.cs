@@ -14,11 +14,12 @@ public class PlayerEat : MonoBehaviour
     [SerializeField] public PlayerScoreSnake playerscore;
     [SerializeField] private SnakeBody snakeBody;
     private bool HasKill = false;
-    public int movetoLooseMult = 2;
-    public int BasemovetoLooseMult = 2;
+    public int movetoLooseMult = 1;
+    public int BasemovetoLooseMult = 1;
 
 
     public event Action Eat;
+    public event Action  Move;
     public event Action End;
     public List<SpriteRenderer> deathPlace;
     public List<TMP_Text> TMP_Texts;
@@ -27,6 +28,7 @@ public class PlayerEat : MonoBehaviour
     public EnemyMovement.MoveType moveType;
     public List<Sprite> ListOfSprite;
     public List<Animator> animatorsDeadpiece;
+    
     void OnEnable()
     {
 
@@ -34,6 +36,7 @@ public class PlayerEat : MonoBehaviour
 
     public void PlayerKill()
     {
+        HasKill = false;
         for (int i = aim.enemies.Count - 1; i >= 0; i--)
         {
             if (aim.enemies[i].CurrentcoordEnemy == pm.coordPlayer)
@@ -49,19 +52,32 @@ public class PlayerEat : MonoBehaviour
                 HasKill = true;
                 playerscore.AddPoint(em.Value);
                 pm.snakeBody.Grow();
+
                
                 Eat?.Invoke();
                 Destroy(em.gameObject);
             }
+           
             
         }
         if (HasKill == true)
         {
-            playerscore.multiplicatorEnchainement += playerscore.multiplierValueEnchainementValue;
             temporarPoint *= (int)playerscore.multiplicatorEnchainement;
-            SpawnEnemyDead();
+            playerscore.multiplicatorEnchainement += playerscore.multiplierValueEnchainementValue;
+            Debug.Log(playerscore.multiplicatorEnchainement);
+            movetoLooseMult = BasemovetoLooseMult;
 
-            HasKill = false;
+            SpawnEnemyDead();
+            for (int i = 1; i < snakeBody.segments.Count; i ++)
+            {
+                Animator snakeAnim = snakeBody.segments[i].GetComponent<Animator>();
+                snakeAnim.SetTrigger("Combo");
+                snakeAnim.ResetTrigger("ComboEnd");
+               
+                //SonIci
+            }
+
+            
         }
         else
         {
@@ -69,14 +85,36 @@ public class PlayerEat : MonoBehaviour
             {
                 playerscore.multiplicatorEnchainement = playerscore.multiplicatorEnchainementBaseValue;
                 movetoLooseMult = BasemovetoLooseMult;
+                //Son perte Combo
+                for (int i = 1; i < snakeBody.segments.Count; i++)
+                {
+                    Animator snakeAnim = snakeBody.segments[i].GetComponent<Animator>();
+                    snakeAnim.SetTrigger("BackToIdle");
+                   
+                    //SonIci
+                }
+
             }
             if (movetoLooseMult > 0)
             {
+                
+                if (movetoLooseMult == 1)
+                {
+                    for (int i = 1; i < snakeBody.segments.Count; i++)
+                    {
+                        Animator snakeAnim = snakeBody.segments[i].GetComponent<Animator>();
+                        snakeAnim.SetTrigger("ComboEnd");
+                        
+                        //SonIci
+                    }
+                }
                 movetoLooseMult -= 1;
             }
+            
           
 
         }
+        Move?.Invoke();
         End?.Invoke();
     }
 

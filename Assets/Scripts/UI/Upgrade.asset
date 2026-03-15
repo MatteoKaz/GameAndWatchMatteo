@@ -14,38 +14,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DataUpgrades
   allUpgrades:
   - upgradeName: Aphophis
-    description: '+ 2 sur les multiplications de taille '
+    description: '+ 0.5   sur les multiplications de taille '
     type: 0
-    value: 2
+    value: 0.5
     formIndex: 0
     icone: {fileID: 0}
   - upgradeName: Serpent Brulant
-    description: '+ 4 sur les multiplications d''enchainement '
+    description: '+1 sur les multiplications d''enchainement '
     type: 1
-    value: 4
+    value: 1
     formIndex: 0
-    icone: {fileID: 0}
-  - upgradeName: Manche sans fin
-    description: '+1 coup par manche '
+    icone: {fileID: -3495241138926711295, guid: 8158316d5e5bc2d47b1ebea34aa1c539, type: 3}
+  - upgradeName: Ecdysis
+    description: '+2 coup par manche '
     type: 2
     value: 1
     formIndex: 0
-    icone: {fileID: 0}
+    icone: {fileID: -8316254473420991889, guid: d2dca2b99c671c84eb08a1bbbbba63ad, type: 3}
   - upgradeName: 'Jormungand '
     description: '2 de taille par prise '
     type: 3
     value: 2
     formIndex: 0
-    icone: {fileID: 0}
+    icone: {fileID: -8029336032677694795, guid: 593ab4da409340c4d9e438af97261ff9, type: 3}
   - upgradeName: Roi du hasard
     description: 'Deux swap au lieu d''un '
     type: 4
     value: 2
     formIndex: 0
-    icone: {fileID: 0}
+    icone: {fileID: -6858748427340265738, guid: 3cc6e4c48f884b846ad033f00bfab800, type: 3}
   - upgradeName: L'Endurant
     description: '+1 coup avant de perdre son enchainement '
     type: 5
     value: 1
     formIndex: 0
-    icone: {fileID: 0}
+    icone: {fileID: -7280764102662641617, guid: 7407a4fed724f9149845a75dcda871f0, type: 3}

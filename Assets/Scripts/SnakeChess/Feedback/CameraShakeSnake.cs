@@ -21,6 +21,7 @@ public class CameraShakeSnake : MonoBehaviour
 
 
     [SerializeField] private PlayerScoreSnake scoreSnake;
+    [SerializeField] private PlayerEat playerEat;
   
 
 
@@ -29,6 +30,10 @@ public class CameraShakeSnake : MonoBehaviour
     private void OnEnable()
     {
         scoreSnake.ShakeCam += TimeShake;
+        scoreSnake.LittleShakeCam += LittleShake;
+        playerEat.Eat += TimeShake;
+        playerEat.Move += LittleShake;
+        scoreSnake.MicroShakeCam += MicroShake;
     }
 
     
@@ -39,10 +44,20 @@ public class CameraShakeSnake : MonoBehaviour
 
     void TimeShake()
     {
-        ShakeDirection = new Vector3(Random.Range(-0.02f, 0.02f), Random.Range(-0.001f, 0.002f), 0f);
-        shakeDuration = 0.1f;
+        ShakeDirection = new Vector3(Random.Range(-0.03f, 0.03f), Random.Range(-0.001f, 0.001f), 0f);
+        shakeDuration = 0.05f;
     }
- 
+    void LittleShake()
+    {
+        ShakeDirection = new Vector3(Random.Range(-0.02f, 0.02f), Random.Range(-0.001f, 0.001f), 0f);
+        shakeDuration = 0.04f;
+    }
+    void MicroShake()
+    {
+        ShakeDirection = new Vector3(Random.Range(-0.0023f, 0.0025f), Random.Range(-0.0013f, 0.0015f), 0f);
+        shakeDuration = 0.03f;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

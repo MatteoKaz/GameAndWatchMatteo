@@ -35,7 +35,13 @@ public class PlayerScoreSnake : MonoBehaviour
     [SerializeField] TMP_Text UImultiplier;
     [SerializeField] TMP_Text UIScore;
 
+    [SerializeField] Animator animatorPoint;
+    [SerializeField] Animator animatorMult;
+
+    public event Action AnimEnded;
     public event Action ShakeCam;
+    public event Action LittleShakeCam;
+    public event Action MicroShakeCam;
     public void OnEnable()
     {
         sb.GrownUp += AddMult;
@@ -82,6 +88,7 @@ public class PlayerScoreSnake : MonoBehaviour
     public IEnumerator AnimEnd()
     {
         int pointToShow = 0;
+        float multToShow = multiplierBaseValue;
         score += Mathf.RoundToInt(PointReceive * multiplicator);
         yield return new WaitForSeconds(0.25f);
 
@@ -90,8 +97,12 @@ public class PlayerScoreSnake : MonoBehaviour
         // Point Ajoute multiplication demain de ces scores
         for (int i = 0; i < pe.indexPlaceToDie; i++)
         {
+           
+            
             pe.animatorsDeadpiece[i].SetTrigger("Piece");
-            yield return new WaitForSeconds(0.18f);
+            
+            yield return new WaitForSeconds(0.4f);
+            LittleShakeCam?.Invoke();
             pe.deathPlace[i].sprite = null;
             pe.TMP_Texts[i].color = Color.white;
             pe.animatorsDeadpiece[i].SetTrigger("Point");
@@ -104,41 +115,112 @@ public class PlayerScoreSnake : MonoBehaviour
             {
                 Debug.Log("Conversion impossible");
             }
+            animatorPoint.SetTrigger("WonPoint");
+            yield return new WaitForSeconds(0.1f);
             UIPoint.text = $"{pointToShow}";
             //animPoint
-            yield return new WaitForSeconds(0.5f);
             ShakeCam?.Invoke();
-
-            yield return new WaitForSeconds(0.35f);
+            
+            yield return new WaitForSeconds(0.5f);
+            pe.TMP_Texts[i].color = Color.clear;
+            
+            yield return new WaitForSeconds(0.1f);
+            
 
         }
         yield return new WaitForSeconds(0.35f);
 
 
         //Multiplication
+        for (int i = 1; i < sb.segments.Count ; i++)
+        {
+            yield return new WaitForSeconds(0.01f);
+            if (i == 1)
+            {
+                Animator anim = sb.segments[i].GetComponent<Animator>();
 
 
+                anim.SetTrigger("CalculateMult");
+                yield return new WaitForSeconds(0.05f);
+                LittleShakeCam?.Invoke();
+                yield return new WaitForSeconds(0.2f);
+                
+                animatorMult.SetTrigger("MultAnim");
+                yield return new WaitForSeconds(0.1f);
+                UImultiplier.text = $"{multToShow}";
+                yield return new WaitForSeconds(0.1f);
+                ShakeCam?.Invoke();
+                yield return new WaitForSeconds(0.3f);
+
+            }
+            else
+            {
+                Animator anim = sb.segments[i].GetComponent<Animator>();
+
+                anim.SetTrigger("CalculateMult");
+                
+                yield return new WaitForSeconds(0.2f);
+                LittleShakeCam?.Invoke();
+                yield return new WaitForSeconds(0.2f);
+                
+                animatorMult.SetTrigger("MultAnim");
+                yield return new WaitForSeconds(0.1f);
+                UImultiplier.text = $"{multToShow += multiplierValueBase}";
+                yield return new WaitForSeconds(0.2f);
+                ShakeCam?.Invoke();
+                yield return new WaitForSeconds(0.3f);
+
+
+
+            }
+            yield return new WaitForSeconds(0.35f); 
+        }
+        yield return new WaitForSeconds(1f);
         pointToShow = 0;
         UIPoint.text = $"{pointToShow}";
+        multToShow = 0;
+        UImultiplier.text = $"{multToShow}";
         //Score Final
-        
-        for (int i = 0; i <= score; i++)
+
+        int displayScore = 0;
+
+        while (displayScore < score)
         {
-            UIScore.text = $"{i} ";
-            yield return new WaitForSeconds(0.01f);
+            int step = Mathf.Clamp(displayScore / 100, 1, 300);
+            displayScore += step;
+
+            if (displayScore > score) displayScore = score; 
+
+            UIScore.text = displayScore.ToString();
+            if (displayScore % 25 <= step)
+                MicroShakeCam?.Invoke();
+
+            yield return null;
         }
 
-        yield return new WaitForSeconds(1f);
-        for (int i = score; i == 0; i--)
+        UIScore.text = score.ToString();
+        displayScore = score;
+        yield return new WaitForSeconds(3f);
+        while (displayScore > 0)
         {
-            UIScore.text = $"{i} ";
-            yield return new WaitForSeconds(0.01f);
+            int step = Mathf.Clamp(displayScore / 100, 1, 500);
+            displayScore -= step;
+
+            UIScore.text = displayScore.ToString();
+            if (displayScore % 50 <= step)
+                MicroShakeCam?.Invoke();
+
+            yield return null;
         }
-        yield return new WaitForSeconds(2f);
-        
+     
+        yield return new WaitForSeconds(0.25f);
+        pe.indexPlaceToDie = 0;
+
+        AnimEnded?.Invoke();
     }
     public void ResetValue()
     {
+        pe.movetoLooseMult = pe.BasemovetoLooseMult;
         cm.movementChange = cm.baseMoveChange;
         multiplicator = multiplierBaseValue;
         PointReceive = 0;

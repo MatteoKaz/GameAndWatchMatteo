@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UpgradeGiver : MonoBehaviour
@@ -14,12 +16,30 @@ public class UpgradeGiver : MonoBehaviour
     [SerializeField] GameObject Self;
     public UpgradeType typetoGive;
     [SerializeField] public WaveEnd waveEnd;
+    [SerializeField] private Animator animator;
 
     public event Action UpgradeDone;
 
     public void OnEnable()
     {
         waveEnd.CloseMenuCard += CloseMenu;
+        StartCoroutine(showAnim());
+    }
+
+
+    public IEnumerator showAnim()
+    {
+
+        
+        Card.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        animator.SetTrigger("ShowUp");
+        yield return new WaitForSeconds(0.25f);
+        animator.SetTrigger("Idle");
+    }
+    public void OnDisable()
+    {
+        waveEnd.CloseMenuCard -= CloseMenu;
     }
     public void GetTypeUpgrade(UpgradeType type)
     {
@@ -50,6 +70,7 @@ public class UpgradeGiver : MonoBehaviour
                 break;
             case UpgradeType.ExtraTimeCombo:
                 playerEat.movetoLooseMult += (int)upgradeValue;
+                playerEat.BasemovetoLooseMult += (int)upgradeValue;
                 break;
         }
         waveEnd.CloseCard();
@@ -58,9 +79,21 @@ public class UpgradeGiver : MonoBehaviour
       
     public void CloseMenu()
     {
+
+        StartCoroutine(Close());
+
+
+    }
+
+    public IEnumerator Close()
+    {
+
+        animator.SetTrigger("Hide");
+
+        yield return new WaitForSeconds(0.8f);
+
         Card.SetActive(false);
         Self.SetActive(false);
-
 
     }
 

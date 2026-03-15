@@ -22,68 +22,84 @@ public class ChangeMovement : MonoBehaviour
                 case 0:
                     pm.currentMoveType = PlayerMovement.MoveType.Roi;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 1: 
                         pm.currentMoveType = PlayerMovement.MoveType.Roi;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
 
                 case 2:  
                     pm.currentMoveType = PlayerMovement.MoveType.Roi;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 3:
                     pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 4:
                     pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 5: 
                     pm.currentMoveType = PlayerMovement.MoveType.Fou;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 6: 
                     pm.currentMoveType = PlayerMovement.MoveType.Fou;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 7: 
                     pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 8: 
 
                     pm.currentMoveType = PlayerMovement.MoveType.Tour;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 9: 
                     pm.currentMoveType = PlayerMovement.MoveType.Tour;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 10: 
                     pm.currentMoveType = PlayerMovement.MoveType.Dame;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 11: 
                     pm.currentMoveType = PlayerMovement.MoveType.Fou;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 12:  
                     pm.currentMoveType = PlayerMovement.MoveType.Roi;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 13:
                     pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 case 14:
                     pm.currentMoveType = PlayerMovement.MoveType.Roi;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
                 default:
                     pm.currentMoveType = PlayerMovement.MoveType.Roi;
                     pm.ColorCell();
+                    pm.PlayerStuckCheck();
                     return;
 
             }

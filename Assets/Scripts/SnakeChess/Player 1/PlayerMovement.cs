@@ -20,7 +20,10 @@ public class PlayerMovement : MonoBehaviour
     public event Action CheckCombo;
     public event Action TurnDone;
     public event Action SpawnedSnake;
+    [SerializeField] private ChangeMovement changeMovement;
 
+
+    public event Action PlayerStuck;
     public enum MoveType
     {
         Roi,      // déplacement d'une case dans toutes les directions
@@ -32,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     public MoveType currentMoveType;
     private void Start()
     {
-       currentMoveType = MoveType.Fou;
+      
     } 
 
     private void OnEnable()
@@ -77,8 +80,36 @@ public class PlayerMovement : MonoBehaviour
         playerTurn = true;
         Debug.Log("value " + playerTurn);
         ColorCell();
+        
+        PlayerStuckCheck();
     }
 
+
+    public void PlayerStuckCheck()
+    {
+        if (IsPlayerBlocked() == true && changeMovement.movementChange == 0 && NumberOfMoves > 0)
+        {
+            PlayerStuck?.Invoke();
+        }
+    }
+    public bool IsPlayerBlocked()
+    {
+        foreach (Cell cell in gridManager.allCells)
+        {
+            if (cell == null) continue;
+
+            bool occupied = snakeBody.snakeCoords.Contains(cell.coord);
+
+            
+            if (!occupied && IsValidMove(cell.coord))
+            {
+                return false; 
+            }
+        }
+
+       
+        return true;
+    }
 
     public void EndTurn()
     {
