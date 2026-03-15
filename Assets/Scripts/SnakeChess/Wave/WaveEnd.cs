@@ -140,8 +140,9 @@ public class WaveEnd : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 wm.NextWave();
                 yield return new WaitForSeconds(0.5f);
-                aim.PlaceEnemyAim(); 
-            
+                aim.PlaceEnemyAim();
+                 pm.currentMoveType = PlayerMovement.MoveType.Roi;
+
         }
                 
         

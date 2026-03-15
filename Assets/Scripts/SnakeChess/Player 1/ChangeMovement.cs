@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class ChangeMovement : MonoBehaviour
 {
@@ -8,106 +9,56 @@ public class ChangeMovement : MonoBehaviour
     public int baseMoveChange = 1;
     [SerializeField] TMP_Text ScoreTexte;
 
+    [System.Serializable]
+    public class MoveWeight
+    {
+        public PlayerMovement.MoveType moveType;
+        public int weight;
+    }
+
+    public List<MoveWeight> moveWeights = new List<MoveWeight>()
+    {
+        new MoveWeight { moveType = PlayerMovement.MoveType.Roi, weight = 5 },
+        new MoveWeight { moveType = PlayerMovement.MoveType.Cavalier, weight = 4 },
+        new MoveWeight { moveType = PlayerMovement.MoveType.Fou, weight = 3 },
+        new MoveWeight { moveType = PlayerMovement.MoveType.Tour, weight = 2 },
+        new MoveWeight { moveType = PlayerMovement.MoveType.Dame, weight = 1 }
+    };
 
     public void ChangeMovementButton()
     {
-        if (movementChange != 0)
-        {
-            Debug.Log("clickk");
-            int RandomPick = Random.Range(0, 15);
-            movementChange -= 1;
+        if (movementChange <= 0) return;
 
-            switch (RandomPick)
-            {
-                case 0:
-                    pm.currentMoveType = PlayerMovement.MoveType.Roi;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 1: 
-                        pm.currentMoveType = PlayerMovement.MoveType.Roi;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
+        movementChange--;
 
-                case 2:  
-                    pm.currentMoveType = PlayerMovement.MoveType.Roi;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 3:
-                    pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 4:
-                    pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 5: 
-                    pm.currentMoveType = PlayerMovement.MoveType.Fou;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 6: 
-                    pm.currentMoveType = PlayerMovement.MoveType.Fou;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 7: 
-                    pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 8: 
+        pm.currentMoveType = GetRandomMove();
 
-                    pm.currentMoveType = PlayerMovement.MoveType.Tour;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 9: 
-                    pm.currentMoveType = PlayerMovement.MoveType.Tour;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 10: 
-                    pm.currentMoveType = PlayerMovement.MoveType.Dame;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 11: 
-                    pm.currentMoveType = PlayerMovement.MoveType.Fou;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 12:  
-                    pm.currentMoveType = PlayerMovement.MoveType.Roi;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 13:
-                    pm.currentMoveType = PlayerMovement.MoveType.Cavalier;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                case 14:
-                    pm.currentMoveType = PlayerMovement.MoveType.Roi;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-                default:
-                    pm.currentMoveType = PlayerMovement.MoveType.Roi;
-                    pm.ColorCell();
-                    pm.PlayerStuckCheck();
-                    return;
-
-            }
-            
-        }
+        pm.ColorCell();
+        pm.PlayerStuckCheck();
     }
 
-    void Update()
+    PlayerMovement.MoveType GetRandomMove()
+    {
+        int totalWeight = 0;
+
+        foreach (var move in moveWeights)
+            totalWeight += move.weight;
+
+        int random = Random.Range(0, totalWeight);
+
+        foreach (var move in moveWeights)
+        {
+            if (random < move.weight)
+                return move.moveType;
+
+            random -= move.weight;
+        }
+
+        return PlayerMovement.MoveType.Roi;
+    }
+
+
+        void Update()
     {
 
         ScoreTexte.text = $"{movementChange} ";

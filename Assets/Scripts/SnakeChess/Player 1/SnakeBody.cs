@@ -23,6 +23,7 @@ public class SnakeBody : MonoBehaviour
     public int startSize = 3;
     public float moveDuration = 0.2f;
     public int GrowValue = 1;
+    public int sizemax = 5;
 
     private void OnEnable()
     {
@@ -239,59 +240,65 @@ public class SnakeBody : MonoBehaviour
     }
     public void Grow()
     {
-        for (int i = 0; i < GrowValue; i++)
-        {
-            // On prend la dernière position connue de la queue
-            Vector2Int tail = snakeCoords[snakeCoords.Count - 1];
-            Vector2Int dir = Vector2Int.zero;
-
-            // Calcul de la direction depuis l'avant-dernier segment si possible
-            if (snakeCoords.Count > 1)
+       
+            for (int i = 0; i < GrowValue; i++)
             {
-                Vector2Int beforeTail = snakeCoords[snakeCoords.Count - 2];
-                dir = tail - beforeTail;
-            }
-
-            // Nouvelle position derrière la queue
-            Vector2Int newTailPos = tail + dir;
-
-            // Clamp pour rester dans la grille
-            newTailPos.x = Mathf.Clamp(newTailPos.x, 0, gridManager.width - 1);
-            newTailPos.y = Mathf.Clamp(newTailPos.y, 0, gridManager.height - 1);
-
-            // Si la case est occupée par le serpent on cherche une case adjacente libre
-            if (snakeCoords.Contains(newTailPos))
-            {
-                Vector2Int[] checks = new Vector2Int[]
+                if (sizemax > segments.Count - 1)
                 {
+                    // On prend la dernière position connue de la queue
+                    Vector2Int tail = snakeCoords[snakeCoords.Count - 1];
+                    Vector2Int dir = Vector2Int.zero;
+
+                    // Calcul de la direction depuis l'avant-dernier segment si possible
+                    if (snakeCoords.Count > 1)
+                    {
+                        Vector2Int beforeTail = snakeCoords[snakeCoords.Count - 2];
+                        dir = tail - beforeTail;
+                    }
+
+                    // Nouvelle position derrière la queue
+                    Vector2Int newTailPos = tail + dir;
+
+                    // Clamp pour rester dans la grille
+                    newTailPos.x = Mathf.Clamp(newTailPos.x, 0, gridManager.width - 1);
+                    newTailPos.y = Mathf.Clamp(newTailPos.y, 0, gridManager.height - 1);
+
+                    // Si la case est occupée par le serpent on cherche une case adjacente libre
+                    if (snakeCoords.Contains(newTailPos))
+                    {
+                        Vector2Int[] checks = new Vector2Int[]
+                        {
                 tail + Vector2Int.up,
                 tail + Vector2Int.down,
                 tail + Vector2Int.left,
                 tail + Vector2Int.right
-                };
+                        };
 
-                foreach (var pos in checks)
-                {
-                    if (!snakeCoords.Contains(pos) &&
-                        pos.x >= 0 && pos.x < gridManager.width &&
-                        pos.y >= 0 && pos.y < gridManager.height)
-                    {
-                        newTailPos = pos;
-                        break;
+                        foreach (var pos in checks)
+                        {
+                            if (!snakeCoords.Contains(pos) &&
+                                pos.x >= 0 && pos.x < gridManager.width &&
+                                pos.y >= 0 && pos.y < gridManager.height)
+                            {
+                                newTailPos = pos;
+                                break;
+                            }
+                        }
+                        // Si aucune case libre, on reste sur la position de la queue (évite plantage)
                     }
+
+                    // On ajoute le segment
+                    snakeCoords.Add(newTailPos);
+                    GameObject seg = Instantiate(segmentPrefab);
+                    seg.transform.position = gridManager.allCells[newTailPos.x, newTailPos.y].transform.position;
+                    segments.Add(seg);
+
+                    GrownUp?.Invoke();
                 }
-                // Si aucune case libre, on reste sur la position de la queue (évite plantage)
             }
-
-            // On ajoute le segment
-            snakeCoords.Add(newTailPos);
-            GameObject seg = Instantiate(segmentPrefab);
-            seg.transform.position = gridManager.allCells[newTailPos.x, newTailPos.y].transform.position;
-            segments.Add(seg);
-
-            GrownUp?.Invoke();
-        }
-    }
+     }
+        
+    
 
     private void UpdateRotations()
     {

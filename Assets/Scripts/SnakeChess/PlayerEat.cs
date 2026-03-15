@@ -28,6 +28,7 @@ public class PlayerEat : MonoBehaviour
     public EnemyMovement.MoveType moveType;
     public List<Sprite> ListOfSprite;
     public List<Animator> animatorsDeadpiece;
+    public event Action enemyEat;
     
     void OnEnable()
     {
@@ -48,9 +49,11 @@ public class PlayerEat : MonoBehaviour
                 EnemyMovement em = aim.enemies[i];
                 aim.enemies.RemoveAt(i);
                 temporarPoint = em.Value;
-                moveType = em.currentMoveType;
                 HasKill = true;
                 playerscore.AddPoint(em.Value);
+                moveType = em.currentMoveType;
+               
+               
                 pm.snakeBody.Grow();
 
                
@@ -62,18 +65,19 @@ public class PlayerEat : MonoBehaviour
         }
         if (HasKill == true)
         {
-            temporarPoint *= (int)playerscore.multiplicatorEnchainement;
-            playerscore.multiplicatorEnchainement += playerscore.multiplierValueEnchainementValue;
+            temporarPoint = Mathf.RoundToInt(temporarPoint * (playerscore.multiplicatorEnchainement * playerscore.multiplierEnchainementFormUp));
+            playerscore.multiplicatorEnchainement += playerscore.multiplierValueEnchainementValue * playerscore.multiplierEnchainementFormUp;
             Debug.Log(playerscore.multiplicatorEnchainement);
             movetoLooseMult = BasemovetoLooseMult;
 
             SpawnEnemyDead();
-            for (int i = 1; i < snakeBody.segments.Count; i ++)
+            for (int i = 0; i < snakeBody.segments.Count; i ++)
             {
                 Animator snakeAnim = snakeBody.segments[i].GetComponent<Animator>();
                 snakeAnim.SetTrigger("Combo");
                 snakeAnim.ResetTrigger("ComboEnd");
-               
+                snakeAnim.ResetTrigger("BackToIdle");
+
                 //SonIci
             }
 
@@ -86,11 +90,13 @@ public class PlayerEat : MonoBehaviour
                 playerscore.multiplicatorEnchainement = playerscore.multiplicatorEnchainementBaseValue;
                 movetoLooseMult = BasemovetoLooseMult;
                 //Son perte Combo
-                for (int i = 1; i < snakeBody.segments.Count; i++)
+                for (int i = 0; i < snakeBody.segments.Count; i++)
                 {
                     Animator snakeAnim = snakeBody.segments[i].GetComponent<Animator>();
                     snakeAnim.SetTrigger("BackToIdle");
-                   
+                    snakeAnim.ResetTrigger("Combo");
+                    snakeAnim.ResetTrigger("ComboEnd");
+
                     //SonIci
                 }
 
@@ -100,11 +106,15 @@ public class PlayerEat : MonoBehaviour
                 
                 if (movetoLooseMult == 1)
                 {
-                    for (int i = 1; i < snakeBody.segments.Count; i++)
+                    for (int i = 0; i < snakeBody.segments.Count; i++)
                     {
                         Animator snakeAnim = snakeBody.segments[i].GetComponent<Animator>();
                         snakeAnim.SetTrigger("ComboEnd");
-                        
+                        snakeAnim.ResetTrigger("Combo");
+                       
+
+
+
                         //SonIci
                     }
                 }
@@ -123,6 +133,7 @@ public class PlayerEat : MonoBehaviour
         for (int i = 0; i < snakeBody.snakeCoords.Count; i++)
             if(pos == snakeBody.snakeCoords[i])
             {
+                enemyEat?.Invoke();
                 snakeBody.RemoveSegmentAt(pos);
             }
 

@@ -10,16 +10,32 @@ public enum UpgradeType
     ExtraSize,
     ExtraSwap,
     ExtraTimeCombo,
+
+
     CavalierMultEnd,
     FouMultEnd,
     DameMultEnd,
     RoiMultEnd,
     TourMultEnd,
+
+
     CavalierCombo,
     FouCombo,
     DameCombo,
     RoiCombo,
     TourCombo,
+
+
+    TailleMax,
+
+
+    MoreChanceKing,
+    MoreChanceKinght,
+    MoreChanceBishop,
+    MoreChanceTour,
+    MoreChanceQueen,
+
+    MultGlobal,
 
 }
 

@@ -29,11 +29,13 @@ public class CameraShakeSnake : MonoBehaviour
 
     private void OnEnable()
     {
-        scoreSnake.ShakeCam += TimeShake;
-        scoreSnake.LittleShakeCam += LittleShake;
-        playerEat.Eat += TimeShake;
+        scoreSnake.ShakeCam += LittleShake;
+        scoreSnake.LittleShakeCam += ShakeEnemy;
+        playerEat.Eat += ShakeEat;
         playerEat.Move += LittleShake;
         scoreSnake.MicroShakeCam += MicroShake;
+        playerEat.enemyEat += ShakeEnemy;
+
     }
 
     
@@ -42,9 +44,35 @@ public class CameraShakeSnake : MonoBehaviour
        
     }
 
+    void PreciseShake()
+    {
+        float y;
+
+        if (Random.value < 0.5f)
+        {
+            y = Random.Range(-0.001f, -0.001f);
+        }
+        else
+        {
+            y = Random.Range(0.001f, 0.01f);
+        }
+
+        ShakeDirection = new Vector3(Random.Range(-0.07f, 0.07f), y, 0f);
+        shakeDuration = 0.05f;
+    }
+    void ShakeEat()
+    {
+        ShakeDirection = new Vector3(Random.Range(-0.09f, 0.09f), Random.Range(-0.003f, 0.003f), 0f);
+        shakeDuration = 0.05f;
+    }
+    void ShakeEnemy()
+    {
+        ShakeDirection = new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.002f, 0.002f), 0f);
+        shakeDuration = 0.05f;
+    }
     void TimeShake()
     {
-        ShakeDirection = new Vector3(Random.Range(-0.03f, 0.03f), Random.Range(-0.001f, 0.001f), 0f);
+        ShakeDirection = new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.002f, 0.002f), 0f);
         shakeDuration = 0.05f;
     }
     void LittleShake()

@@ -68,7 +68,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _Amplitude: -10.74
+    - _Amplitude: -6.9
     - _ColorMask: 15
     - _EnableExternalAlpha: 0
     - _Opacity: 0
@@ -89,8 +89,8 @@ Material:
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.45490196, g: 0.48235294, b: 0.7882353, a: 1}
-    - _Color_1: {r: 1, g: 0.18431373, b: 0, a: 0.6392157}
+    - _Color: {r: 0.29800004, g: 0.35581192, b: 1, a: 1}
+    - _Color_1: {r: 1, g: 0.31727064, b: 0.16300005, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

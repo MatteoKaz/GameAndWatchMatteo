@@ -88,9 +88,11 @@ public class AIManger : MonoBehaviour
         else
         {
             LaunchEnemy();
+            
             yield return new WaitForSeconds(0.5f);
             if (enemy != null)
             {
+                TurnEnemy = true;
                 enemy.TryMove();
                 enemy.StartCoroutine(enemy.MoveEnemy());
 
