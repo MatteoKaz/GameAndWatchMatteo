@@ -39,19 +39,34 @@ public class ChangeMovement : MonoBehaviour
 
     PlayerMovement.MoveType GetRandomMove()
     {
+
+        PlayerMovement.MoveType currentType = pm.currentMoveType;
         int totalWeight = 0;
-
         foreach (var move in moveWeights)
-            totalWeight += move.weight;
+        {
+            if (move.moveType != currentType)
+                totalWeight += move.weight;
+        }
 
+        // Tirage aléatoire
         int random = Random.Range(0, totalWeight);
 
         foreach (var move in moveWeights)
         {
+            if (move.moveType == currentType)
+                continue; // ignorer le move actuel
+
             if (random < move.weight)
                 return move.moveType;
 
             random -= move.weight;
+        }
+
+        // fallback si quelque chose se passe mal
+        foreach (var move in moveWeights)
+        {
+            if (move.moveType != currentType)
+                return move.moveType;
         }
 
         return PlayerMovement.MoveType.Roi;

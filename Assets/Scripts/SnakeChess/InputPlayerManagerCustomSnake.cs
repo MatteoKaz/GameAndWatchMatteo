@@ -87,9 +87,18 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
             {
                 Cell cell = hit.collider.GetComponent<Cell>();
                 if (cell != null)
+                {
                     CellClicked(cell.coord);
-                OnMove?.Invoke(cell);
-
+                    OnMove?.Invoke(cell);
+                }
+                    
+                else
+                {
+                    EnemyMovement em = hit.collider.GetComponent<EnemyMovement>();
+                    if (em != null)
+                        em.ColorCase();
+                } 
+               
             }
             startPosition = touch.screenPosition;
             

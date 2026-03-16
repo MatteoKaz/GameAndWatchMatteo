@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8210831910435138795}
   - component: {fileID: 5857918188521310865}
   - component: {fileID: 1633967550344851327}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.16, y: 0.21}
+  m_Size: {x: 0.07, y: 0.06}
   m_EdgeRadius: 0
 --- !u!50 &8210831910435138795
 Rigidbody2D:
@@ -189,6 +189,7 @@ MonoBehaviour:
   CurrentcoordEnemy: {x: 0, y: 0}
   futurmove: {x: 0, y: 0, z: 0}
   Value: 0
+  Active: 0
   moveDuration: 0.3
   currentMoveType: 2
 --- !u!95 &1633967550344851327

@@ -1,7 +1,8 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 
 public class AIManger : MonoBehaviour
@@ -17,7 +18,10 @@ public class AIManger : MonoBehaviour
     private bool TurnEnemy= false;
     [SerializeField] public GridManager gm;
     [SerializeField] private WaveEnd waveEnd;
-
+    [SerializeField] public PlayerMovement playerMovement;
+    private bool chosenEnemyDead = false;
+    private bool enemyIsMoving = false;
+    private bool beginWave = false;
     void OnEnable()
     {
         tm.EnemyTurn +=MoveEnemy;
@@ -31,29 +35,60 @@ public class AIManger : MonoBehaviour
     public void PlaceEnemyAim()
     {
         StartCoroutine(PlaceEnemyAimCoroutine());
+
     }
     void LaunchEnemy()
     {
-        if (TurnEnemy == true)
+        if (TurnEnemy ==true)
         {
+
             TurnEnemy = false;
-            if (enemies.Count == 0)
-            return;
-             int index = UnityEngine.Random.Range(0, enemies.Count);
-             enemy = enemies[index];
-             
-             enemy.SetSpriteColor(Color.red);
-             
-             if (count != 0)
+            if (enemies.Count == 0) 
+                return;
+            EnemyMovement chosen = null;
+            // Mélanger la liste pour éviter les boucles infinies
+            List<EnemyMovement> shuffled = enemies.OrderBy(x => UnityEngine.Random.value).ToList();
+
+
+
+            foreach (var e in shuffled)
             {
-            //enemy.TryMove();
+                if (!e.NoLegalMove()) // si e peut bouger
+                {
+                    chosen = e;
+                    break;
+                }
+            }
+            enemy = chosen;
+            if (enemy == null)
+            {
+                Debug.Log("Aucun ennemi ne peut bouger !");
+                return;
+            }
+
+            if (chosenEnemyDead == false)
+                //enemy.ColorCase();
+
+
+
+
+            enemy.SetSpriteColor(Color.red);
+
+            if (count != 0)
+            {
+                //enemy.TryMove();
             }
             else
             {
-                 count ++;
+                count++;
             }
-         
+
+
         }
+
+
+
+
     }
     public IEnumerator PlaceEnemyAimCoroutine()
     {
@@ -78,24 +113,32 @@ public class AIManger : MonoBehaviour
 
     public IEnumerator Wait()
     {
-        yield return new WaitForSeconds(0.25f);
+
+        
+        yield return new WaitForSeconds(0.5f);
         if (enemy != null)
         {
             enemy.TryMove();
             enemy.StartCoroutine(enemy.MoveEnemy());
-
+            chosenEnemyDead = false;
         }
         else
         {
-            LaunchEnemy();
+            if (beginWave == false)
+            {
+                chosenEnemyDead = true;
+            }
             
+
+            LaunchEnemy();
+            chosenEnemyDead = false;
             yield return new WaitForSeconds(0.5f);
             if (enemy != null)
             {
                 TurnEnemy = true;
                 enemy.TryMove();
                 enemy.StartCoroutine(enemy.MoveEnemy());
-
+                chosenEnemyDead = false;
             }
         }
         
@@ -126,9 +169,10 @@ public class AIManger : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
 
         TurnEnemy = true;
+        beginWave = true;
         LaunchEnemy();
-           
-        
+        beginWave = false;
+
 
     }
 

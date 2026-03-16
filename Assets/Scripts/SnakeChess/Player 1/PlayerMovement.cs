@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    bool IsValidMove(Vector2Int target)
+   public bool IsValidMove(Vector2Int target)
     {
         int dx = target.x - coordPlayer.x;
         int dy = target.y - coordPlayer.y;

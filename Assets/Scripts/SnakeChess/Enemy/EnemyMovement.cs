@@ -17,6 +17,7 @@ public class EnemyMovement : MonoBehaviour
     public Vector2Int CurrentcoordEnemy;
     public Vector3 futurmove;
     public int Value;
+    public bool Active = false;
 
     [SerializeField] private float moveDuration = 0.3f;
     public event Action CutPlayer;
@@ -138,7 +139,11 @@ public class EnemyMovement : MonoBehaviour
         cellscript.ColorCase(Color.red);
         
     }
-
+    public bool NoLegalMove()
+    {
+        List<Vector2Int> moves = GetPossibleMoves();
+        return moves.Count == 0;
+    }
     public List<Vector2Int> GetPossibleMoves()
     {
         List<Vector2Int> candidates = new List<Vector2Int>();
@@ -175,6 +180,51 @@ public class EnemyMovement : MonoBehaviour
 
         // Filtrer par coups légaux
         return candidates.Where(IsLegalMove).ToList();
+    }
+
+    public void ColorCase()
+    {
+        if (Active == false)
+        {
+            Active = true;  
+            foreach (Cell cell in gridManager.allCells)
+            {
+
+                bool validMove = IsLegalMove(cell.coord);
+                if (cell == null) continue;
+
+                SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
+                //&& !aim.playerMovement.IsValidMove(cell.coord)
+                if (IsLegalMove(cell.coord) && !aim.playerMovement.IsValidMove(cell.coord))
+                    sr.color = new Color(1f, 174f / 255f, 174f / 255f, 1f);
+
+
+
+
+
+            }
+        }
+        else
+        {
+            Active = false;
+            foreach (Cell cell in gridManager.allCells)
+            {
+
+                bool validMove = IsLegalMove(cell.coord);
+                if (cell == null) continue;
+
+                SpriteRenderer sr = cell.GetComponent<SpriteRenderer>();
+                //&& !aim.playerMovement.IsValidMove(cell.coord)
+                if (IsLegalMove(cell.coord) && !aim.playerMovement.IsValidMove(cell.coord))
+                    sr.color = Color.white;
+
+
+
+
+
+            }
+        }
+          
     }
 
     bool IsLegalMove(Vector2Int target)
