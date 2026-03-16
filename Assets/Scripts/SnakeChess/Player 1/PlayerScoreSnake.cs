@@ -112,20 +112,26 @@ public class PlayerScoreSnake : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
 
         yield return new WaitForSeconds(0.75f);
-
-        // Point Ajoute multiplication demain de ces scores
+        
+        //Time to wait for Piece
+        float FirstWait = 0.4f; 
+        float TextWait = 0.15f;
+        float WaitShowPoint = 0.1f;
+        float HideNumber = 0.5f;
+        float WaitForNext = 0.1f;
+            // Point Ajoute multiplication demain de ces scores
         for (int i = 0; i < pe.indexPlaceToDie; i++)
         {
 
 
             pe.animatorsDeadpiece[i].SetTrigger("Piece");
 
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(FirstWait);
             ShakeCam?.Invoke();
             pe.deathPlace[i].sprite = null;
             pe.TMP_Texts[i].color = Color.white;
             pe.animatorsDeadpiece[i].SetTrigger("Point");
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(TextWait);
             if (int.TryParse(pe.TMP_Texts[i].text, out int number))
             {
                 pointToShow += number; // 42
@@ -135,21 +141,31 @@ public class PlayerScoreSnake : MonoBehaviour
                 Debug.Log("Conversion impossible");
             }
             animatorPoint.SetTrigger("WonPoint");
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(WaitShowPoint);
             UIPoint.text = $"{pointToShow}";
             //animPoint
             ShakeCam?.Invoke();
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(HideNumber);
             pe.TMP_Texts[i].color = Color.clear;
 
-            yield return new WaitForSeconds(0.1f);
-
+            yield return new WaitForSeconds(WaitForNext);
+            FirstWait = Mathf.Clamp(FirstWait - 0.05f, 0.1f, 0.4f);
+            TextWait = Mathf.Clamp(TextWait - 0.05f, 0.025f, 0.4f);
+            WaitShowPoint = Mathf.Clamp(WaitShowPoint - 0.04f, 0.015f, 0.4f);
+            HideNumber = Mathf.Clamp(HideNumber - 0.04f, 0.015f, 0.5f);
+            WaitForNext = Mathf.Clamp(WaitForNext - 0.08f, 0.015f, 0.5f);
 
         }
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.45f);
 
+        //Time to wait for Piece
+        float EndWaitMult = 0.3f;
+        float WaitToAnimText = 0.2f;
+        float FirstWaitMult = 0.2f;
+        float ShakeWait = 0.2f;
 
+        
         //Multiplication
         for (int i = 1; i < sb.segments.Count; i++)
         {
@@ -185,19 +201,22 @@ public class PlayerScoreSnake : MonoBehaviour
 
                 yield return new WaitForSeconds(0.2f);
                 LittleShakeCam?.Invoke();
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(WaitToAnimText);
                 anim.SetTrigger("BackToIdle");
                 animatorMult.SetTrigger("MultAnim");
                 yield return new WaitForSeconds(0.1f);
                 UImultiplier.text = $"{multToShow += multiplierValueBase * multiplierFormUp}";
                 yield return new WaitForSeconds(0.2f);
                 ShakeCam?.Invoke();
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(EndWaitMult);
 
 
 
             }
-            yield return new WaitForSeconds(0.35f);
+            yield return new WaitForSeconds(EndWaitMult);
+            EndWaitMult = Mathf.Clamp(EndWaitMult - 0.08f, 0.05f, 0.35f);
+
+            WaitToAnimText = Mathf.Clamp(WaitToAnimText - 0.05f, 0.01f, 0.2f);
         }
 
         if (multGlobal != 1)
@@ -239,7 +258,7 @@ public class PlayerScoreSnake : MonoBehaviour
         yield return new WaitForSeconds(3f);
         while (displayScore > 0)
         {
-            int step = Mathf.Clamp(displayScore / 100, 1, 500);
+            int step = Mathf.Clamp(displayScore / 100, 1, 750);
             displayScore -= step;
 
             UIScore.text = displayScore.ToString();
@@ -249,7 +268,7 @@ public class PlayerScoreSnake : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
         pe.indexPlaceToDie = 0;
 
         AnimEnded?.Invoke();
