@@ -22,7 +22,7 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
     string debugText = "";
     private Vector2 endPosition;
     [SerializeField] Camera mainCamera;
-
+    public bool canClickEnemies =false;
     public event Action<Cell> OnMove ;
 
 
@@ -78,31 +78,47 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
         var touch = Touch.activeTouches[0];
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(touch.screenPosition);
         Vector2 touchPos2D = new Vector2(worldPos.x, worldPos.y);
+        Debug.Log("canClickEnemies = " + canClickEnemies);
         if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
         {
-           
 
-            RaycastHit2D hit = Physics2D.Raycast(touchPos2D, Vector2.zero);
-            if (hit.collider != null)
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(touchPos2D, Vector2.zero);
+
+            // Priorité aux cases
+            foreach (var hit in hits)
             {
                 Cell cell = hit.collider.GetComponent<Cell>();
                 if (cell != null)
                 {
                     CellClicked(cell.coord);
                     OnMove?.Invoke(cell);
+                    startPosition = touch.screenPosition;
+                    break;// stop après avoir cliqué une case
                 }
-                    
-                else
+            }
+
+            // Si activé, cliquer sur un ennemi
+            if (canClickEnemies == true)
+            {
+                Debug.Log("toucheenemy");
+                foreach (var hit in hits)
                 {
+                  
                     EnemyMovement em = hit.collider.GetComponent<EnemyMovement>();
                     if (em != null)
-                        em.ColorCase();
-                } 
-               
+                    {
+                       
+                        em.ColorCase(); // ou autre action sur l'ennemi
+                        startPosition = touch.screenPosition;
+                        break; // stop après avoir cliqué un ennemi
+                    }
+                }
             }
+
             startPosition = touch.screenPosition;
-            
-          
+
+
         }
         if(touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
         {

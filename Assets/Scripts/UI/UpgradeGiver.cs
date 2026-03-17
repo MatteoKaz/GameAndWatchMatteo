@@ -140,6 +140,9 @@ public class UpgradeGiver : MonoBehaviour
                 case UpgradeType.MultGlobal:
                     scoreSnake.multGlobal += upgradeValue;
                     break;
+                case UpgradeType.MultOrdre: 
+                    scoreSnake.multOrdre += upgradeValue;
+                    break;
             }
             waveEnd.CloseCard();
             waveEnd.LaunchNewWave();

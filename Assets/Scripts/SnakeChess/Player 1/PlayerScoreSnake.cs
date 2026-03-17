@@ -35,8 +35,8 @@ public class PlayerScoreSnake : MonoBehaviour
     public float multTourEnchainement = 1f;
     public float multDameEnchainement = 1f;
 
-    public float multGlobal = 1f;  
-
+    public float multGlobal = 1f;
+    public float multOrdre = 1.25f;
 
     public int bonusValue = 0;
 
@@ -134,12 +134,19 @@ public class PlayerScoreSnake : MonoBehaviour
             yield return new WaitForSeconds(TextWait);
             if (int.TryParse(pe.TMP_Texts[i].text, out int number))
             {
-                pointToShow += number; // 42
+                
+                pointToShow = Mathf.RoundToInt((pointToShow + number) * multOrdre); // mult = 1.25 par exemple
             }
             else
             {
                 Debug.Log("Conversion impossible");
             }
+            yield return new WaitForSeconds(FirstWait);
+            pe.TMP_Texts[i].text = $"X{multOrdre}";
+            
+            pe.animatorsDeadpiece[i].SetTrigger("Point");
+            yield return new WaitForSeconds(TextWait);
+            pe.TMP_Texts[i].text = $"{pointToShow}";
             animatorPoint.SetTrigger("WonPoint");
             yield return new WaitForSeconds(WaitShowPoint);
             UIPoint.text = $"{pointToShow}";
@@ -147,9 +154,13 @@ public class PlayerScoreSnake : MonoBehaviour
             ShakeCam?.Invoke();
 
             yield return new WaitForSeconds(HideNumber);
+            
+           
+            yield return new WaitForSeconds(WaitForNext);
+            yield return new WaitForSeconds(0.1f);
             pe.TMP_Texts[i].color = Color.clear;
 
-            yield return new WaitForSeconds(WaitForNext);
+            
             FirstWait = Mathf.Clamp(FirstWait - 0.05f, 0.1f, 0.4f);
             TextWait = Mathf.Clamp(TextWait - 0.05f, 0.025f, 0.4f);
             WaitShowPoint = Mathf.Clamp(WaitShowPoint - 0.04f, 0.015f, 0.4f);
@@ -229,12 +240,13 @@ public class PlayerScoreSnake : MonoBehaviour
             
         }
         yield return new WaitForSeconds(1f);
+        
+        
+        score += Mathf.RoundToInt(pointToShow * (multiplicator * multGlobal));
         pointToShow = 0;
         UIPoint.text = $"{pointToShow}";
         multToShow = 0;
         UImultiplier.text = $"{multToShow}";
-        
-        score += Mathf.RoundToInt(PointReceive * (multiplicator * multGlobal));
         //Score Final
 
         int displayScore = 0;

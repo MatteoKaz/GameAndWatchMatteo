@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DataUpgrades
   allUpgrades:
   - upgradeName: Aphophis
-    description: '+ 0.25  sur les multiplications de taille '
+    description: '+ 0.1  sur les multiplications de taille '
     type: 0
     value: 0.25
     formIndex: 0
     icone: {fileID: 0}
   - upgradeName: Serpent Brulant
-    description: '+0.5 sur les multiplications d''enchainement '
+    description: '+0.25 sur les multiplications d''enchainement '
     type: 1
     value: 0.5
     formIndex: 0
@@ -149,5 +149,11 @@ MonoBehaviour:
     description: '+0.25 sur le total du multiplicateur '
     type: 22
     value: 0.25
+    formIndex: 0
+    icone: {fileID: -8029336032677694795, guid: 593ab4da409340c4d9e438af97261ff9, type: 3}
+  - upgradeName: L'Ordre du Serpent
+    description: '+0.1 sur le multiplicateur d''ordre de prise '
+    type: 23
+    value: 0.1
     formIndex: 0
     icone: {fileID: -8029336032677694795, guid: 593ab4da409340c4d9e438af97261ff9, type: 3}

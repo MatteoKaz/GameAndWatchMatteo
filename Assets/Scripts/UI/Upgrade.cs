@@ -36,6 +36,7 @@ public enum UpgradeType
     MoreChanceQueen,
 
     MultGlobal,
+    MultOrdre,
 
 }
 
