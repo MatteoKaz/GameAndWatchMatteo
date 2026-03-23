@@ -13,7 +13,7 @@ public class SetUpgrade : MonoBehaviour
     [SerializeField] public List<Image> ListOfIcone;
     [SerializeField] public List<UpgradeGiver> upgradeGivers;
     [SerializeField] public List<GameObject> Bouton;
-
+    [SerializeField] public GraphicRaycaster backGroundToBlock;
 
     public void GenerateUpgrade()
     {
@@ -27,10 +27,10 @@ public class SetUpgrade : MonoBehaviour
             ListOfIcone[i].sprite = DataToChoose.icone;
             upgradeGivers[i].upgradeValue = DataToChoose.value;
             upgradeGivers[i].GetTypeUpgrade(DataToChoose.type);
-           
+
             //prefabCard[i].SetActive(true);
-           
-            Bouton[i].SetActive(true);
+            backGroundToBlock.blockingMask = LayerMask.GetMask("Everything"); 
+             Bouton[i].SetActive(true);
 
 
 

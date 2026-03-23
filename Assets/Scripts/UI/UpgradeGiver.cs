@@ -25,7 +25,7 @@ public class UpgradeGiver : MonoBehaviour
 
     [SerializeField] GameObject UpgradeMenuparent;
     [SerializeField] public GameObject UpgradeMenuPrefab;
-   
+    [SerializeField] public GraphicRaycaster backGroundToBlock;
 
 
     public event Action UpgradeDone;
@@ -182,7 +182,7 @@ public class UpgradeGiver : MonoBehaviour
         animator.SetTrigger("Hide");
         CanPress = false;
         yield return new WaitForSeconds(0.8f);
-
+        backGroundToBlock.blockingMask = LayerMask.GetMask("None");
         Card.SetActive(false);
         Self.SetActive(false);
 

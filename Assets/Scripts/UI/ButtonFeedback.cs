@@ -12,7 +12,8 @@ public class ButtonFeedback : MonoBehaviour
 
     public void OnClick()
     {
-        StartCoroutine(Click());    
+        if (transform.gameObject.activeInHierarchy)
+            StartCoroutine(Click());    
     }
 
     public IEnumerator Click()
