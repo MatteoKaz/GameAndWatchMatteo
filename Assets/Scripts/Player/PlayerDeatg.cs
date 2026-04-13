@@ -7,6 +7,7 @@ public class PlayerDeatg : MonoBehaviour
     [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
     [SerializeField] PlayerScore PlayerScore;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,12 +22,20 @@ public class PlayerDeatg : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider2D)
     {
-        if (collider2D.GetComponent<Bonus>() == null)
+        if (collider2D.GetComponent<Enemy>() != null )
         {
-            timeManager.StopTime();
-            _audioEventDispatcher.PlayAudio(AudioType.Death);
-            DeathMenu.SetActive(true);
-            PlayerScore.StopAllCoroutines();
+            if (PlayerScore.GodMod == false)
+            {
+                timeManager.StopTime();
+                _audioEventDispatcher.PlayAudio(AudioType.Death);
+                DeathMenu.SetActive(true);
+                PlayerScore.StopAllCoroutines();
+            }
+            else
+            {
+                Destroy(collider2D.gameObject);
+                PlayerScore.AddScore();
+            }
 
 
         }

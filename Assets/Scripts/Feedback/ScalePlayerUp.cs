@@ -6,8 +6,8 @@ public class ScalePlayerUp : MonoBehaviour
 {
     [SerializeField] private PlayerScore PS;
     private float duration = 0.25f;
-    private Vector3 startScale = new(2,2,2) ;
-    private Vector3 targetScale = new Vector3(2.5f, 2.5f, 2.5f);
+    private Vector3 startScale = new(6.95f, 6.95f, 6.95f) ;
+    private Vector3 targetScale = new Vector3(8f, 8f, 8f);
     IEnumerator ScalePlayer()
     {
         

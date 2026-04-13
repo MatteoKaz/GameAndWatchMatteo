@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,8 +11,8 @@ public class PlayerScore : MonoBehaviour
     
     public event Action ONBonus;
     [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
-
-
+    public bool GodMod;
+    public Coroutine God;
     void Update()
     {
         
@@ -38,12 +39,50 @@ public class PlayerScore : MonoBehaviour
             ONBonus?.Invoke();
 
         }
+        if (collision.GetComponent<Bonus2>() != null)
+        {
+            GodMod = true;
+            if (God != null)
+                StopCoroutine(God);
+            God = StartCoroutine(GodMode());
+            var actor = collision.gameObject;
+            Destroy(actor);
+            _audioEventDispatcher.PlayAudio(AudioType.Win);
+            ONBonus?.Invoke();
+
+        }
     }
 
+    public IEnumerator GodMode()
+    {
+        float t = 0f;
+        float duration = 15f;
+
+
+       float rainbowSpeed = 25f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float hue = Mathf.Repeat((t / duration)* rainbowSpeed, 1f);
+            Color rainbow = Color.HSVToRGB(hue, 1f, 1f);
+            GetComponent<SpriteRenderer>().color = rainbow;
+            yield return null;
+        }
+
+        GodMod = false;
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    public void AddScore()
+    {
+        score += 50;
+        ONBonus?.Invoke();
+        _audioEventDispatcher.PlayAudio(AudioType.Win);
+    }
     private void Start()
     {
         StartTime();
-
+        
     }
     private void StartTime()
     {

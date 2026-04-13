@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject _objectToSpawn2;
     [SerializeField] private GameObject _objectToSpawn3;
     [SerializeField] private GameObject _BonusToSpawn;
+    [SerializeField] private GameObject _BonusToSpawn2;
     [SerializeField] private int _spawnTimer = 0;
     [SerializeField] private int _spawnInterval = 4;
     private int _RefNumber;
@@ -148,9 +150,12 @@ public class Spawner : MonoBehaviour
                     {
                         newRef = UnityEngine.Random.Range(0, _fallingLines.Length);
                     } while (newRef  == LastRefNumb);
-
+                    int random = Random.Range(0, 2);
+                    if (random == 0)
                     _fallingLines[newRef].Init(Instantiate(_BonusToSpawn));
-                }
+                    if (random == 1)
+                    _fallingLines[newRef].Init(Instantiate(_BonusToSpawn2));
+            }
 
             
 

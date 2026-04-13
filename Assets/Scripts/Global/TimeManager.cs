@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    [SerializeField] private float _timeStepDuration = 1.5f;
+    [SerializeField] private float _timeStepDuration = 2f;
     [SerializeField] private float _TimeToReverse = 25f;
     public event Action OnTimePassed;
     public event Action OnTimeReverse;
@@ -58,7 +58,7 @@ public class TimeManager : MonoBehaviour
             }
             else
             {
-                _timeStepDuration = Mathf.Clamp(_timeStepDuration - 0.25f, 0.5f, 1.5f);
+                _timeStepDuration = Mathf.Clamp(_timeStepDuration - 0.5f, 0.5f, 1.5f);
             }
             
         }

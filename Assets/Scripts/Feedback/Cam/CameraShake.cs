@@ -28,8 +28,8 @@ public class CameraShake : MonoBehaviour
 
     private void OnEnable()
     {
-        m_inputPlayerManager.OnMoveLeft += ShakeLeft;
-        m_inputPlayerManager.OnMoveRight += ShakeRight;
+        m_inputPlayerManager.OnMoveLeft += ShakeRight;
+        m_inputPlayerManager.OnMoveRight += ShakeLeft;
         _Spawner.OnSpawn += SpawnShake;
         _Time.OnTimePassed += TimeShake;
     }
@@ -37,8 +37,8 @@ public class CameraShake : MonoBehaviour
     
     private void OnDisable()
     {
-        m_inputPlayerManager.OnMoveLeft -= ShakeLeft;
-        m_inputPlayerManager.OnMoveRight -= ShakeRight;
+        m_inputPlayerManager.OnMoveLeft -= ShakeRight;
+        m_inputPlayerManager.OnMoveRight -= ShakeLeft;
         _Spawner.OnSpawn -= SpawnShake;
         _Time.OnTimePassed -= TimeShake;
     }
@@ -55,13 +55,13 @@ public class CameraShake : MonoBehaviour
     }
     void ShakeLeft()
     {
-        ShakeDirection = new Vector3(Random.Range(-0.02f, 0.03f), Random.Range(0.05f,0.08f), 0f);
+        ShakeDirection = new Vector3(Random.Range(-0.05f, 0.03f), Random.Range(0.02f,0.03f), 0f);
         shakeDuration = 0.25f;
     }
 
     void ShakeRight()
     {
-        ShakeDirection = new Vector3(Random.Range(-0.02f, 0.03f), Random.Range(-0.08f, -0.03f), 0f);
+        ShakeDirection = new Vector3(Random.Range(-0.03f, 0.05f), Random.Range(-0.02f, -0.03f), 0f);
         shakeDuration = 0.25f;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created

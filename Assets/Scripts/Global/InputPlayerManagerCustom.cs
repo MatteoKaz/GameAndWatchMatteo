@@ -47,7 +47,7 @@ public class InputPlayerManagerCustom : MonoBehaviour
     {
         Vector2 delta = endPosition - startPosition;
         delta = delta.normalized;
-        float dot = Vector2.Dot(delta, Vector2.up); 
+        float dot = Vector2.Dot(delta, Vector2.left); 
 
         if (Mathf.Abs(dot) > 0.7f)
         {
