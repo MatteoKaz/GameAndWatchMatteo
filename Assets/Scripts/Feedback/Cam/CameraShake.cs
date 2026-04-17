@@ -55,13 +55,13 @@ public class CameraShake : MonoBehaviour
     }
     void ShakeLeft()
     {
-        ShakeDirection = new Vector3(Random.Range(-0.05f, 0.03f), Random.Range(0.02f,0.03f), 0f);
+        ShakeDirection = new Vector3(Random.Range(-0.05f, 0.03f), Random.Range(0.01f,0.01f), 0f);
         shakeDuration = 0.25f;
     }
 
     void ShakeRight()
     {
-        ShakeDirection = new Vector3(Random.Range(-0.03f, 0.05f), Random.Range(-0.02f, -0.03f), 0f);
+        ShakeDirection = new Vector3(Random.Range(-0.03f, 0.05f), Random.Range(-0.01f, -0.01f), 0f);
         shakeDuration = 0.25f;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created

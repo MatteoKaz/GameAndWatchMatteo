@@ -11,6 +11,8 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
 {
     public event Action OnMoveLeft;
     public event Action OnMoveRight;
+    public event Action OnMoveUp;
+    public event Action OnMoveDown;
 
     [SerializeField] private float _tapDuration = 1.0f;
     private float _tapTimer = 0.0f;
@@ -49,19 +51,36 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
     private void OnSwipe()
     {
         Vector2 delta = endPosition - startPosition;
-        delta = delta.normalized;
-        float dot = Vector2.Dot(delta, Vector2.up); 
 
-        if (Mathf.Abs(dot) > 0.7f)
+        // Ignore les petits mouvements (évite bruit)
+        if (delta.magnitude < 50f) return;
+
+        // Normalisation
+        delta.Normalize();
+
+        // Déterminer axe dominant
+        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
         {
-            if (dot < 0)
+            // Horizontal
+            if (delta.x > 0)
             {
                 MoveRight();
             }
             else
             {
                 MoveLeft();
-                
+            }
+        }
+        else
+        {
+            // Vertical
+            if (delta.y > 0)
+            {
+                MoveUp();
+            }
+            else
+            {
+                MoveDown();
             }
         }
     }
@@ -182,15 +201,23 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
         //}
     }
     
+    public void MoveDown()
+    {
+        OnMoveDown?.Invoke();
+    }
+
+    public void MoveUp()
+    {
+        OnMoveUp?.Invoke();
+        
+    }
     public void MoveLeft()
     {
         OnMoveLeft?.Invoke();
     }
-
     public void MoveRight()
     {
         OnMoveRight?.Invoke();
-        
     }
     void CellClicked(Vector2Int coord)
     {

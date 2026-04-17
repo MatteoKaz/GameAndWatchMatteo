@@ -16,7 +16,7 @@ public class GridManager : MonoBehaviour
     
     [SerializeField] public int width = 8;
     [SerializeField] public int height = 8;
-    [SerializeField] float cellSize = 2f; // taille d’une case dans le monde
+    [SerializeField] public float cellSize = 2f; // taille d’une case dans le monde
     [SerializeField] Vector3 startPosition = new Vector3(6.02f, 3f, 0f);
     [SerializeField] float spacing = 0.2f;  // espace supplémentaire entre cellules
     [SerializeField] Sprite White;
@@ -27,6 +27,11 @@ public class GridManager : MonoBehaviour
     public event Action FinishInitialize;
     public bool FinishInvoke = false;
 
+    public bool BaseSnakeType = false;
+    public float tileSize = 1f;
+
+    
+    private Cell[,] mainGrid;
     void Awake()
     {
         allCells = new Cell[width, height];
@@ -82,6 +87,8 @@ public class GridManager : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
         FinishInvoke = true;
         FinishInitialize?.Invoke();
+
+       
     }
     public void InvokeThings()
     {
@@ -113,5 +120,40 @@ public class GridManager : MonoBehaviour
 
         // Vider la liste de toutes les cellules si tu en as une
         
+    }
+
+    public Cell GetCell(Vector2Int coord)
+    {
+        foreach (Cell cell in allCells)
+        {
+            if (cell != null && cell.coord == coord)
+                return cell;
+        }
+        return null;
+    }
+
+    public Vector2Int Wrap(Vector2Int pos)
+    {
+        int x = (pos.x % width + width) % width;
+        int y = (pos.y % height + height) % height;
+        return new Vector2Int(x, y);
+    }
+    public Vector3 GetWorldPosWrapped(Vector2Int from, Vector2Int to)
+    {
+        Vector3 fromPos = allCells[from.x, from.y].transform.position;
+        Vector3 toPos = allCells[to.x, to.y].transform.position;
+
+        Vector3 delta = toPos - fromPos;
+
+        float worldWidth = width * cellSize;
+        float worldHeight = height * cellSize;
+
+        if (delta.x > worldWidth / 2f) delta.x -= worldWidth;
+        else if (delta.x < -worldWidth / 2f) delta.x += worldWidth;
+
+        if (delta.y > worldHeight / 2f) delta.y -= worldHeight;
+        else if (delta.y < -worldHeight / 2f) delta.y += worldHeight;
+
+        return fromPos + delta;
     }
 }
