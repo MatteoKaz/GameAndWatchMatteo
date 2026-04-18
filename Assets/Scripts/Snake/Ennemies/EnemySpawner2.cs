@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner2 : MonoBehaviour
@@ -23,9 +24,12 @@ public class EnemySpawner2 : MonoBehaviour
     [Header("Cap maximum d'ennemis")]
     [SerializeField] private int maxEnemies = 10;
 
-
+    [SerializeField] private float spawnIntervalEmpty = 8f;
     public event Action FinishSpawn;
-
+    [SerializeField] private int scoreThreshold = 100;
+    [SerializeField] private float spawnIntervalMin = 8f;
+    [SerializeField] private float spawnIntervalReduction = 2f;
+    [SerializeField] Score score;
     private void OnEnable()
     {
         gridManager.FinishInitialize += OnGridReady;
@@ -48,21 +52,44 @@ public class EnemySpawner2 : MonoBehaviour
         StartCoroutine(PeriodicSpawn());
     }
 
-    
+
     private IEnumerator PeriodicSpawn()
     {
         while (true)
         {
-            yield return new WaitForSeconds(spawnInterval);
+            float interval;
+
+            if (aiManager.enemies.Count == 0)
+            {
+                interval = spawnIntervalEmpty;
+            }
+            else
+            {
+                // Réduire l'interval selon le score
+                int scorePalier = score.GetScore() / scoreThreshold;
+                float reduced = spawnInterval - (scorePalier * spawnIntervalReduction);
+                interval = Mathf.Max(reduced, spawnIntervalMin);
+            }
+
+            yield return new WaitForSeconds(interval);
 
             if (aiManager.enemies.Count < maxEnemies)
-                SpawnOneEnemy();
-            else
-                Debug.Log("Cap d'ennemis atteint, pas de spawn.");
+            {
+                // Spawn 2 d'un coup si la liste était vide
+                if (aiManager.enemies.Count == 0)
+                {
+                    SpawnOneEnemy();
+                    SpawnOneEnemy();
+                }
+                else
+                {
+                    SpawnOneEnemy();
+                }
+            }
         }
     }
 
-    
+
     private void SpawnOneEnemy()
     {
         if (enemyPrefabs == null || enemyPrefabs.Count == 0)

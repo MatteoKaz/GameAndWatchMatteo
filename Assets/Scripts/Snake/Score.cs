@@ -9,4 +9,5 @@ public class Score : MonoBehaviour
     {
         playerScore += score;
     }
+    public int GetScore() => playerScore;
 }

@@ -1,6 +1,8 @@
-using UnityEngine;
 using System;
 using System.Collections;
+using System.Linq;
+using UnityEngine;
+using static PlayerEat2;
 
 public class PlayerMovement2 : MonoBehaviour
 {
@@ -8,9 +10,10 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] public SnakeBody2 snakeBody;
     [SerializeField] private AiManager2 aiManager;
+    [SerializeField] private PlayerEat2 pe;
     public Vector2Int coordPlayer;
 
-    private Vector2Int currentDirection = Vector2Int.right;
+    public Vector2Int currentDirection = Vector2Int.right;
     private Vector2Int nextDirection = Vector2Int.right;
 
     private bool hasBufferedInput = false;
@@ -18,7 +21,9 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private float moveInterval = 0.2f;
     private float timer = 0f;
     public bool isPlaying = false;
-
+    public bool Ghost = false;
+    public event Action<Vector2Int> OnMove;
+   
     private void OnEnable()
     {
         gridManager.FinishInitialize += PlacePlayer;
@@ -48,26 +53,40 @@ public class PlayerMovement2 : MonoBehaviour
 
             Vector2Int targetCoord = WrapPosition(coordPlayer + currentDirection);
             Cell targetCell = gridManager.GetCell(targetCoord);
-
+            Vector2Int tailCoord = snakeBody.snakeCoords[snakeBody.snakeCoords.Count - 1];
             if (targetCell == null) { GameOver(); yield break; }
-           
-           
-            coordPlayer = targetCoord;
-           
+            if(snakeBody.snakeCoords.Count > 1 &&  
+            snakeBody.snakeCoords
+                .Take(snakeBody.snakeCoords.Count - 1)
+            .Contains(targetCoord))
+            {
+                if(Ghost == false)
+                {
+                    // D'abord on bouge VERS la case fatale
+                    coordPlayer = targetCoord;
+                    snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(targetCoord));
 
+                    // On attend la FIN COMPLÈTE de l'animation
+                    yield return new WaitForSeconds(snakeBody.moveDuration * 0.95f);
+                    yield return new WaitUntil(() => snakeBody.MoveFinish);
+
+                    GameOver();
+                    yield break;
+                }
+                
+            }
+            coordPlayer = targetCoord;
+            OnMove?.Invoke(tailCoord);
             // Lance l'animation sans l'attendre complètement
             snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(targetCoord));
            
                 
             // Attend 95% de la durée relance avant la fin de l'animation
             yield return new WaitForSeconds(snakeBody.moveDuration * 0.95f);
-            if (snakeBody.snakeCoords.Contains(coordPlayer))
-            {
-                GameOver();
-                yield break;
-            }
+           
             // Attend que MoveFinish soit true (les 5% restants + fin propre)
             yield return new WaitUntil(() => snakeBody.MoveFinish);
+           
         }
     }
 

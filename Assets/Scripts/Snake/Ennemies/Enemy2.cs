@@ -1,8 +1,10 @@
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.AppUI.MVVM;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy2 : MonoBehaviour
 {
@@ -12,9 +14,10 @@ public class Enemy2 : MonoBehaviour
     private Vector2Int? chosenMove = null;
     public Vector2Int coordEnemy;
     public int Value;
-
+    public bool isFrozen = false;
+    private GameObject iceInstance;
     [SerializeField] private float moveDuration = 0.3f;
-
+    public bool isBroken = false;
     // Branche cet event sur ton système de collision (couper le serpent, game over, etc.)
     public event Action<Vector2Int> OnHitSnake;
 
@@ -28,6 +31,14 @@ public class Enemy2 : MonoBehaviour
     public void SetSpriteColor(Color color) =>
         GetComponent<SpriteRenderer>().color = color;
 
+
+    public void SetBroken(bool broken)
+    {
+        isBroken = broken;
+
+        // Visuel : teinte orange pour indiquer l'état brisé
+        SetSpriteColor(broken ? new Color(1f, 0.5f, 0f) : Color.white);
+    }
     public void SetValue()
     {
         Value = currentMoveType switch
@@ -66,6 +77,7 @@ public class Enemy2 : MonoBehaviour
    
     public void Tick()
     {
+        if (isFrozen) return;
         if (NoLegalMove()) return;
 
         TryMove();
@@ -77,6 +89,7 @@ public class Enemy2 : MonoBehaviour
     
     void TryMove()
     {
+        if (isFrozen) return;
         List<Vector2Int> moves = GetPossibleMoves();
         if (moves.Count == 0) return;
 
@@ -126,6 +139,7 @@ public class Enemy2 : MonoBehaviour
     // Appelé après le délai si le coup est encore valide
     public void ExecuteMove()
     {
+        
         if (chosenMove == null) return;
 
         bool hitsSnake = IsSnake(chosenMove.Value);
@@ -140,6 +154,7 @@ public class Enemy2 : MonoBehaviour
 
     public IEnumerator MoveEnemy()
     {
+        
         Vector3 startPos = transform.position;
         Vector3 endPos = gridManager.allCells[coordEnemy.x, coordEnemy.y].transform.position;
         float t = 0f;
@@ -152,11 +167,33 @@ public class Enemy2 : MonoBehaviour
         }
         if (snakeBody.snakeCoords.Contains(coordEnemy))
         {
-            snakeBody.RemoveSegmentAt(coordEnemy);
+            
+            if (coordEnemy == snakeBody.snakeCoords[0])
+            {
+                if (snakeBody.playerMovement.Ghost == false)
+                aim.playerMovement.GameOver();
+            }
+            else
+            {
+                 if (snakeBody.playerMovement.Ghost == false)
+                    snakeBody.RemoveSegmentAt(coordEnemy);
+            }
         }
+
+
         transform.position = endPos;
         gridManager.allCells[coordEnemy.x, coordEnemy.y].ColorCase(Color.white);
+       
         SetSpriteColor(Color.white);
+        if (aim.fireTrail.IsBurning(coordEnemy))
+        {
+            yield return new WaitForSeconds(0.2f);
+            aim.score.AddScore(Value);
+            ClearChosenMove();
+            aim.RemoveEnemy(this);
+            Destroy(gameObject);
+        }
+        
 
     }
     public List<Vector2Int> GetPossibleMoves()
@@ -277,6 +314,25 @@ public class Enemy2 : MonoBehaviour
             }
 
         return best;
+    }
+    public void Freeze(GameObject icePrefab)
+    {
+        isFrozen = true;
+
+        // Spawner le prefab de glace sur l'ennemi
+        iceInstance = Instantiate(icePrefab, transform.position, Quaternion.identity);
+        iceInstance.transform.SetParent(transform); // suit l'ennemi
+    }
+
+    public void Unfreeze()
+    {
+        isFrozen = false;
+
+        if (iceInstance != null)
+        {
+            Destroy(iceInstance);
+            iceInstance = null;
+        }
     }
 
     Vector2Int RandomMove(List<Vector2Int> moves) =>

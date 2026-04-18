@@ -1,0 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class IceEffect : MonoBehaviour
+{
+    [SerializeField] private GameObject icePrefab;
+    [SerializeField] private AiManager2 aiManager;
+    [SerializeField] private float iceDuration = 5f;
+
+    private bool isActive = false;
+
+    public void SetActive(bool active)
+    {
+        isActive = active;
+
+        if (active)
+            FreezeAllEnemies();
+        else
+            UnfreezeAllEnemies();
+    }
+
+    // ?? Gèle tous les ennemis actuels ?????????????????????????
+    private void FreezeAllEnemies()
+    {
+        foreach (Enemy2 e in aiManager.enemies)
+            if (e != null)
+                StartCoroutine(FreezeEnemy(e));
+    }
+
+    private IEnumerator FreezeEnemy(Enemy2 e)
+    {
+        e.Freeze(icePrefab);
+        yield return new WaitForSeconds(iceDuration);
+
+        // Ne pas dégeler si détruit entre temps
+        if (e != null)
+            e.Unfreeze();
+    }
+
+    private void UnfreezeAllEnemies()
+    {
+        foreach (Enemy2 e in aiManager.enemies)
+            if (e != null)
+                e.Unfreeze();
+    }
+}

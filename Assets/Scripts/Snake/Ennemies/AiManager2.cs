@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class AiManager2 : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class AiManager2 : MonoBehaviour
     [SerializeField] public PlayerMovement2 playerMovement;
     [SerializeField] private WaveEnd waveEnd;
     [SerializeField] private EnemySpawner2 enemySpawner;
-
+    [SerializeField] public FireTrail fireTrail;
+    [SerializeField] public Score score;
     [Header("Timer")]
     [SerializeField] private float tickInterval = 3f; // secondes entre chaque coup
 
@@ -65,7 +67,7 @@ public class AiManager2 : MonoBehaviour
             currentEnemyIndex = (currentEnemyIndex + 1) % enemies.Count;
             tries++;
 
-            if (!e.NoLegalMove())
+            if (!e.NoLegalMove() && e.isFrozen == false)
             {
                 // Choix immédiat + coloration
                 e.ChooseNextMove();
@@ -87,7 +89,12 @@ public class AiManager2 : MonoBehaviour
         // Si l'ennemi a été détruit ou supprimé entre temps
         if (e == null || !enemies.Contains(e))
             yield break;
-
+        if (e.isFrozen)
+        {
+            e.SetSpriteColor(Color.white);
+            e.ClearChosenMove();
+            yield break;
+        }
         // Si le coup choisi n'est plus valide, on ne fait rien
         // (le prochain Tick refera un choix)
         if (!e.IsChosenMoveStillValid())
@@ -99,9 +106,12 @@ public class AiManager2 : MonoBehaviour
         }
 
         e.ExecuteMove();
+        
 
         
-       
+      
+
+
     }
 
     public void ClearEnemies()

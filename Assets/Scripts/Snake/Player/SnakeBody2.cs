@@ -1,7 +1,11 @@
+using NUnit.Framework.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Unity.InferenceEngine.Tokenization.PostProcessors.Templating;
 using UnityEngine;
-using System;
+using static UnityEngine.Rendering.HableCurve;
 
 public class SnakeBody2 : MonoBehaviour
 {
@@ -11,7 +15,7 @@ public class SnakeBody2 : MonoBehaviour
     [SerializeField] private Sprite headSprite;
     [SerializeField] private Sprite bodySprite;
     [SerializeField] private Sprite tailSprite;
-    [SerializeField] private PlayerMovement2 playerMovement;
+    [SerializeField] public PlayerMovement2 playerMovement;
     [SerializeField] private PlayerEat2 pe;
 
     public bool MoveFinish = true;
@@ -69,34 +73,46 @@ public class SnakeBody2 : MonoBehaviour
     public IEnumerator MoveSnakeTo(Vector2Int target)
     {
         MoveFinish = false;
+        target = gridManager.Wrap(target);
+
+        // Capturer la taille au début — elle ne doit pas changer pendant l'animation
+        int count = segments.Count;
 
         List<Vector2Int> newCoords = new List<Vector2Int> { target };
-        for (int i = 0; i < segments.Count - 1; i++)
+        for (int i = 0; i < count - 1; i++)
             newCoords.Add(snakeCoords[i]);
 
-        Vector3[] startPositions = new Vector3[segments.Count];
-        Vector3[] endPositions = new Vector3[segments.Count];
+        Vector3[] startPositions = new Vector3[count];
+        Vector3[] endPositions = new Vector3[count];
 
-        for (int i = 0; i < segments.Count; i++)
+        for (int i = 0; i < count; i++)
         {
             Vector2Int from = snakeCoords[i];
             Vector2Int to = newCoords[i];
+
+            from.x = Mathf.Clamp(from.x, 0, gridManager.width - 1);
+            from.y = Mathf.Clamp(from.y, 0, gridManager.height - 1);
+            to.x = Mathf.Clamp(to.x, 0, gridManager.width - 1);
+            to.y = Mathf.Clamp(to.y, 0, gridManager.height - 1);
 
             startPositions[i] = gridManager.GetWorldPosWrapped(from, from);
             endPositions[i] = gridManager.GetWorldPosWrapped(from, to);
         }
 
         float t = 0f;
-
         while (t < 1f)
         {
             t += Time.deltaTime / moveDuration;
-            t = Mathf.Min(t, 1f); // Clamp propre sans dépasser
+            t = Mathf.Min(t, 1f);
 
-            // Lerp LINÉAIRE — pas de SmoothStep qui ralentit en fin de course
-            for (int i = 0; i < segments.Count; i++)
-                segments[i].transform.position =
-                                                GetWrappedLerp(startPositions[i], endPositions[i], t);
+            // Utiliser count capturé + vérifier que segments est toujours valide
+            int safeCount = Mathf.Min(count, segments.Count);
+            for (int i = 0; i < safeCount; i++)
+            {
+                if (segments[i] != null)
+                    segments[i].transform.position =
+                        GetWrappedLerp(startPositions[i], endPositions[i], t);
+            }
 
             yield return null;
         }
@@ -203,11 +219,20 @@ public class SnakeBody2 : MonoBehaviour
         }
     }
 
-    public void RemoveSegmentAt(Vector2Int targetPos)
+    
+        public void RemoveSegmentAt(Vector2Int targetPos)
     {
         playerMovement.isPlaying = false;
+        StartCoroutine(RemoveSegmentAfterMove(targetPos));
+    }
+
+    private IEnumerator RemoveSegmentAfterMove(Vector2Int targetPos)
+    {
+        // Attendre la fin de l'animation en cours
+        yield return new WaitUntil(() => MoveFinish);
+
         int index = snakeCoords.IndexOf(targetPos);
-        if (index == -1) return;
+        if (index == -1) { StartCoroutine(Relaunch()); yield break; }
 
         if (snakeCoords.Count <= 2)
         {
@@ -217,21 +242,13 @@ public class SnakeBody2 : MonoBehaviour
                 segments.RemoveAt(index);
                 snakeCoords.RemoveAt(index);
                 segments[0].GetComponent<SpriteRenderer>().sprite = headSprite;
-                Debug.Log("Serpent minimal atteint.");
-            }
-            else
-            {
-                Debug.Log("Game Over : suppression de la tête.");
             }
             UpdateRotations();
-            return;
+            StartCoroutine(Relaunch());
+            yield break;
         }
 
-        if (index == 0)
-        {
-            Debug.Log("Suppression de la tête non supportée.");
-            return;
-        }
+        if (index == 0) { StartCoroutine(Relaunch()); yield break; }
 
         Destroy(segments[index]);
         segments.RemoveAt(index);
@@ -277,11 +294,16 @@ public class SnakeBody2 : MonoBehaviour
 
     private void UpdateRotations()
     {
-        for (int i = 0; i < segments.Count; i++)
+        // Sécurité : les deux listes doivent être de même taille
+        int count = Mathf.Min(segments.Count, snakeCoords.Count);
+
+        for (int i = 0; i < count; i++)
         {
+            if (segments[i] == null) continue;
+
             Vector2Int dir;
             if (i == 0)
-                dir = segments.Count > 1 ? snakeCoords[0] - snakeCoords[1] : Vector2Int.right;
+                dir = count > 1 ? snakeCoords[0] - snakeCoords[1] : Vector2Int.right;
             else
                 dir = snakeCoords[i] - snakeCoords[i - 1];
 
