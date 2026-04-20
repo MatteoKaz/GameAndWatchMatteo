@@ -184,7 +184,21 @@ public class PlayerEat2 : MonoBehaviour
     }
     IEnumerator TimeAfterStopBonusGhost()
     {
-        yield return new WaitForSeconds(TimeBonusGhost);
+        yield return new WaitForSeconds(TimeBonusGhost - 2.5f);
+        float t = 0f;
+        while (t <1)
+        {
+            t += Time.deltaTime/2.5f;
+            foreach (GameObject seg in playerMovement.snakeBody.segments)
+            {
+                SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
+                Color c = sr.color;
+                c.a = Mathf.PingPong(t,1f);
+                c.a = Mathf.Clamp(c.a, 0.5f, 1f);
+                sr.color = c;
+            }
+        }
+       
         foreach (GameObject seg in playerMovement.snakeBody.segments)
             {
                 SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();

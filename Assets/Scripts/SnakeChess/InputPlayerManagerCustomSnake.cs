@@ -26,7 +26,7 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
     [SerializeField] Camera mainCamera;
     public bool canClickEnemies =false;
     public event Action<Cell> OnMove ;
-
+    public bool clickOnEnemy;
 
     void Awake()
     {
@@ -112,12 +112,13 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
                 {
                     CellClicked(cell.coord);
                     OnMove?.Invoke(cell);
+                    
                     startPosition = touch.screenPosition;
                     break;// stop après avoir cliqué une case
                 }
             }
 
-            // Si activé, cliquer sur un ennemi
+           
             if (canClickEnemies == true)
             {
                 Debug.Log("toucheenemy");
@@ -127,14 +128,17 @@ public class InputPlayerManagerCustomSnake : MonoBehaviour
                     EnemyMovement em = hit.collider.GetComponent<EnemyMovement>();
                     if (em != null)
                     {
-                       
-                        em.ColorCase(); // ou autre action sur l'ennemi
-                        startPosition = touch.screenPosition;
-                        break; // stop après avoir cliqué un ennemi
+                        if (clickOnEnemy == false)
+                        {
+                            em.ColorCase(); // ou autre action sur l'ennemi
+                            startPosition = touch.screenPosition;
+                            break;
+                        }
+                        
                     }
                 }
             }
-
+            clickOnEnemy = false;
             startPosition = touch.screenPosition;
 
 

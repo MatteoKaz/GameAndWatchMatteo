@@ -20,7 +20,7 @@ public class Enemy2 : MonoBehaviour
     public bool isBroken = false;
     // Branche cet event sur ton système de collision (couper le serpent, game over, etc.)
     public event Action<Vector2Int> OnHitSnake;
-
+    public Color color = Color.white; 
     public enum MoveType { Roi, Fou, Tour, Cavalier, Dame }
     public MoveType currentMoveType;
 
@@ -38,6 +38,7 @@ public class Enemy2 : MonoBehaviour
 
         // Visuel : teinte orange pour indiquer l'état brisé
         SetSpriteColor(broken ? new Color(1f, 0.5f, 0f) : Color.white);
+        color = (broken ? new Color(1f, 0.5f, 0f) : Color.white);
     }
     public void SetValue()
     {
@@ -184,7 +185,7 @@ public class Enemy2 : MonoBehaviour
         transform.position = endPos;
         gridManager.allCells[coordEnemy.x, coordEnemy.y].ColorCase(Color.white);
        
-        SetSpriteColor(Color.white);
+        SetSpriteColor(color);
         if (aim.fireTrail.IsBurning(coordEnemy))
         {
             yield return new WaitForSeconds(0.2f);

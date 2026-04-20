@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
-using UnityEngine;
+
 using System;
 
 
@@ -189,7 +189,7 @@ public class EnemyMovement : MonoBehaviour
             Active = true;  
             foreach (Cell cell in gridManager.allCells)
             {
-
+                
                 bool validMove = IsLegalMove(cell.coord);
                 if (cell == null) continue;
 
