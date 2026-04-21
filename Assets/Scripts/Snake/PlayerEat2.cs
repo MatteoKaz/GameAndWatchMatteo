@@ -186,19 +186,21 @@ public class PlayerEat2 : MonoBehaviour
     {
         yield return new WaitForSeconds(TimeBonusGhost - 2.5f);
         float t = 0f;
-        while (t <1)
+        while (t < 1f)
         {
-            t += Time.deltaTime/2.5f;
+            t += Time.deltaTime / 2.5f;
+
             foreach (GameObject seg in playerMovement.snakeBody.segments)
             {
                 SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
                 Color c = sr.color;
-                c.a = Mathf.PingPong(t,1f);
-                c.a = Mathf.Clamp(c.a, 0.5f, 1f);
+                c.a = Mathf.Clamp(Mathf.PingPong(t, 1f), 0.5f, 1f);
                 sr.color = c;
             }
+
+            yield return null; 
         }
-       
+
         foreach (GameObject seg in playerMovement.snakeBody.segments)
             {
                 SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
@@ -229,7 +231,7 @@ public class PlayerEat2 : MonoBehaviour
         state = PlayerState.normal;
     }
 
- 
+
 
 
 
@@ -237,29 +239,33 @@ public class PlayerEat2 : MonoBehaviour
     {
         while (state == PlayerState.Ghost)
         {
+            // Détruire les markers dont l'ennemi n'overlap plus
+            foreach (GhostMarker m in ghostMarkers.ToList())
+            {
+                if (m == null || m.linkedEnemy == null ||
+                    !playerMovement.snakeBody.snakeCoords.Contains(m.linkedEnemy.coordEnemy))
+                {
+                    if (m != null) Destroy(m.gameObject);
+                    ghostMarkers.Remove(m);
+                }
+            }
+
+            // Spawner les nouveaux markers
             foreach (Enemy2 e in aiManager.enemies.ToList())
             {
                 if (e == null) continue;
                 if (!playerMovement.snakeBody.snakeCoords.Contains(e.coordEnemy)) continue;
-
-                // Déjà un marker sur cet ennemi
                 bool alreadyMarked = ghostMarkers.Exists(m => m != null && m.linkedEnemy == e);
                 if (alreadyMarked) continue;
-
-                // Spawner le marker sur la position de l'ennemi
                 GameObject go = Instantiate(ghostMarkerPrefab, e.transform.position, Quaternion.identity);
-                GhostMarker marker = go.GetComponent<GhostMarker>();    
+                GhostMarker marker = go.GetComponent<GhostMarker>();
                 marker.linkedEnemy = e;
                 marker.playerEat = this;
-                
-                
-               
                 ghostMarkers.Add(marker);
             }
+
             yield return null;
         }
-
-        // Ghost expiré sans click ? détruire les markers
         ClearGhostMarkers();
     }
 

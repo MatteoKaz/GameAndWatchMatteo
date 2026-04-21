@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class OpenLevel : MonoBehaviour
 {
+
+    public string snakeScene = "SnakeScene";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,7 +17,10 @@ public class OpenLevel : MonoBehaviour
     {
         
     }
-
+    public void LoadSpecificScene()
+    {
+        SceneManager.LoadScene(snakeScene);
+    }
     public void LoadANewLevel()
     {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);

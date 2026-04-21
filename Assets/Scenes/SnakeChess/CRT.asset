@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb60a22f311433c4c962b888d1393f88, type: 3}
   m_Name: PaniniProjection
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.PaniniProjection
-  active: 0
+  active: 1
   distance:
     m_OverrideState: 1
-    m_Value: 0.953
+    m_Value: 0.053
   cropToFit:
     m_OverrideState: 0
     m_Value: 1
@@ -37,10 +37,10 @@ MonoBehaviour:
     m_Value: 10
   intensity:
     m_OverrideState: 1
-    m_Value: 0.384
+    m_Value: 0.211
   response:
     m_OverrideState: 1
-    m_Value: 0.065
+    m_Value: 0.013
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 2800000, guid: 632aefecc784ede4c9170645c42f98df, type: 3}
@@ -65,10 +65,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.569
+    m_Value: 0.274
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.305
+    m_Value: 0.54
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.15
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,10 +125,10 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 0.9
+    m_Value: 2.75
   intensity:
     m_OverrideState: 1
-    m_Value: 1.66
+    m_Value: 1.27
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -175,10 +175,10 @@ MonoBehaviour:
     m_Value: 0.39
   xMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.763
   yMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.699
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}

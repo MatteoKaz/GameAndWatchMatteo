@@ -7797,7 +7797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f400f22ebebc6874fbe560b9103fa199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenLevelChoose
-  SceneToLoad: MenuPlaySnakeChess
+  SceneToLoad: Menu
   IndexSceneToLoad: 0
 --- !u!1 &606133893
 GameObject:
@@ -13450,6 +13450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbbbdeba948517440ad2067ed190637f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenLevel
+  snakeScene: SnakeScene
 --- !u!114 &964821434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15587,6 +15588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbbbdeba948517440ad2067ed190637f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenLevel
+  snakeScene: SnakeScene
 --- !u!114 &1106459334
 MonoBehaviour:
   m_ObjectHideFlags: 0

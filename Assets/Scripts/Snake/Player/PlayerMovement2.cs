@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using static PlayerEat2;
 
@@ -10,9 +11,12 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] public SnakeBody2 snakeBody;
     [SerializeField] private AiManager2 aiManager;
+    [SerializeField] private Score score;
     [SerializeField] private PlayerEat2 pe;
     public Vector2Int coordPlayer;
-
+    [SerializeField] private GameObject deathScreen;
+    [SerializeField] private Animator deathAnim;
+     [SerializeField] private GameObject deathmenu;
     public Vector2Int currentDirection = Vector2Int.right;
     private Vector2Int nextDirection = Vector2Int.right;
 
@@ -23,6 +27,8 @@ public class PlayerMovement2 : MonoBehaviour
     public bool isPlaying = false;
     public bool Ghost = false;
     public event Action<Vector2Int> OnMove;
+
+    
    
     private void OnEnable()
     {
@@ -119,9 +125,18 @@ public class PlayerMovement2 : MonoBehaviour
     public void GameOver()
     {
         isPlaying = false;
-        Debug.Log("Game Over");
-    }
+        score.EndScore();
+        deathScreen.SetActive(true);
+        deathAnim.SetTrigger("WaveEnd");
+        StartCoroutine(death());
 
+
+    }
+    IEnumerator death()
+    {
+        yield return new WaitForSeconds(1f);
+        deathmenu.SetActive(true);  
+    }
     public void PlacePlayer()
     {
         Vector2Int center = new Vector2Int(
