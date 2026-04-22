@@ -197,95 +197,103 @@ public class PlayerEat2 : MonoBehaviour
                 c.a = Mathf.Clamp(Mathf.PingPong(t, 1f), 0.5f, 1f);
                 sr.color = c;
             }
-
-            yield return null; 
+            yield return null;
         }
 
         foreach (GameObject seg in playerMovement.snakeBody.segments)
-            {
-                SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
-                Color c = sr.color;
-                c.a = 1f;
-                sr.color = c;
-            }
+        {
+            SpriteRenderer sr = seg.GetComponent<SpriteRenderer>();
+            Color c = sr.color;
+            c.a = 1f;
+            sr.color = c;
+        }
+
         foreach (Enemy2 e in aiManager.enemies)
         {
             if (e == null) continue;
             if (playerMovement.snakeBody.snakeCoords.Contains(e.coordEnemy))
             {
-
-
-                    Instantiate(point, e.transform.position, Quaternion.identity);
-                point.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"+{e.Value}";
                 playerMovement.isPlaying = false;
-                    e.ClearChosenMove();
-                    aiManager.RemoveEnemy(e);
-                    score.AddScore(e.Value);
-                    Destroy(e.gameObject);
-                    StartCoroutine(Relaunch());
-                    break;
-                
+                e.ClearChosenMove();
+                aiManager.RemoveEnemy(e);
+                score.AddScore(e.Value);
+                SpawnPoint(e.Value, e.transform.position);
+                Destroy(e.gameObject);
+                StartCoroutine(Relaunch());
+                break;
             }
         }
-                playerMovement.Ghost = false;
+
+        playerMovement.Ghost = false;
         state = PlayerState.normal;
     }
 
-
-
-
+ 
 
     private IEnumerator GhostOverlapCheck()
     {
         while (state == PlayerState.Ghost)
         {
-            // Détruire les markers dont l'ennemi n'overlap plus
-            foreach (GhostMarker m in ghostMarkers.ToList())
-            {
-                if (m == null || m.linkedEnemy == null ||
-                    !playerMovement.snakeBody.snakeCoords.Contains(m.linkedEnemy.coordEnemy))
-                {
-                    if (m != null) Destroy(m.gameObject);
-                    ghostMarkers.Remove(m);
-                }
-            }
-
-            // Spawner les nouveaux markers
-            foreach (Enemy2 e in aiManager.enemies.ToList())
-            {
-                if (e == null) continue;
-                if (!playerMovement.snakeBody.snakeCoords.Contains(e.coordEnemy)) continue;
-                bool alreadyMarked = ghostMarkers.Exists(m => m != null && m.linkedEnemy == e);
-                if (alreadyMarked) continue;
-                GameObject go = Instantiate(ghostMarkerPrefab, e.transform.position, Quaternion.identity);
-                GhostMarker marker = go.GetComponent<GhostMarker>();
-                marker.linkedEnemy = e;
-                marker.playerEat = this;
-                ghostMarkers.Add(marker);
-            }
-
-            yield return null;
+            RefreshGhostMarkers();
+            yield return new WaitForSeconds(0.15f);
         }
         ClearGhostMarkers();
+    }
+
+    private void RefreshGhostMarkers()
+    {
+        // Supprimer les markers dont l'ennemi n'overlap plus OU est déjà détruit
+        foreach (GhostMarker m in ghostMarkers.ToList())
+        {
+            if (m == null || m.linkedEnemy == null ||
+                !playerMovement.snakeBody.snakeCoords.Contains(m.linkedEnemy.coordEnemy))
+            {
+                if (m != null) Destroy(m.gameObject);
+                ghostMarkers.Remove(m);
+            }
+        }
+
+        // Spawner uniquement si pas déjà marqué ET ennemi encore vivant
+        foreach (Enemy2 e in aiManager.enemies.ToList())
+        {
+            if (e == null) continue;
+            if (!playerMovement.snakeBody.snakeCoords.Contains(e.coordEnemy)) continue;
+
+            // Vérification stricte par référence — évite les doublons
+            bool alreadyMarked = ghostMarkers.Exists(m => m != null && m.linkedEnemy == e);
+            if (alreadyMarked) continue;
+
+            GameObject go = Instantiate(ghostMarkerPrefab, e.transform.position, Quaternion.identity);
+            GhostMarker marker = go.GetComponent<GhostMarker>();
+            marker.linkedEnemy = e;
+            marker.playerEat = this;
+            ghostMarkers.Add(marker);
+        }
     }
 
     public void OnGhostMarkerClicked(GhostMarker marker)
     {
         Enemy2 e = marker.linkedEnemy;
-        if (e == null) { ClearGhostMarkers(); return; }
 
-        Instantiate(point, e.transform.position, Quaternion.identity);
-        point.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"+{e.Value}";
+        Debug.Log($"[Ghost] Click reçu — ennemi null ? {e == null}");
+
+       // if (e == null) { ClearGhostMarkers(); return; }
+
+        Debug.Log($"[Ghost] Destruction de {e.name}, valeur {e.Value}");
+
+        marker.linkedEnemy = null;
+        ghostMarkers.Remove(marker);
+        Destroy(marker.gameObject);
+
+        
         e.ClearChosenMove();
         aiManager.RemoveEnemy(e);
         score.AddScore(e.Value);
+        SpawnPoint(e.Value, e.transform.position);
         Destroy(e.gameObject);
-
-        
-        ghostMarkers.Remove(marker);
-        Destroy(marker.gameObject);
+       
+        Debug.Log("[Ghost] Destroy appelé");
     }
-
     private void ClearGhostMarkers()
     {
         foreach (GhostMarker m in ghostMarkers)
@@ -293,9 +301,12 @@ public class PlayerEat2 : MonoBehaviour
         ghostMarkers.Clear();
     }
 
+
     private void SpawnPoint(int value, Vector3 position)
     {
-        point.GetComponentInChildren<TMPro.TextMeshPro>().text = $"+{value}";
-        Instantiate(point, position, Quaternion.identity);
+        
+        GameObject pointInstance = Instantiate(point, position, Quaternion.identity);
+
+        pointInstance.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"+{value}";
     }
 }

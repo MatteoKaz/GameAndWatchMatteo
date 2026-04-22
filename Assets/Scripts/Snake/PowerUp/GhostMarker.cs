@@ -10,6 +10,8 @@ public class GhostMarker : MonoBehaviour
 
     public void Press()
     {
+        Debug.LogWarning("Clique sur transparence");
         playerEat.OnGhostMarkerClicked(this);
+        Debug.LogWarning("Clique sur transparence");
     }
 }

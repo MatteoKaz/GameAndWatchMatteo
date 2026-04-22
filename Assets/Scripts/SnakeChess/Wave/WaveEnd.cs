@@ -120,6 +120,7 @@ public class WaveEnd : MonoBehaviour
         animator.SetTrigger("WaveEnd");
         yield return new WaitForSeconds(1f);
         setUpgrade.GenerateUpgrade();
+        setUpgrade.resetUse();
 
 
 

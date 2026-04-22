@@ -114,7 +114,10 @@ public class Enemy2 : MonoBehaviour
         if (moves.Count == 0) return;
 
         chosenMove = ChooseAction(moves);
-
+        foreach (Cell cel in gridManager.allCells)
+        {
+            cel.ColorCase(Color.white);
+        }
         // Case destination en rouge immédiatement
         Cell cell = gridManager.allCells[chosenMove.Value.x, chosenMove.Value.y];
         cell.ColorCase(Color.red);
