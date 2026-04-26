@@ -55,7 +55,7 @@ MonoBehaviour:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
       count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
-      count: 2
+      count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
       count: 1
     numBonuses: 0
@@ -64,9 +64,9 @@ MonoBehaviour:
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
-      count: 1
-    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
       count: 2
+    - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
+      count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
       count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
@@ -86,7 +86,7 @@ MonoBehaviour:
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
-      count: 2
+      count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
       count: 3
     - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
@@ -99,7 +99,7 @@ MonoBehaviour:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
       count: 2
     - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
-      count: 2
+      count: 1
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
       count: 2
     - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
@@ -110,7 +110,7 @@ MonoBehaviour:
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}
-      count: 7
+      count: 6
     - enemyPrefab: {fileID: 4603094208181271503, guid: 82e6c996d27b11942ba76458f8933c68, type: 3}
       count: 0
     - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}

@@ -6,7 +6,7 @@ public class IceEffect : MonoBehaviour
 {
     [SerializeField] private GameObject icePrefab;
     [SerializeField] private AiManager2 aiManager;
-    [SerializeField] private float iceDuration = 5f;
+    [SerializeField] private float iceDuration = 15f;
 
     private bool isActive = false;
 
@@ -34,8 +34,8 @@ public class IceEffect : MonoBehaviour
         yield return new WaitForSeconds(iceDuration);
 
         // Ne pas dégeler si détruit entre temps
-        if (e != null)
-            e.Unfreeze();
+        //if (e != null)
+            //e.Unfreeze();
     }
 
     private void UnfreezeAllEnemies()

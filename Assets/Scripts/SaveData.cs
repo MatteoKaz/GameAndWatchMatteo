@@ -5,21 +5,36 @@ public class SaveData
 {
     public int highScoreSnake = 0;
     public int highScoreGameAndWatch = 0;
+    
+    
     public TopScores topScoresSnake = new TopScores();
     public TopScores topScoresGameAndWatch = new TopScores();
 }
 
 [System.Serializable]
+public class ScoreEntry
+{
+    public string name;
+    public int score;
+
+    public ScoreEntry(string name, int score)
+    {
+        this.name = name;
+        this.score = score;
+    }
+}
+
+[System.Serializable]
 public class TopScores
 {
-    public List<int> scores = new List<int>();
+    public List<ScoreEntry> entries = new List<ScoreEntry>();
 
-    public void AddScore(int score)
+    public void AddScore(string name, int score)
     {
-        scores.Add(score);
-        scores.Sort((a, b) => b.CompareTo(a)); // tri décroissant
-        if (scores.Count > 10)
-            scores.RemoveAt(10); // garde seulement le top 10
+        entries.Add(new ScoreEntry(name, score));
+        entries.Sort((a, b) => b.score.CompareTo(a.score)); // tri décroissant
+        if (entries.Count > 10)
+            entries.RemoveAt(10); // garde seulement le top 10
     }
 }
 

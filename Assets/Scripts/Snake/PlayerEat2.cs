@@ -15,7 +15,7 @@ public class PlayerEat2 : MonoBehaviour
     [SerializeField] private FireTrail fireTrail;
     [SerializeField] private IceEffect iceEffect;
     private float TimeBonusFire = 10f;
-    private float TimeBonusIce = 10f;
+    private float TimeBonusIce =  15f;
     private float TimeBonusGhost = 10f;
     private Coroutine Timer ;
     private Coroutine TimerIce;

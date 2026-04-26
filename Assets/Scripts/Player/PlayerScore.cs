@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScore : MonoBehaviour
 {
@@ -13,12 +15,18 @@ public class PlayerScore : MonoBehaviour
     [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
     public bool GodMod;
     public Coroutine God;
+    public String Name;
+    [SerializeField]public TMP_InputField inputField;
     void Update()
     {
         
     }
-
-       IEnumerator AddPoint()
+   
+    void OnTextChanged(string value)
+    {
+        Name = value;
+    }
+    IEnumerator AddPoint()
     {
         yield return new WaitForSeconds(2f);
         while (true)
@@ -79,10 +87,26 @@ public class PlayerScore : MonoBehaviour
         ONBonus?.Invoke();
         _audioEventDispatcher.PlayAudio(AudioType.Win);
     }
+    public void EndScore()
+    {
+        GameManager.Instance.saveData.topScoresGameAndWatch.AddScore(Name,score);
+
+
+        if (score > GameManager.Instance.saveData.highScoreGameAndWatch)
+            GameManager.Instance.saveData.highScoreGameAndWatch = score;
+       
+
+        SaveManager.Save(GameManager.Instance.saveData);
+    }
+   public void SetName(String name)
+    {
+        Name = name; 
+    }
     private void Start()
     {
         StartTime();
-        
+        inputField.onValueChanged.AddListener(OnTextChanged);
+
     }
     private void StartTime()
     {
