@@ -4080,7 +4080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f400f22ebebc6874fbe560b9103fa199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenLevelChoose
-  SceneToLoad: MenuPlaySnakeChess
+  SceneToLoad: Menu
   IndexSceneToLoad: 0
 --- !u!1 &354811540
 GameObject:
@@ -9118,7 +9118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   m_inputPlayerManager: {fileID: 677991730}
-  _audioEventDispatcher: {fileID: 11400000, guid: 7063fb652f376c3459dd8cd9d81e992b, type: 2}
   coordPlayer: {x: 0, y: 0}
   gridManager: {fileID: 1919128413}
   snakeBody: {fileID: 677991732}
@@ -9152,6 +9151,7 @@ MonoBehaviour:
   playerMovement: {fileID: 677991731}
   MoveFinish: 1
   pe: {fileID: 1919128416}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   snakeCoords: []
   segments: []
   startSize: 3
@@ -9194,7 +9194,7 @@ MonoBehaviour:
   multGlobal: 1
   multOrdre: 1.25
   bonusValue: 0
-  _audioEventDispatcher: {fileID: 11400000, guid: 7063fb652f376c3459dd8cd9d81e992b, type: 2}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   pe: {fileID: 1919128416}
   sb: {fileID: 677991732}
   cm: {fileID: 1914360032}
@@ -9498,6 +9498,7 @@ GameObject:
   - component: {fileID: 699104225}
   - component: {fileID: 699104227}
   - component: {fileID: 699104226}
+  - component: {fileID: 699104228}
   m_Layer: 0
   m_Name: Number
   m_TagString: Untagged
@@ -9624,6 +9625,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699104224}
   m_CullTransparentMesh: 1
+--- !u!114 &699104228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699104224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22a2d2d47b110a4ca1255a442c45dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeRetry
+  upgrade: {fileID: 1919128420}
+  text: {fileID: 699104226}
 --- !u!1 &712040787
 GameObject:
   m_ObjectHideFlags: 0
@@ -13575,7 +13590,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &944094264
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13631,7 +13646,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944094263}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -13728,7 +13743,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944094263}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -19163,6 +19178,7 @@ MonoBehaviour:
   typetoGive: 0
   waveEnd: {fileID: 1919128419}
   animator: {fileID: 1014418481}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   UpgradeMenuparent: {fileID: 1847296662}
   UpgradeMenuPrefab: {fileID: 3382393348124902498, guid: 0e83fa5e8442306429f9b15310b74c2a, type: 3}
   backGroundToBlock: {fileID: 417720750}
@@ -19867,6 +19883,7 @@ MonoBehaviour:
   typetoGive: 0
   waveEnd: {fileID: 1919128419}
   animator: {fileID: 33549747}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   UpgradeMenuparent: {fileID: 1847296662}
   UpgradeMenuPrefab: {fileID: 3382393348124902498, guid: 0e83fa5e8442306429f9b15310b74c2a, type: 3}
   backGroundToBlock: {fileID: 417720750}
@@ -19975,6 +19992,7 @@ GameObject:
   - component: {fileID: 1395511599}
   - component: {fileID: 1395511601}
   - component: {fileID: 1395511600}
+  - component: {fileID: 1395511602}
   m_Layer: 0
   m_Name: Number
   m_TagString: Untagged
@@ -20101,6 +20119,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1395511598}
   m_CullTransparentMesh: 1
+--- !u!114 &1395511602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395511598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22a2d2d47b110a4ca1255a442c45dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeRetry
+  upgrade: {fileID: 1919128420}
+  text: {fileID: 1395511600}
 --- !u!1 &1397915888
 GameObject:
   m_ObjectHideFlags: 0
@@ -21525,7 +21557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1494832014
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22147,6 +22179,135 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1509733495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1509733497}
+  - component: {fileID: 1509733496}
+  m_Layer: 0
+  m_Name: Audio Source (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1509733496
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509733495}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7010940355c53bb499f5e4efc9d79af0, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.169
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1509733497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509733495}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1509774044
 GameObject:
   m_ObjectHideFlags: 0
@@ -22730,6 +22891,7 @@ MonoBehaviour:
   typetoGive: 0
   waveEnd: {fileID: 1919128419}
   animator: {fileID: 1654397172}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   UpgradeMenuparent: {fileID: 1847296662}
   UpgradeMenuPrefab: {fileID: 3382393348124902498, guid: 0e83fa5e8442306429f9b15310b74c2a, type: 3}
   backGroundToBlock: {fileID: 417720750}
@@ -27166,6 +27328,7 @@ GameObject:
   - component: {fileID: 1879862902}
   - component: {fileID: 1879862904}
   - component: {fileID: 1879862903}
+  - component: {fileID: 1879862905}
   m_Layer: 0
   m_Name: Number
   m_TagString: Untagged
@@ -27292,6 +27455,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1879862901}
   m_CullTransparentMesh: 1
+--- !u!114 &1879862905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879862901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22a2d2d47b110a4ca1255a442c45dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeRetry
+  upgrade: {fileID: 1919128420}
+  text: {fileID: 1879862903}
 --- !u!1 &1881787918
 GameObject:
   m_ObjectHideFlags: 0
@@ -28820,7 +28997,7 @@ MonoBehaviour:
   spacing: 1
   White: {fileID: 2086993313030124417, guid: e6a68ea474eb5484bacac22fdfcd96d7, type: 3}
   Black: {fileID: 1033215642, guid: e6a68ea474eb5484bacac22fdfcd96d7, type: 3}
-  _audioEventDispatcher: {fileID: 0}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   FinishInvoke: 0
   BaseSnakeType: 0
   tileSize: 1
@@ -28837,6 +29014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIManger
   enemies: []
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   gridManager: {fileID: 1919128413}
   snakeBody: {fileID: 677991732}
   pe: {fileID: 1919128416}
@@ -28879,6 +29057,7 @@ MonoBehaviour:
   snakeBody: {fileID: 677991732}
   movetoLooseMult: 1
   BasemovetoLooseMult: 1
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   deathPlace:
   - {fileID: 405873669}
   - {fileID: 921730592}
@@ -28991,6 +29170,7 @@ MonoBehaviour:
   wm: {fileID: 1919128418}
   updateGiver: {fileID: 1560243959}
   setUpgrade: {fileID: 1919128420}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   animator: {fileID: 1487476225}
   waveActive: 0
   DeathScreen: {fileID: 138727850}
@@ -29040,6 +29220,7 @@ MonoBehaviour:
   - {fileID: 1356774878}
   - {fileID: 1395029692}
   backGroundToBlock: {fileID: 417720750}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   numberOfUse: 2
 --- !u!1 &1944298812
 GameObject:
@@ -30745,7 +30926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioEventManager1
   audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
-  audioSource: {fileID: 1244444810}
+  audioSource: {fileID: 2142099324}
 --- !u!82 &2142099324
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31058,3 +31239,4 @@ SceneRoots:
   - {fileID: 637772635}
   - {fileID: 2142099325}
   - {fileID: 1244444811}
+  - {fileID: 1509733497}

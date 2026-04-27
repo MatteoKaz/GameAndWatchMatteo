@@ -12,4 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f818344e258c366468962952ad597b9e, type: 3}
   m_Name: AudioEventDispatcher1
   m_EditorClassIdentifier: Assembly-CSharp::AudioEventDispatcher1
-  _audioClips: []
+  _audioClips:
+  - audioType: 4
+    audioClip: {fileID: 8300000, guid: ae3430aa0dc71eb4ba030cedf00cce88, type: 3}
+    volume: 2
+  - audioType: 0
+    audioClip: {fileID: 8300000, guid: ae3430aa0dc71eb4ba030cedf00cce88, type: 3}
+    volume: 1.5
+  - audioType: 5
+    audioClip: {fileID: 8300000, guid: 6639a5e0dd7ac9642a2aab4c15341c08, type: 3}
+    volume: 1
+  - audioType: 1
+    audioClip: {fileID: 8300000, guid: 19ce1ab82de987349b7dd0d495deb417, type: 3}
+    volume: 1
+  - audioType: 8
+    audioClip: {fileID: 8300000, guid: a49ab984610fee745afa90efc6d03678, type: 3}
+    volume: 1
+  - audioType: 7
+    audioClip: {fileID: 8300000, guid: 13623f4c8d949314287fd087f3162751, type: 3}
+    volume: 2
+  - audioType: 9
+    audioClip: {fileID: 8300000, guid: a4a28e6b53e381d49a384268090ba055, type: 3}
+    volume: 1.5
+  - audioType: 10
+    audioClip: {fileID: 8300000, guid: e075dd692d9b7c6429c8d8b718799509, type: 3}
+    volume: 0.75
+  - audioType: 6
+    audioClip: {fileID: 8300000, guid: f6cae020911f49540bbbbc4fef40f2e6, type: 3}
+    volume: 0.75
+  - audioType: 11
+    audioClip: {fileID: 8300000, guid: ae3430aa0dc71eb4ba030cedf00cce88, type: 3}
+    volume: 0.25

@@ -21,7 +21,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] float spacing = 0.2f;  // espace supplémentaire entre cellules
     [SerializeField] Sprite White;
     [SerializeField] Sprite Black;
-    [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     Vector2Int[,] gridPositions;
     public Cell[,] allCells;
     public event Action FinishInitialize;
@@ -58,6 +58,7 @@ public class GridManager : MonoBehaviour
         {
                 for (int x = 0; x < width; x++)
                 {
+                    _audioEventDispatcher.PlayAudio(AudioType1.Grid);
                     Vector3 worldPos = startPosition + new Vector3(
                     x  * (cellSize + spacing),
                     y * (cellSize + spacing),
@@ -81,6 +82,7 @@ public class GridManager : MonoBehaviour
                     }
 
                     yield return new WaitForSeconds(0.03f);
+
 
                 }
         }

@@ -16,11 +16,12 @@ public class AudioEventManager1 : MonoBehaviour
     }
 
 
-    private void PlayAudioFX(AudioClip clip)
+    private void PlayAudioFX(AudioClip clip, float volume)
     {
-        
-        audioSource.Stop();
-        audioSource.clip = clip;
-        audioSource.Play();
+
+
+        Debug.LogWarning("PlayAudioFX called " + Time.frameCount);
+        audioSource.PlayOneShot(clip, volume);
     }
+
 }

@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] public AIManger aim;
     [SerializeField] public Sprite sprite;
     [SerializeField] public PlayerEat pe;
+    
     public Vector2Int coordEnemy;
     public Vector2Int CurrentcoordEnemy;
     public Vector3 futurmove;

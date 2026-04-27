@@ -12,6 +12,7 @@ public class WaveEnd : MonoBehaviour
     [SerializeField] public WaveManager wm;
     [SerializeField] public UpgradeGiver updateGiver;
     [SerializeField] public SetUpgrade setUpgrade;
+    [SerializeField] public AudioEventDispatcher1 _audioEventDispatcher;
     public Animator animator;
     public bool waveActive = false;
     public event Action CloseMenuCard;
@@ -66,6 +67,7 @@ public class WaveEnd : MonoBehaviour
             Debug.Log("fin wave");
             //Quand upgrade modifier ici 
             ResetAndRelaunch();
+
         }
         else
         {
@@ -74,9 +76,11 @@ public class WaveEnd : MonoBehaviour
     }
     public IEnumerator Death()
     {
+        
         yield return new WaitForSeconds(1f);
         DeathScreen.SetActive(true);
         yield return new WaitForSeconds(1f);
+        _audioEventDispatcher.PlayAudio(AudioType1.Death);
         animatorDeathScreen.SetTrigger("WaveEnd");
         yield return new WaitForSeconds(2f);
         for (int i = 0; i < DeathgameObjects.Count; i++)
@@ -94,6 +98,7 @@ public class WaveEnd : MonoBehaviour
 
 
         StartCoroutine(EndWave());
+        
 
 
     }
@@ -116,6 +121,7 @@ public class WaveEnd : MonoBehaviour
         aim.ClearEnemies();
         yield return new WaitForSeconds(0.75f);
         pm.snakeBody.DestroySnake();
+        _audioEventDispatcher.PlayAudio(AudioType1.Win);
         yield return new WaitForSeconds(0.75f);
         animator.SetTrigger("WaveEnd");
         yield return new WaitForSeconds(1f);

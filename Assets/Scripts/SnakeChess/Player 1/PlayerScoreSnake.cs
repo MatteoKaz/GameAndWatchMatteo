@@ -24,8 +24,8 @@ public class PlayerScoreSnake : MonoBehaviour
     public float multiplicatorEnchainement = 1f;
     public float multiplicatorEnchainementBaseValue = 1f;
 
-    public float multiplierValueEnchainementValue = 2f;
-    public float BasemultiplierValueEnchainementAdd = 2f;
+    public float multiplierValueEnchainementValue = 0.75f;
+    public float BasemultiplierValueEnchainementAdd = 0.75f;
     public float multiplierEnchainementFormUp = 1f;
 
 
@@ -36,12 +36,12 @@ public class PlayerScoreSnake : MonoBehaviour
     public float multDameEnchainement = 1f;
 
     public float multGlobal = 1f;
-    public float multOrdre = 1.25f;
+    public float multOrdre = 1.1f;
 
     public int bonusValue = 0;
 
     public event Action ONBonus;
-    [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     [SerializeField] private PlayerEat pe;
     [SerializeField] SnakeBody sb;
     [SerializeField] ChangeMovement cm;
@@ -131,6 +131,7 @@ public class PlayerScoreSnake : MonoBehaviour
             pe.deathPlace[i].sprite = null;
             pe.TMP_Texts[i].color = Color.white;
             pe.animatorsDeadpiece[i].SetTrigger("Point");
+            _audioEventDispatcher.PlayAudio(AudioType1.Eat);
             yield return new WaitForSeconds(TextWait);
             if (int.TryParse(pe.TMP_Texts[i].text, out int number))
             {
@@ -143,7 +144,7 @@ public class PlayerScoreSnake : MonoBehaviour
             }
             yield return new WaitForSeconds(FirstWait);
             pe.TMP_Texts[i].text = $"X{multOrdre}";
-            
+            _audioEventDispatcher.PlayAudio(AudioType1.Point);
             pe.animatorsDeadpiece[i].SetTrigger("Point");
             yield return new WaitForSeconds(TextWait);
             pe.TMP_Texts[i].text = $"{pointToShow}";
@@ -195,6 +196,7 @@ public class PlayerScoreSnake : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 UImultiplier.text = $"{multToShow}";
                 yield return new WaitForSeconds(0.1f);
+                _audioEventDispatcher.PlayAudio(AudioType1.Point);
                 ShakeCam?.Invoke();
                 yield return new WaitForSeconds(0.3f);
 
@@ -215,9 +217,11 @@ public class PlayerScoreSnake : MonoBehaviour
                 yield return new WaitForSeconds(WaitToAnimText);
                 anim.SetTrigger("BackToIdle");
                 animatorMult.SetTrigger("MultAnim");
+                _audioEventDispatcher.PlayAudio(AudioType1.Eat);
                 yield return new WaitForSeconds(0.1f);
                 UImultiplier.text = $"{multToShow += multiplierValueBase * multiplierFormUp}";
                 yield return new WaitForSeconds(0.2f);
+                _audioEventDispatcher.PlayAudio(AudioType1.Point);
                 ShakeCam?.Invoke();
                 yield return new WaitForSeconds(EndWaitMult);
 
@@ -236,6 +240,7 @@ public class PlayerScoreSnake : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             UImultiplier.text = $"{multToShow *= multGlobal}";
             yield return new WaitForSeconds(0.2f);
+            _audioEventDispatcher.PlayAudio(AudioType1.Point);
             ShakeCam?.Invoke();
             
         }
@@ -247,21 +252,23 @@ public class PlayerScoreSnake : MonoBehaviour
         UIPoint.text = $"{pointToShow}";
         multToShow = 0;
         UImultiplier.text = $"{multToShow}";
+        _audioEventDispatcher.PlayAudio(AudioType1.Point);
         //Score Final
 
         int displayScore = 0;
-
+        int frameCount = 0; 
         while (displayScore < score)
         {
             int step = Mathf.Clamp(displayScore / 100, 1, 300);
             displayScore += step;
-
+            if (frameCount % 25 == 0) // 
+                _audioEventDispatcher.PlayAudio(AudioType1.Score);
             if (displayScore > score) displayScore = score;
 
             UIScore.text = displayScore.ToString();
             if (displayScore % 25 <= step)
                 MicroShakeCam?.Invoke();
-
+            frameCount++;
             yield return null;
         }
 
@@ -272,12 +279,15 @@ public class PlayerScoreSnake : MonoBehaviour
         {
             int step = Mathf.Clamp(displayScore / 100, 1, 750);
             displayScore -= step;
+            if(frameCount % 25 == 0) 
+            _audioEventDispatcher.PlayAudio(AudioType1.ScoreDown);
 
             UIScore.text = displayScore.ToString();
             if (displayScore % 50 <= step)
                 MicroShakeCam?.Invoke();
-
+            frameCount++;
             yield return null;
+            
         }
 
         yield return new WaitForSeconds(0.1f);

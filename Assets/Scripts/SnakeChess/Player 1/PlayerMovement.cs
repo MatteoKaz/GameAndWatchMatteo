@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private InputPlayerManagerCustomSnake m_inputPlayerManager;
-    [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
+    
     public Vector2Int coordPlayer;
     [SerializeField] private GridManager gridManager;
     [SerializeField] public SnakeBody snakeBody;
@@ -168,6 +168,7 @@ public class PlayerMovement : MonoBehaviour
                     snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(newCell.coord));
                     NumberOfMoves -= 1;
                     
+
 
 
 

@@ -1,15 +1,16 @@
-using NUnit.Framework.Internal;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using Unity.InferenceEngine.Tokenization.PostProcessors.Templating;
+
+
 using UnityEngine;
-using static UnityEngine.Rendering.HableCurve;
+
 
 public class SnakeBody2 : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     [SerializeField] private GameObject segmentPrefab;
     [SerializeField] private GameObject HeadsegmentPrefab;
     [SerializeField] private Sprite headSprite;
@@ -27,7 +28,7 @@ public class SnakeBody2 : MonoBehaviour
     public List<GameObject> segments = new List<GameObject>();
 
     public int startSize = 3;
-    public float moveDuration = 0.19f; // Légèrement < moveInterval (0.2f) pour éviter tout gap
+    public float moveDuration = 0.23f; // Légèrement < moveInterval (0.2f) pour éviter tout gap
     public int GrowValue = 1;
     public int sizemax = 5;
 
@@ -105,7 +106,7 @@ public class SnakeBody2 : MonoBehaviour
             t += Time.deltaTime / moveDuration;
             t = Mathf.Min(t, 1f);
 
-            // Utiliser count capturé + vérifier que segments est toujours valide
+           
             int safeCount = Mathf.Min(count, segments.Count);
             for (int i = 0; i < safeCount; i++)
             {
@@ -223,6 +224,7 @@ public class SnakeBody2 : MonoBehaviour
         public void RemoveSegmentAt(Vector2Int targetPos)
     {
         playerMovement.isPlaying = false;
+        _audioEventDispatcher.PlayAudio(AudioType1.Death);
         StartCoroutine(RemoveSegmentAfterMove(targetPos));
     }
 

@@ -9,6 +9,8 @@ using Color = UnityEngine.Color;
 public class PlayerEat2 : MonoBehaviour
 {
     [SerializeField] private PlayerMovement2 playerMovement;
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
+    [SerializeField] private AudioEventManager1 _audioEventManager;
     [SerializeField] private Spawner1 spawner;
     [SerializeField] private AiManager2 aiManager;
     [SerializeField] Score score;
@@ -51,7 +53,8 @@ public class PlayerEat2 : MonoBehaviour
                     point.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"+{e.Value}";
                     e.ClearChosenMove();
                      aiManager.RemoveEnemy(e);
-                     score.AddScore(e.Value);
+                    _audioEventDispatcher.PlayAudio(AudioType1.Point);
+                    score.AddScore(e.Value);
                      Destroy(e.gameObject);
                     StartCoroutine(Relaunch());
                     break; 
@@ -62,7 +65,7 @@ public class PlayerEat2 : MonoBehaviour
                     e.ClearChosenMove();
                     point.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"+{e.Value}";
                     Instantiate(point, e.transform.position, Quaternion.identity);
-                    
+                    _audioEventDispatcher.PlayAudio(AudioType1.Point);
                     aiManager.RemoveEnemy(e);
                     score.AddScore(e.Value);
                     Destroy(e.gameObject);
@@ -70,7 +73,9 @@ public class PlayerEat2 : MonoBehaviour
                 }
                 if ((state == PlayerState.normal || state == PlayerState.Fire) && !e.isFrozen)
                 {
+                    _audioEventDispatcher.PlayAudio(AudioType1.Death);
                     playerMovement.GameOver();
+                    _audioEventManager.enabled = false; 
                     return;
                 }
 
@@ -98,6 +103,7 @@ public class PlayerEat2 : MonoBehaviour
         switch (data.type)
         {
             case EatData.EatType.Normal:
+                _audioEventDispatcher.PlayAudio(AudioType1.Eat);
                 playerMovement.snakeBody.Grow();
                 point.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = $"+{data.value}";
                 Instantiate(point, data.transform.position, Quaternion.identity);
@@ -106,7 +112,7 @@ public class PlayerEat2 : MonoBehaviour
                 break;
             case EatData.EatType.Fire:
                 state = PlayerState.Fire;
-
+                _audioEventDispatcher.PlayAudio(AudioType1.Win);
                 TimeBonusFire = data.duration;
 
                 //fireTrail.SetActive(true);
@@ -122,7 +128,7 @@ public class PlayerEat2 : MonoBehaviour
                 Timer = StartCoroutine(TimeBeforeStopBonus());
                 break;
             case EatData.EatType.Ice:
-                
+                _audioEventDispatcher.PlayAudio(AudioType1.Win);
                 state = PlayerState.Ice;
                 TimeBonusIce = data.duration;
                 iceEffect.SetActive(true);
@@ -130,6 +136,7 @@ public class PlayerEat2 : MonoBehaviour
                 TimerIce = StartCoroutine(TimeBeforeStopBonusIce());
                 break;
             case EatData.EatType.Ghost:
+                _audioEventDispatcher.PlayAudio(AudioType1.Win);
                 state = PlayerState.Ghost;
                 TimeBonusGhost = data.duration;
                 playerMovement.Ghost = true;
@@ -242,7 +249,6 @@ public class PlayerEat2 : MonoBehaviour
 
     private void RefreshGhostMarkers()
     {
-        // Supprimer les markers dont l'ennemi n'overlap plus OU est déjà détruit
         foreach (GhostMarker m in ghostMarkers.ToList())
         {
             if (m == null || m.linkedEnemy == null ||
@@ -253,7 +259,7 @@ public class PlayerEat2 : MonoBehaviour
             }
         }
 
-        // Spawner uniquement si pas déjà marqué ET ennemi encore vivant
+        
         foreach (Enemy2 e in aiManager.enemies.ToList())
         {
             if (e == null) continue;
@@ -275,17 +281,17 @@ public class PlayerEat2 : MonoBehaviour
     {
         Enemy2 e = marker.linkedEnemy;
 
-        Debug.Log($"[Ghost] Click reçu — ennemi null ? {e == null}");
+       
 
        // if (e == null) { ClearGhostMarkers(); return; }
 
-        Debug.Log($"[Ghost] Destruction de {e.name}, valeur {e.Value}");
+        
 
         marker.linkedEnemy = null;
         ghostMarkers.Remove(marker);
         Destroy(marker.gameObject);
 
-        
+        _audioEventDispatcher.PlayAudio(AudioType1.Point);
         e.ClearChosenMove();
         aiManager.RemoveEnemy(e);
         score.AddScore(e.Value);

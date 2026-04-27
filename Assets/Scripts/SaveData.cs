@@ -34,7 +34,7 @@ public class TopScores
         entries.Add(new ScoreEntry(name, score));
         entries.Sort((a, b) => b.score.CompareTo(a.score)); // tri décroissant
         if (entries.Count > 10)
-            entries.RemoveAt(10); // garde seulement le top 10
+            entries.RemoveAt(10); 
     }
 }
 

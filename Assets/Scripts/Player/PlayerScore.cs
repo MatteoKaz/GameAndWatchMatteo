@@ -64,7 +64,7 @@ public class PlayerScore : MonoBehaviour
     public IEnumerator GodMode()
     {
         float t = 0f;
-        float duration = 15f;
+        float duration = 7.5f;
 
 
        float rainbowSpeed = 25f;

@@ -9,6 +9,7 @@ public class AiManager2 : MonoBehaviour
     public List<Enemy2> enemies = new();
 
     [Header("Références")]
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     [SerializeField] public GridManager gridManager;
     [SerializeField] public SnakeBody2 snakeBody;
     [SerializeField] public PlayerMovement2 playerMovement;
@@ -106,10 +107,10 @@ public class AiManager2 : MonoBehaviour
         }
 
         e.ExecuteMove();
-        
+        _audioEventDispatcher.PlayAudio(AudioType1.EnnemyMovement);
 
-        
-      
+
+
 
 
     }

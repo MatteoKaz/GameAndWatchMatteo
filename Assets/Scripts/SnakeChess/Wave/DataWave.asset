@@ -36,7 +36,7 @@ MonoBehaviour:
       count: 0
     numBonuses: 0
   - waveNumber: 3
-    waveValue: 450
+    waveValue: 550
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
@@ -47,7 +47,7 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 4
-    waveValue: 700
+    waveValue: 850
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
@@ -60,7 +60,7 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 5
-    waveValue: 1000
+    waveValue: 1250
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: f82c1f88c71bb3b46876c793ec7f84bd, type: 3}
@@ -73,7 +73,7 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 6
-    waveValue: 1500
+    waveValue: 1750
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 08725c1b38075044fbbf74a3d49b8bf5, type: 3}
@@ -106,7 +106,7 @@ MonoBehaviour:
       count: 1
     numBonuses: 0
   - waveNumber: 9
-    waveValue: 4500
+    waveValue: 5000
     maxMoves: 10
     enemies:
     - enemyPrefab: {fileID: 4603094208181271503, guid: 3948634b1ed0f9647a4d496a55056c05, type: 3}

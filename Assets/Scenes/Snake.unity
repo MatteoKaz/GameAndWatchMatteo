@@ -2953,8 +2953,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 2100000, guid: 4d04f5ed33054bf40947fdec61e5c926, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.16470589}
+  m_Material: {fileID: 2100000, guid: cce4598fca85c0a458fa6a8c82da2b71, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.41960785}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2988,7 +2988,7 @@ RectTransform:
   m_GameObject: {fileID: 463092618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.49, y: 0.49, z: 0.33793107}
+  m_LocalScale: {x: -2.4699998, y: -2.4699998, z: -1.7034482}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -4610,6 +4610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SnakeBody2
   gridManager: {fileID: 1919128413}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   segmentPrefab: {fileID: 4200181361928152831, guid: a0bb1541d76433a47bdb7d8ea9697e5a, type: 3}
   HeadsegmentPrefab: {fileID: 895219617358469177, guid: c7eb336fe9c03c24fbb40e5a95f59aea, type: 3}
   headSprite: {fileID: 1864096491674756069, guid: 4955a91c16efba94f853198a9d27d6a6, type: 3}
@@ -4637,10 +4638,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement2
   m_inputPlayerManager: {fileID: 677991730}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   gridManager: {fileID: 1919128413}
   snakeBody: {fileID: 677991731}
   aiManager: {fileID: 1919128424}
   score: {fileID: 677991733}
+  _audioEventManager: {fileID: 676551546}
   pe: {fileID: 1919128423}
   coordPlayer: {x: 0, y: 0}
   deathScreen: {fileID: 138727850}
@@ -4663,6 +4666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Score
   playerScore: 0
+  playerMovement: {fileID: 677991731}
   Name: 
   inputField: {fileID: 1130851161}
 --- !u!1 &695170136
@@ -5364,6 +5368,135 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 1
+--- !u!1 &833742082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 833742084}
+  - component: {fileID: 833742083}
+  m_Layer: 0
+  m_Name: Audio Source (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &833742083
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833742082}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 58d30d97586aad54bbd3ed441d7ee3c9, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.481
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &833742084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833742082}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &847139584
 GameObject:
   m_ObjectHideFlags: 0
@@ -8796,7 +8929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 2100000, guid: 4d04f5ed33054bf40947fdec61e5c926, type: 2}
+  m_Material: {fileID: 2100000, guid: cce4598fca85c0a458fa6a8c82da2b71, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -8831,7 +8964,7 @@ RectTransform:
   m_GameObject: {fileID: 1397915888}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.49, y: 0.49, z: 0.33793107}
+  m_LocalScale: {x: -2.4699998, y: -2.4699998, z: -1.7034482}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -12068,7 +12201,7 @@ MonoBehaviour:
   spacing: 1
   White: {fileID: 2086993313030124417, guid: e6a68ea474eb5484bacac22fdfcd96d7, type: 3}
   Black: {fileID: 1033215642, guid: e6a68ea474eb5484bacac22fdfcd96d7, type: 3}
-  _audioEventDispatcher: {fileID: 0}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   FinishInvoke: 0
   BaseSnakeType: 1
   tileSize: 1
@@ -12111,6 +12244,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   backGroundToBlock: {fileID: 417720750}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   numberOfUse: 2
 --- !u!114 &1919128421
 MonoBehaviour:
@@ -12160,6 +12294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEat2
   playerMovement: {fileID: 677991732}
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
+  _audioEventManager: {fileID: 676551546}
   spawner: {fileID: 1919128421}
   aiManager: {fileID: 1919128424}
   score: {fileID: 677991733}
@@ -12181,6 +12317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AiManager2
   enemies: []
+  _audioEventDispatcher: {fileID: 11400000, guid: e08ce7572a3cebe48bcf0f7aba94de86, type: 2}
   gridManager: {fileID: 1919128413}
   snakeBody: {fileID: 677991731}
   playerMovement: {fileID: 677991732}
@@ -13350,3 +13487,4 @@ SceneRoots:
   - {fileID: 638026203}
   - {fileID: 676551548}
   - {fileID: 2050049804}
+  - {fileID: 833742084}

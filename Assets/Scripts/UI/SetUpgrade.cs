@@ -14,6 +14,7 @@ public class SetUpgrade : MonoBehaviour
     [SerializeField] public List<UpgradeGiver> upgradeGivers;
     [SerializeField] public List<GameObject> Bouton;
     [SerializeField] public GraphicRaycaster backGroundToBlock;
+    [SerializeField] AudioEventDispatcher1 _audioEventDispatcher;
     public int numberOfUse = 2;
     public void GenerateUpgrade()
     {
@@ -44,6 +45,7 @@ public class SetUpgrade : MonoBehaviour
     {
         if (numberOfUse == 0)
             return;
+        _audioEventDispatcher.PlayAudio(AudioType1.EnnemyMovement);
         numberOfUse -= 1;
             int random = Random.Range(0, dataUpgrade.allUpgrades.Count);
         UpgradeData DataToChoose = dataUpgrade.allUpgrades[random];

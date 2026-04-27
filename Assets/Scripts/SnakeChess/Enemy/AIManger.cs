@@ -8,6 +8,7 @@ using UnityEngine;
 public class AIManger : MonoBehaviour
 {
     public List<EnemyMovement> enemies = new List<EnemyMovement>();
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     [SerializeField] public GridManager gridManager;
     [SerializeField] public SnakeBody snakeBody;
     [SerializeField] public PlayerEat pe;
@@ -120,6 +121,7 @@ public class AIManger : MonoBehaviour
         {
             enemy.TryMove();
             enemy.StartCoroutine(enemy.MoveEnemy());
+            _audioEventDispatcher.PlayAudio(AudioType1.EnnemyMovement);
             chosenEnemyDead = false;
         }
         else
@@ -138,6 +140,7 @@ public class AIManger : MonoBehaviour
                 TurnEnemy = true;
                 enemy.TryMove();
                 enemy.StartCoroutine(enemy.MoveEnemy());
+                _audioEventDispatcher.PlayAudio(AudioType1.EnnemyMovement);
                 chosenEnemyDead = false;
             }
         }

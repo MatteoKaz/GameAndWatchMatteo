@@ -19,7 +19,7 @@ public class ShowEnemyMove : MonoBehaviour
         }
         else
         {
-            inputPlayerManagerCustomSnake.canClickEnemies = false;
+            
             active = false;
         }
            

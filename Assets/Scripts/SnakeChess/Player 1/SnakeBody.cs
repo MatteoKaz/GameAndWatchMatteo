@@ -14,7 +14,7 @@ public class SnakeBody : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
     public bool MoveFinish = true;
     [SerializeField] private PlayerEat pe;
-
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     public event Action GrownUp;
     public event Action GrownDown;
     public List<Vector2Int> snakeCoords = new List<Vector2Int>();
@@ -157,14 +157,14 @@ public class SnakeBody : MonoBehaviour
                 UpdateRotations();
                 yield return null;
             }
-
+            
             for (int i = 0; i < segments.Count; i++)
                 segments[i].transform.position = endPositions[i];
 
             snakeCoords = newCoords;
             UpdateRotations();
         }
-
+        _audioEventDispatcher.PlayAudio(AudioType1.EnnemyMovement);
         MoveFinish = true;
         playerMovement.coordPlayer = snakeCoords[0];
         pe.PlayerKill();

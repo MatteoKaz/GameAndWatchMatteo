@@ -20,7 +20,7 @@ public class IceEffect : MonoBehaviour
             UnfreezeAllEnemies();
     }
 
-    // ?? Gèle tous les ennemis actuels ?????????????????????????
+    
     private void FreezeAllEnemies()
     {
         foreach (Enemy2 e in aiManager.enemies)
@@ -33,9 +33,7 @@ public class IceEffect : MonoBehaviour
         e.Freeze(icePrefab);
         yield return new WaitForSeconds(iceDuration);
 
-        // Ne pas dégeler si détruit entre temps
-        //if (e != null)
-            //e.Unfreeze();
+        
     }
 
     private void UnfreezeAllEnemies()

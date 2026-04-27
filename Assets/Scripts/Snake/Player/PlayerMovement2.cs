@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Linq;
-using System.Runtime.CompilerServices;
+
 using UnityEngine;
 using static PlayerEat2;
 
 public class PlayerMovement2 : MonoBehaviour
 {
     [SerializeField] private InputPlayerManagerCustomSnake m_inputPlayerManager;
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
     [SerializeField] private GridManager gridManager;
     [SerializeField] public SnakeBody2 snakeBody;
     [SerializeField] private AiManager2 aiManager;
     [SerializeField] private Score score;
+    [SerializeField] private AudioEventManager1 _audioEventManager;
     [SerializeField] private PlayerEat2 pe;
     public Vector2Int coordPlayer;
     [SerializeField] private GameObject deathScreen;
@@ -20,7 +22,7 @@ public class PlayerMovement2 : MonoBehaviour
     public Vector2Int currentDirection = Vector2Int.right;
     private Vector2Int nextDirection = Vector2Int.right;
 
-    private bool hasBufferedInput = false;
+    private bool hasTwoInput = false;
 
     [SerializeField] private float moveInterval = 0.2f;
     private float timer = 0f;
@@ -55,7 +57,7 @@ public class PlayerMovement2 : MonoBehaviour
         while (isPlaying)
         {
             currentDirection = nextDirection;
-            hasBufferedInput = false;
+            hasTwoInput = false;
 
             Vector2Int targetCoord = WrapPosition(coordPlayer + currentDirection);
             Cell targetCell = gridManager.GetCell(targetCoord);
@@ -68,11 +70,11 @@ public class PlayerMovement2 : MonoBehaviour
             {
                 if(Ghost == false)
                 {
-                    // D'abord on bouge VERS la case fatale
+                    
                     coordPlayer = targetCoord;
                     snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(targetCoord));
 
-                    // On attend la FIN COMPLÈTE de l'animation
+                   
                     yield return new WaitForSeconds(snakeBody.moveDuration * 0.95f);
                     yield return new WaitUntil(() => snakeBody.MoveFinish);
 
@@ -83,14 +85,14 @@ public class PlayerMovement2 : MonoBehaviour
             }
             coordPlayer = targetCoord;
             OnMove?.Invoke(tailCoord);
-            // Lance l'animation sans l'attendre complètement
+           
             snakeBody.StartCoroutine(snakeBody.MoveSnakeTo(targetCoord));
            
                 
-            // Attend 95% de la durée relance avant la fin de l'animation
+            
             yield return new WaitForSeconds(snakeBody.moveDuration * 0.95f);
            
-            // Attend que MoveFinish soit true (les 5% restants + fin propre)
+            
             yield return new WaitUntil(() => snakeBody.MoveFinish);
            
         }
@@ -106,10 +108,10 @@ public class PlayerMovement2 : MonoBehaviour
     {
         if (dir == -currentDirection) return;
 
-        if (!hasBufferedInput)
+        if (!hasTwoInput)
         {
             nextDirection = dir;
-            hasBufferedInput = true;
+            hasTwoInput = true;
         }
     }
 
@@ -125,7 +127,8 @@ public class PlayerMovement2 : MonoBehaviour
     public void GameOver()
     {
         isPlaying = false;
-        score.EndScore();
+        _audioEventDispatcher.PlayAudio(AudioType1.Death);
+        _audioEventManager.enabled = false;
         deathScreen.SetActive(true);
         deathAnim.SetTrigger("WaveEnd");
         StartCoroutine(death());

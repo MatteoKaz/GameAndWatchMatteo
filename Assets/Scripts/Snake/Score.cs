@@ -1,18 +1,20 @@
 using System;
 using TMPro;
-using UnityEditor.Overlays;
+
 using UnityEngine;
 
 public class Score : MonoBehaviour
 {
     public int playerScore;
+    [SerializeField] SnakeBody2 playerMovement;
     
     public String Name;
     [SerializeField] public TMP_InputField inputField;
     public void AddScore(int score)
     {
         playerScore += score;
-        
+        playerMovement.moveDuration -= 0.005f;
+        playerMovement.moveDuration = Mathf.Clamp(playerMovement.moveDuration, 0.12f, playerMovement.moveDuration);
 
     }
     public int GetScore() => playerScore;

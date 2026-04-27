@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.AppUI.MVVM;
+
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+
 
 public class Enemy2 : MonoBehaviour
 {
@@ -76,14 +76,7 @@ public class Enemy2 : MonoBehaviour
     }
 
    
-    public void Tick()
-    {
-        if (isFrozen) return;
-        if (NoLegalMove()) return;
-
-        TryMove();
-        StartCoroutine(MoveEnemy());
-    }
+ 
 
     public bool NoLegalMove() => GetPossibleMoves().Count == 0;
 

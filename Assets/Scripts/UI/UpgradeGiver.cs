@@ -22,7 +22,7 @@ public class UpgradeGiver : MonoBehaviour
     [SerializeField] public WaveEnd waveEnd;
     [SerializeField] private Animator animator;
     private bool CanPress=false;
-
+    [SerializeField] AudioEventDispatcher1 _audioEventDispatcher;
     [SerializeField] GameObject UpgradeMenuparent;
     [SerializeField] public GameObject UpgradeMenuPrefab;
     [SerializeField] public GraphicRaycaster backGroundToBlock;
@@ -144,6 +144,7 @@ public class UpgradeGiver : MonoBehaviour
                     scoreSnake.multOrdre += upgradeValue;
                     break;
             }
+            _audioEventDispatcher.PlayAudio(AudioType1.Eat);
             waveEnd.CloseCard();
             waveEnd.LaunchNewWave();
             UpgradeData upgrade = dataUpgrade.allUpgrades.FirstOrDefault(u => u.type == typetoGive);

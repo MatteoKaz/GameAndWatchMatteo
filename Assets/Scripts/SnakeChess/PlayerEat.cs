@@ -16,7 +16,7 @@ public class PlayerEat : MonoBehaviour
     private bool HasKill = false;
     public int movetoLooseMult = 1;
     public int BasemovetoLooseMult = 1;
-
+    [SerializeField] private AudioEventDispatcher1 _audioEventDispatcher;
 
     public event Action Eat;
     public event Action  Move;
@@ -52,8 +52,8 @@ public class PlayerEat : MonoBehaviour
                 HasKill = true;
                 playerscore.AddPoint(em.Value);
                 moveType = em.currentMoveType;
-               
-               
+                _audioEventDispatcher.PlayAudio(AudioType1.Eat);
+
                 pm.snakeBody.Grow();
 
                
@@ -135,6 +135,7 @@ public class PlayerEat : MonoBehaviour
             {
                 enemyEat?.Invoke();
                 snakeBody.RemoveSegmentAt(pos);
+                _audioEventDispatcher.PlayAudio(AudioType1.LoostPart);
             }
 
        
