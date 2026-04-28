@@ -1,6 +1,10 @@
 One page Concept: Check Mate 
 Theme qui lie le tout : Les eches et aussi le fait de passé de la victime à l'aggresseur.
-Clock and Watch est un game and watch se jouant sur mobile dans lequel le joueur incarne 
+
+
+==============================
+ClockChess
+ClockChess est un game and watch se jouant sur mobile dans lequel le joueur incarne 
 une héros bloquer dans une horloge devant survivre le plus longtemps possible pour obtenir le score le plus haut.
 
 Le joueur peut se deplacer sur 6 positions de haut en bas.
@@ -20,10 +24,11 @@ le joueur peut alors prévoir sa stratégie à court terme.
 
 Le jeu fait parti d'un ensemble qui contiendra 3 jeu, tous les jeux se deroule dans une meme realité, le game and watch se deroule sur la montre du protagoniste,
 le second jeu se deroulera sur son telephone mobile, et le 3 eme sera sa réalité.
-
+=====================================
 Snake Mate 
 
 -Snake mate est un twist de snake dans lequel le joueur doit eviter des pièces d'echec qui bouge, si le joueur se mange ou touche une piece il meurt.
+Mouvement swipe
 Les pièces bouge une par une et spawn a partir d'un certain moment 
 -Le joueur peut manger des etoiles pour grandir 
 Son but atteindre le plus de point possible
@@ -35,7 +40,7 @@ Le joueur peut manger des bonus spéciaux
 
 Ces bonus dure un temps puis s'arrette.
 
-
+==========================================
 Snake Chess 
 
 
@@ -70,5 +75,19 @@ Amelio crée des builds possible
 Jouer un serpent très long 
 Jouer un serpent combo 
 Ou d'ordre 
+
+
+
+
+
+Jouer conseille 
+
+Swipe bouton permet de changer de forme a pas oublier 
+
+Click sur les ennemis pour voir leur move possible 
+
+L'ennemi rouge est celui qui vas bouger 
+
+
 
 Un peu des builds mais aussi des builds basé sur un type de mouvement par exemple.
