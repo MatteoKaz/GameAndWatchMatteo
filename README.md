@@ -1,5 +1,5 @@
 One page Concept: Check Mate 
-
+Theme qui lie le tout : Les eches et aussi le fait de passé de la victime à l'aggresseur.
 Clock and Watch est un game and watch se jouant sur mobile dans lequel le joueur incarne 
 une héros bloquer dans une horloge devant survivre le plus longtemps possible pour obtenir le score le plus haut.
 
