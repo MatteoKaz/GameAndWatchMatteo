@@ -12,7 +12,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject _BonusToSpawn;
     [SerializeField] private GameObject _BonusToSpawn2;
     [SerializeField] private int _spawnTimer = 0;
-    [SerializeField] private int _spawnInterval = 4;
+    [SerializeField] private int _spawnInterval = 5;
     private int _RefNumber;
     public event Action OnSpawn;
     private int _LastRefNumber = 5;
@@ -38,7 +38,7 @@ public class Spawner : MonoBehaviour
     private int randomBonus()
     {
 
-        return  UnityEngine.Random.Range(0,5);
+        return  UnityEngine.Random.Range(0,4);
 
     }
     private void TimeGestion()
